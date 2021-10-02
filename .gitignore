@@ -1,0 +1,17 @@
+*.aux
+*.dvi
+*.log
+*.lof
+*.lot
+*.out
+*.toc
+*.lol
+Main.pdf
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+*.synctex.gz
+content/__latexindent_temp.tex
+*.synctex*
+*.xml

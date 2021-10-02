@@ -1,0 +1,6 @@
+*       text working-tree-encoding=UTF-8 eol=CRLF
+*.tex	text diff=tex
+
+*.gif   diff=image
+*.jpg   diff=image
+*.png   diff=image

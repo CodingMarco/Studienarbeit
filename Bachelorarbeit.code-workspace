@@ -1,0 +1,30 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+    ],
+    "settings": {
+        "files.exclude": {
+            "**/.git": true,
+            "**/.svn": true,
+            "**/.hg": true,
+            "**/CVS": true,
+            "**/.DS_Store": true,
+            "**/*.aux": true,
+            "**/*.blg": true,
+            "**/*.bbl": true,
+            "**/*.bcf": true,
+            "**/*.log": true,
+            "**/*.lot": true,
+            "**/*.tdo": true,
+            "**/*.lof": true,
+            "**/*.toc": true,
+            "**/*.out": true,
+            "**/*.run.xml": true,
+            "**/*.gz": true,
+            "__latexindent_temp.tex":true
+        },
+        "explorerExclude.backup": null
+    }
+}

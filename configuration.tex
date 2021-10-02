@@ -1,0 +1,177 @@
+
+%%%
+%%% KOMA related
+%%%
+
+\usepackage[
+    paper=a4paper,
+    left=25mm,
+    right=25mm,
+    top=25mm,
+    bottom=20mm,
+    includefoot,
+    foot=\baselineskip,
+    bindingoffset=0mm
+]{geometry}
+
+\usepackage[utf8]{inputenc} % encoding
+\usepackage[T1]{fontenc} % selecting font encodings
+\usepackage[ngerman]{babel} % German hyphenation
+\usepackage[babel,german=quotes]{csquotes} % German quotes
+\usepackage{lmodern} %MOST IMPORTANT PACKAGE!!! High resolution font
+\renewcommand*\familydefault{\sfdefault} %% für Serifen freie Schrift
+\usepackage{textcomp} % für in line {\textmu}
+
+\usepackage{scrlayer-scrpage}
+\clearpairofpagestyles
+\setkomafont{pageheadfoot}{\sffamily\footnotesize}
+\setkomafont{pagehead}{\bfseries}
+\setkomafont{pagination}{}
+
+\KOMAoptions{
+    headsepline = true,
+    footsepline = false,
+    plainfootsepline = false
+}
+\renewcommand*{\sectionmarkformat}{}
+
+\automark{section}
+\ihead{\myStudentenname}
+\chead{\myDokumententyp}
+\ohead{\headmark}
+\ofoot*{\pagemark}
+
+
+\usepackage{scrdate} % Für Datum und Wochentag
+
+%%%
+%%% not KOMA related
+%%%
+
+
+\usepackage[onehalfspacing]{setspace}
+
+%\usepackage{booktabs} %Never, ever use vertical rules! Never use double rules!
+\usepackage{multirow}
+\usepackage{comment}
+
+%\usepackage{etoolbox} %use with care! powerful but not can create difficult errors! extends build time
+%\AtBeginEnvironment{table}{\sffamily}
+%\AtBeginEnvironment{tabular}{\sffamily}
+
+%\usepackage{enumitem}
+\usepackage{paralist} % for \begin{compactitem}
+
+
+\usepackage{listings}
+\lstset{
+    basicstyle=\footnotesize, % Global Code Style
+    numbers=left,
+    numberstyle=\tiny,
+    columns=flexible,
+    breaklines=true,
+    postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space},
+}
+% from https://tex.stackexchange.com/questions/303465/higher-asterisks-in-lstlisting-environment
+\makeatletter
+\lst@CCPutMacro
+    \lst@ProcessOther {"2A}{\raisebox{2pt}{*}}
+    \@empty\z@\@empty
+\makeatother
+
+%\usepackage{color}
+%\include{listingsstyls}
+
+\usepackage{etex}
+% \#TODO: Entscheiden welchen Style
+%\bibliographystyle{ieeetr} % ist ohne den Strich
+\bibliographystyle{IEEETran} % ist mit dem Strich, dafür ausführlicher
+
+
+\usepackage{graphicx}
+%\usepackage{svg} %no reason to use this (unless you know how to use it)
+\usepackage{float}
+\usepackage[abs]{overpic} % Für Unterschrift
+
+\usepackage[binary-units = true ]{siunitx}
+%\sisetup{scientific-notation = true} % Wissenschaftliche Notation
+\sisetup{exponent-product = \cdot}
+\sisetup{output-product = \cdot} % Das Punkt statt X
+\sisetup{binary-units=true}
+\sisetup{output-decimal-marker = {,}}
+\sisetup{detect-all} 	% Einstellung das Front für SI gleich Standardfront
+\sisetup{per-mode = symbol}
+\sisetup{locale=DE}
+\usepackage{eurosym}
+\DeclareSIUnit{\sieuro}{\mbox{\euro}}
+
+% verwende gerade kein Mathe \usepackage{amsmath, amsthm, amssymb}
+% !sehr langsam  \usepackage[colorinlistoftodos,prependcaption, textsize=footnotesize]{todonotes}
+
+
+
+%\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{adjustbox}
+\usepackage{subcaption}
+%\usepackage{lscape}
+%\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.16}
+\usepackage{pgfplotstable}
+
+%% Glossar
+\usepackage[acronym,nonumberlist,nopostdot]{glossaries}
+\usepackage{glossary-mcols} % für Style mcolindex
+\glsenablehyper % Verlinkung der Einträge im Text zu Abkürzungen
+\setglossarystyle{mcolindex}
+\renewcommand{\glossarypreamble}{\glsfindwidesttoplevelname[\currentglossary]} % funktioniert nicht mit mcolindex
+\makenoidxglossaries
+
+
+\usepackage{makecell} % Für multiline Zellen mit \makecell
+%\usepackage{tabularx}
+\usepackage{longtable}
+
+
+\usepackage[
+    hidelinks,              % Das Links nicht farbig
+    bookmarks,              % Bookmarks erstellen
+    bookmarksopen,          % Bookmarks bei öffnen des PDF anzeigen
+    bookmarksnumbered,      % damit Nummern in Bookmarks
+    bookmarksopenlevel = 1, % damit nur die erste Ebene der Bookmarks beim öffnen angezeigt werden
+    pdftoolbar=		false,
+    pdfmenubar=		false,
+    pdftitle={		\myDokumententyp~über~\myTitle~von~\myStudentenname},
+    pdfsubject={}
+    pdfkeywords={}
+    pdfauthor={		\myStudentenname},
+    pdfstartpage={	1}
+    ]{hyperref}
+\addto\extrasngerman{\def\subsectionautorefname{Abschnitt}}
+\addto\extrasngerman{\def\subsubsectionautorefname{Abschnitt}}
+\addto\extrasngerman{\def\appendixautorefname{Anhang}} % funktioniert auch nicht
+\addto\extrasngerman{\def\lstlistingautorefname{Codeausschnitt}}
+\renewcommand{\lstlistingname}{Codeausschnitt}
+
+%% Anhang
+\usepackage{appendix}
+\renewcommand{\appendixname}{Anhang}
+\renewcommand{\appendixtocname}{Anhang}
+\renewcommand{\appendixpagename}{Anhang}
+\newcommand{\Appendixautorefname}{Anhang} % funktioniert nicht
+ \newcommand*\appendixmore{% see the KOMA-Script documentation
+   \clearpage
+   %\addsec{{\appendixname}}%
+   \renewcommand{\thesubsection}{{\Alph{subsection}}}%
+ } % damit Appendix subsection mit Buchstaben anfangen
+
+
+ \renewcommand{\k}[1]{\textit{#1}}
+ \newcommand{\f}[1]{\textbf{#1}}
+ \let\oldautoref\autoref
+ \let\oldref\ref
+
+ \renewcommand{\autoref}[1]{\oldautoref{#1}}
+ \renewcommand{\ref}[1]{\oldref{#1}}
+ \newcommand{\fullref}[1]{\autoref{#1} \nameref{#1}}

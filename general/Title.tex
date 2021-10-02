@@ -1,0 +1,40 @@
+\begin{titlepage}
+	\thispagestyle{empty}
+    \begin{center}
+        \rule{\textwidth}{1.6pt}\vspace*{-\baselineskip}\vspace*{2pt}
+        \rule{\textwidth}{0.4pt}
+        \\[0.2\baselineskip]
+        {\LARGE \myTitle}	
+        \rule{\textwidth}{0.4pt}\vspace*{-\baselineskip}\vspace{3.2pt}
+        \rule{\textwidth}{1.6pt}
+        \\
+        \vspace*{12mm}	{\large \myDokumententyp}\\
+        \ifx\myBachelorart\undefinde
+            \vspace*{27mm}	Studienganges \myStudiengang\\
+        \else
+            \vspace*{12mm}	für die Prüfung zum\\
+            \vspace*{3mm} 	{\large \myBachelorart}\\
+            \vspace*{12mm}	Studienganges \myStudiengang\\
+        \fi
+        \vspace*{3mm} 	an der \myHochschule\\
+        \vspace*{12mm}	von\\
+        \vspace*{3mm} 	{\large \myStudentenname}\\
+        \vspace*{12mm}	{\todaysname} der {\today} \\
+      \end{center}
+
+      \vfill
+      \begin{spacing}{1.2}
+        \centering
+        \begin{tabbing}
+            \hspace{6.5cm}                   \= \kill\\
+            \textbf{Matrikelnummer, Kurs}  \>  \myMatrikelnummer, \myKurs\\
+            \textbf{Ausbildungsfirma}      \>  \myAusbildungsfirma\\
+            \textbf{Erstgutachter}         \>  \myErstgutachter\\
+            \ifx\myZweigutachter\undefined
+            \else
+            \textbf{Zweitgutachter}        \>  \myZweigutachter\\
+            \fi
+            \textbf{Bearbeitungszeitraum}  \>  \Bearbeitungszeitraum\\
+        \end{tabbing}
+      \end{spacing}
+\end{titlepage}	

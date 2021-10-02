@@ -1,0 +1,59 @@
+% !TeX root = ./Main.tex
+% !TeX engine = xetex
+% !BIB program = bibtex
+
+\documentclass[oneside, openbib, parskip = full-]{scrartcl}
+% \includeonly{ % #INFO: wenn man nur bestimmte includes nutzen will 
+%     content/Anhang_KIS
+%     }
+
+
+
+
+
+\input{documentkeys} % #INFO: allgemeine Werte für die Arbeit
+\input{configuration}  % #INFO: Einstellungen
+\input{content/glossary_entries} % #INFO: laden aller Glossary und Abkürzungen
+
+\begin{document}
+%%%
+%%% Vorbau
+%%%
+\pagenumbering{Roman}
+\include{general/Title}
+\include{general/Selbstaendigkeitserklaerung}
+\include{content/Abstract}
+\include{general/tableofcontent}
+\clearpage
+
+%%%
+%%% Inhalt
+%%%
+\pagenumbering{arabic}
+% #INFO: für Inhalt normalerweise \input. \include with care, kann Verweise und so schwieriger machen
+% ich nutze trotzdem include damit ich mit \includeonly{} zum test bauen kleiner PDFs erstellen lassen kann
+%\input{content/<Name des Kapitels>}
+%\include{content/<filename>}
+
+\include{content/Vorlage_Content}
+
+    %\include{content/Schluss}
+
+%%%
+%%% Nachbau
+%%%
+\addsec{Literatur}
+\renewcommand{\section}[2]{}
+\bibliography{citation/quellen}
+\clearpage
+
+% Anhänge
+\appendix
+\addappheadtotoc
+\appendixpage
+\begin{appendices}
+%\include{content/<Name des Anhangs>}
+\include{content/Vorlage_Anhang}
+
+\end{appendices}
+\end{document}
