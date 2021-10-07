@@ -39,14 +39,18 @@ Dateistruktur:
 ## Einrichten
 
 1. install git
-1. install Sourcetree
-1. clone Repository
-1. install Perl
-1. install MiKTex
-1. install VS Code
-1. install VS Code Extensions
-1. reboot
-1. try build
+2. install Sourcetree
+3. clone Repository
+4. install Perl
+5. install MiKTex
+6. install VS Code
+7. install VS Code Extensions
+8. reboot
+9. try `latexmk` in cmd
+10. open `Bachelorarbeit.code-workspace`
+11. open TEX extension
+12. Build LaTeX Project -> Recipe: latexmk
+13. try build
 
 ## Infos
 

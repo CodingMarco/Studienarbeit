@@ -25,6 +25,5 @@
             "**/*.gz": true,
             "__latexindent_temp.tex":true
         },
-        "explorerExclude.backup": null
     }
 }
