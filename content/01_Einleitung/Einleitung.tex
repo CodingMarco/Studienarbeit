@@ -11,11 +11,18 @@ da sich hier nur wenige Benutzer auf den Straßen befinden.
 Dies ist besonders für mobile Radarkontrollen entscheidend, da solche jeden Tag zu unterschiedlichen Zeiten und an unterschiedlichen Orten auf- und abgebaut werden.
 
 Andererseits ist auch denkbar, dass es Zusammenhänge zwischen vergangenen und zukünftigen Standorten von Radarkontrollen gibt.
-Beispielsweise liegt es nahe, dass mobile Radarkontrollen räumlich und zeitlich möglichst gut gestreut werden.
-Daher kann man annehmen, dass die Gefahr für eine mobile Radarkontrolle an einem Ort im ländlichen Bereich sehr gering ist, wenn dort am vorherigen Tag eine solche anzutreffen war.
+Dies ist, wie Chollet in \cite{Chollet} auf Seite 152 argumentiert, eine wichtige Annahme, derer man sich bei jeglichen Vorhersagen bewusst sein muss.
+Diese Zusammenhänge haben im vorliegenden Anwendungsfall sowohl räumliche als auch zeitliche Aspekte.
+Beispielsweise liegt es nahe, dass mobile Radarkontrollen zeitlich möglichst gut gestreut werden.
+Daher kann man annehmen, dass die Gefahr für eine mobile Radarkontrolle an einem Ort eher gering ist, wenn dort am vorherigen Tag eine solche anzutreffen war.
+Die Gefahr sollte jedoch stetig steigen, je länger an einem Ort keine Radarkontrolle mehr anzutreffen war.
+Eine beispielhafte Annahme für ein rein räumlicher Zusammenhang ist, dass mobile Radarkontrollen in ländlichen Gebieten selten sehr dicht aufeinander folgen.
+Befindet sich also an einem bestimmten Ort eine mobile Radarkontrolle, ist es unwahrscheinlich, in direkter Umgebung eine weitere Radarkontrolle anzutreffen.
+Je weiter weg man sich begibt, desto weiter steigt die Wahrscheinlichkeit jedoch.
 
 Das Ziel der vorliegenden Arbeit ist daher, die Gefahr für mobile Radarkontrollen anhand historischer Daten und insbesondere derer der letzten Tage für den Folgetag zu prognostizieren.
-Wie in \autoref{sec:VerwanteteForschung} gezeigt wird, gibt es einige vielversprechende Ansätze, wie Neuronale Netze (\Acrshortpl{nn}) verwendet werden können, um sehr ähnliche Probleme anzugehen, wie z.B. die Vorhersage von Verbrechen.
+Wie in \autoref{sec:VerwanteteForschung} gezeigt wird, gibt es einige vielversprechende Ansätze, wie Neuronale Netze (\Acrshortpl{nn}) verwendet werden können, um sehr ähnliche Problemstellungen anzugehen.
+Ähnliche Problemstellungen sind in diesem Fall Vorhersagen mit räumlichen und zeitlichen Aspekten, wie z.B. die Vorhersage von Verkehrsunfällen oder Verbrechen.
 Daher sollen auch in dieser Arbeit \Acrshortpl{nn} verwendet werden, um die Vorhersagen anzustellen.
 
 Die erwähnten historischen Daten bestehen aus allen gemeldeten Standorten von mobilen Radarkontrollen der vorhergegangenen Jahre.
@@ -30,12 +37,19 @@ So entsprechen die Koordinaten dem Standort des Appbenutzers zum Zeitpunkt der M
 Da die Meldungen meist bei laufender Fahrt erfolgen, kann die gemeldete Position auf einem Straßenabschnitt relativ weit vor oder nach der tatsächlichen Position der Radarkontrolle liegen.
 Der Abbauzeitpunkt basiert ebenfalls auf Angaben der Appbenutzer.
 Sobald ein Benutzer an einer eingetragenen Radarkontrolle vorbeigefaren ist wird dieser gefragt, ob die Radarkontrolle gesehen wurde.
+Sobald genügend Benutzer dies verneint haben wird die Radarkontrolle anderen Benutzern nicht mehr angezeigt.
+Dieser Zeitpunkt entspricht dann auch dem Abbauzeitpunkt.
+Da prinzipiell auch Fehlmeldungen möglich sind, ist es wichtig, die Gesamtdauer der Meldung zu betrachten.
+Beträgt die Gesamtdauer beispielsweise nur 10 Minuten kann davon ausgegangen werden, dass es sich um eine Fehlmeldung handelt.
+Je länger die Gesamtdauer hingegen ist, desto höher ist die Wahrscheinlichkeit, dass es sich um eine valide Meldung handelt, die von vielen Benutzern bestätigt wurde.
 
-
-
+Sowohl die Ungenauigkeit der gemeldeten Position als auch die Möglichkeit für Fehlmeldungen machen es erforderlich, den Datensatz aufzubereiten.
+Es bietet sich an, den betrachteten Bereich in ein Raster zu unterteilen und jede Meldung am betrachteten Tag derjenigen Rasterzelle zuzuordnen, in deren Bereich die Meldung liegt.
+Dieses Vorgehen macht die Ungenauigkeit der Position sowie die Ungenauigkeit des Auf- und Abbauzeitpunkts weniger signifikant.
+Die genaue Vorgehensweise bei der Aufbereitung des Datensatzes wird in \autoref{sec:Datensatz} erläutert.
 
 \subsection{Aufbau der Arbeit}
 \label{sec:Aufbau}
-
+%TODO: Überhaupt nötig oder einfach weglassen?
 
 
