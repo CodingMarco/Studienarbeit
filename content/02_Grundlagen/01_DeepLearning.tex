@@ -1,3 +1,47 @@
-\subsection{Deep Learning}
-\label{sec:DeepLearning}
+\subsection{Machine Learning und Deep Learning}
+\label{sec:MachineDeepLearning}
+
+Machine Learning ist ein Teilgebiet der Informatik, das sich fundamental von der klassischen Programmierung unterscheidet.
+Diese Unterscheidung wird von Chollet in \cite{DeepLearningPythonKeras} auf den Seiten 23 und 24 beschrieben.
+In \autoref{fig:KlassischVsML} wird der Unterschied verdeutlicht.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth,height=6cm,keepaspectratio=true]{content/images/KlassischVsML.png}
+    \caption{Unterschied zwischen klassischer Programmierung und Machine Learning \cite[Abb.~1.2]{DeepLearningPythonKeras}}
+    \label{fig:KlassischVsML}
+\end{figure}
+
+Sowohl klassische Programmierung als auch Machine Learning sollen im Rahmen von künstlicher Intelligenz verschiedenste Fragestellungen beantworten, die ansonsten von Menschen beantwortet werden.
+Ein Beispiel für eine solche Fragestellung könnte z.B. lauten: "`Welche Ziffer ist in diesem Bild dargestellt?"'.
+Ein anderes Beispiel wäre "`Gegeben ist dieser halbe Satz, wie könnte der Satz weiter gehen?"'.
+Die Fragestellung der vorliegenden Arbeit wurde bereits definiert.
+Sie könnte wie folgt in einem Satz zusammengefasst werden:
+"`Gegeben sind die Standorte von mobilen Radarkontrollen der letzten 16 Tage, wie groß ist die Gefahr für mobile Radarkontrollen am 17. Tag an verschiedenen Stellen?"'
+Bei der klassischen Programmierung liegt es nach Chollet nun am Menschen, Regeln aufzustellen, nach denen die Fragestellungen beantwortet werden.
+Der Mensch könnte sich vergangene Daten anschauen und müsste in ihnen Muster suchen, von denen diese Regeln abgeleitet werden können.
+Die Regeln werden anschließend in einer Programmiersprache explizit in Form von Verzweigungen, Schleifen und Variablen implementiert.
+Für die Vorhersage von mobilen Radarkontrollen könnte ein Mensch beispielsweise aus eigener Erfahrung im Straßenverkehr gewisse Muster erkennen.
+Daraus könnte z.B. die Regel aufgestellt werden, dass die Wahrscheinlichkeit für eine mobile Radarkontrolle an einem Standort sehr gering ist, wenn dort am vorherigen Tag bereits eine solche vorhanden war.
+Wie in \autoref{fig:KlassischVsML} zusammengefasst wird, findet die klassische Programmierung also Antworten auf Basis von Eingangsdaten und explizit implementierten Regeln.
+
+Beim Machine Learning ist es nun anders herum.
+Ein Machine Learning Algorithmus erhält nach Chollet als Eingabe Daten und Antworten und leitet daraus Regeln ab.
+Diese Regeln können anschließend verwendet werden, um anhand von neuen Eingabedaten neue Antworten zu erzeugen.
+Die Regeln müssen nun also nicht mehr explizit vom Menschen festgelegt werden.
+Dies bringt den Vorteil mit sich, dass möglicherweise Regeln erkannt werden, die dem Menschen (z.B. aufgrund ihrer Komplexität) verborgen bleiben.
+Für die Vorhersage von mobilen Radarkontrollen würde ein Machine Learning Algorithmus sehr viele Beispiele von je 16 aufeinanderfolgenden Tagen als Eingangsdaten sowie den 17. Tag als Antwort erhalten.
+Anhand der daraus erlernten Regeln und 16 neuen Tagen als Eingabe könnte dann der 17. Tag vorhergesagt werden.
+Chollet beschreibt auf Seite 152, dass hierfür jedoch zwei Voraussetzungen erfüllt sein müssen.
+Zum einen muss der 17. Tag anhand der 16 vorhergegangenen Tage vorhersagbar sein.
+Es muss also einen Zusammenhang zwischen Vergangenheit und Zukunft geben.
+Andererseits müssen genügend Trainingsdaten vorhanden sind um die Regeln daraus ableiten zu können.
+Jedes Muster, dass in Zukunft erkannt werden soll, muss also in den Trainingsdaten vorhanden sein.
+Zu Beginn eines Machine Learning Projekts müssen diese Voraussetzungen nach Chollet als wahr angenommen werden.
+Je nach Performanceergebnis können sich diese Annahmen schlussendlich als wahr oder falsch herausstellen.
+
+Als nächstes stellt sich die Frage, wie ein solcher Machine Learning Algorithmus funktioniert.
+Innerhalb des Machine Learnings gibt verschiedene Algorithmen, die von Alzubi et al. in \cite{MachineLearningOverview} zusammengefasst sind.
+Nennenswerte Algorithmen sind nach Alzubi et al. beispielsweise \emph{Decision Tree}, \emph{Na\"ive Bayes} oder \emph{Random Forest}.
+In der vorliegenden Arbeit sollen jedoch Neuronale Netze (\acrshortpl{nn}) verwendet werden.
 
