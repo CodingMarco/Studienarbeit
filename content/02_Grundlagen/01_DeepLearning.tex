@@ -44,4 +44,43 @@ Als nächstes stellt sich die Frage, wie ein solcher Machine Learning Algorithmu
 Innerhalb des Machine Learnings gibt verschiedene Algorithmen, die von Alzubi et al. in \cite{MachineLearningOverview} zusammengefasst sind.
 Nennenswerte Algorithmen sind nach Alzubi et al. beispielsweise \emph{Decision Tree}, \emph{Na\"ive Bayes} oder \emph{Random Forest}.
 In der vorliegenden Arbeit sollen jedoch Neuronale Netze (\acrshortpl{nn}) verwendet werden.
+Das Perzeptron (auch Zelle, Neuron, Element) genannt bildet nach \cite{6S191Intro} den Grundbaustein von \acrshortpl{nn}.
+Die verschiedenen Bestandteile eines Perzeptrons sind in \autoref{fig:PerzeptronVisualisierung} grafisch visualisiert.
 
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth,height=6cm,keepaspectratio=true]{content/images/PerzeptronVisualisierung.png}
+    \caption{Grafische Visualisierung eines Perzeptrons als Grundbaustein von \acrshortpl{nn} \cite{6S191Intro}}
+    \label{fig:PerzeptronVisualisierung}
+\end{figure}
+
+Ein Perzeptron hat eine beliebige Anzahl von Eingängen (engl. Inputs).
+Die Eingänge $x_1 \dots x_n$ werden mit den Gewichtungen (engl. Weights) $w_1 \dots w_m$ multipliziert und die Ergebnisse aufsummiert.
+Unabhängig von den Eingängen wird dann noch ein Bias $w_0$ dazuaddiert.
+Zuletzt wird eine nichtlineare Aktivierungsfunktion $g$ auf das Ergebnis angewendet.
+Bekannte Aktivierungsfunktionen sind z.B. \emph{Sigmoid} oder \emph{ReLU}, wobei in der Praxis meistens \emph{ReLU} verwendet wird \cite{ActivFuncSharma,ActivFuncNwankpa}.
+Die gesamte Berechnung des Ausgangs $\hat{y}$ ist in der aus \cite{6S191Intro} übernommenen \autoref{eq:PerceptronEquation} zu sehen.
+
+\begin{equation}
+    \hat{y} = g\left(w_0 + \sum_{i=1}^{m} x_i w_i \right)  
+\label{eq:PerceptronEquation}
+\end{equation}
+
+Ein Neuronales Netz entsteht nun, wenn mehrere dieser Perzeptronen kombiniert werden.
+Die einfachste Möglichkeit ist ein sogenanntes Fully-connected \acrshort{nn}.
+Hierbei werden mehrere Schichten aus parallel angeordneten Perzeptronen gebildet.
+Dies ist schematisch in \autoref{fig:FCNN} dargestellt.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth,height=8cm,keepaspectratio=true]{content/images/FCNN.png}
+    \caption{Architektur eines Fully-connected \acrshort{nn} \cite[FIGURE 1]{NNArchitectures}}
+    \label{fig:FCNN}
+\end{figure}
+
+Wie in der Abbildung zu sehen ist, ist der Ausgang eines jeden Perzeptrons mit jedem Perzeptron der nächsten Schicht verbunden.
+Der häufig verwendete Begriff \emph{Deep Learning} bezieht sich nach \cite[S. 27]{DeepLearningPythonKeras} auf die Vorgehensweise, Perzeptronen in mehreren Schichten anzuordnen.
+Der Hintergedanke dabei ist nach \cite{6S191Intro}, dass durch die Schichten eine Merkmalshierarchie aufgebaut werden soll.
+Bei der Erkennung von handgeschriebenen Ziffern könnte die erste Schicht beispielsweise Ecken und Kanten erkennen.
+Die zweite Schicht würde aus Ecken und Kanten zusammengesetzte Kreise und Linien erkennen.
+Schließlich könnte die dritte Schicht komplette Ziffern erkennen, die wiederum aus Linien und Kreisen zusammengesetzt sind.
