@@ -58,7 +58,7 @@ Ein Perzeptron hat eine beliebige Anzahl von Eingängen (engl. Inputs).
 Die Eingänge $x_1 \dots x_n$ werden mit den Gewichtungen (engl. Weights) $w_1 \dots w_m$ multipliziert und die Ergebnisse aufsummiert.
 Unabhängig von den Eingängen wird dann noch ein Bias $w_0$ dazuaddiert.
 Zuletzt wird eine nichtlineare Aktivierungsfunktion $g$ auf das Ergebnis angewendet.
-Bekannte Aktivierungsfunktionen sind z.B. \emph{Sigmoid} oder \emph{ReLU}, wobei in der Praxis meistens \emph{ReLU} verwendet wird \cite{ActivFuncSharma,ActivFuncNwankpa}.
+Bekannte Aktivierungsfunktionen sind z.B. \emph{Sigmoid} oder \emph{\acrfullr{relu}}, wobei in der Praxis meistens \emph{\acrshort{relu}} verwendet wird \cite{ActivFuncSharma,ActivFuncNwankpa}.
 Die gesamte Berechnung des Ausgangs $\hat{y}$ ist in der aus \cite{6S191Intro} übernommenen \autoref{eq:PerceptronEquation} zu sehen.
 
 \begin{equation}
@@ -84,3 +84,35 @@ Der Hintergedanke dabei ist nach \cite{6S191Intro}, dass durch die Schichten ein
 Bei der Erkennung von handgeschriebenen Ziffern könnte die erste Schicht beispielsweise Ecken und Kanten erkennen.
 Die zweite Schicht würde aus Ecken und Kanten zusammengesetzte Kreise und Linien erkennen.
 Schließlich könnte die dritte Schicht komplette Ziffern erkennen, die wiederum aus Linien und Kreisen zusammengesetzt sind.
+
+Bisher wurde nur das eigentliche \acrshort{nn} erklärt.
+Um ein \acrshort{nn} zu trainieren sind jedoch noch einige andere Komponenten notwendig.
+Das Zusammenspiel dieser Komponenten ist in \autoref{fig:DLKomponenten} dargestellt.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth,height=8cm,keepaspectratio=true]{content/images/DeepLearningKomponenten.png}
+    \caption{Komponenten eines Deep Learning Systems \cite[Abb. 1.9]{DeepLearningPythonKeras}}
+    \label{fig:DLKomponenten}
+\end{figure}
+
+Wie in der Abbildung erkennbar ist, wird eine Verlustfunktion benötigt.
+Diese erhält nach \cite[S. 30]{DeepLearningPythonKeras} als Eingabe die Vorhersagen $Y'$ des \acrshort{nn}s sowie die tatsächlichen Werte $Y$.
+Die Verlustfunktion berechnet anhand dieser Eingaben einen Verlustscore (engl. loss), der ein Maß dafür ist, wie stark die Vorhersagen von den tatsächlichen Werten abweichen.
+Die Ausgabe der Verlustfunktion ist umso größer, je stärker diese Abweichung ist.
+Es gibt viele verschiedene Verlustfunktionen, die für unterschiedliche Aufgabenstellungen geeignet sind.
+Häufig verwendet werden nach \cite[S. 155]{DeepLearningPythonKeras} z.B. der mittlere quadratische Fehler (engl. \acrlong{mse}, \acrshort{mse}) oder die binäre Kreuzentropie (engl. binary crossentropy).
+
+
+
+Ein Beispiel für eine einfache Verlustfunktionen ist der mittlere quadratische Fehler (engl. \acrlong{mse}, \acrshort{mse}).
+Die Berechnungsvorschrift ist in \autoref{eq:MSE} zu sehen.
+
+\begin{equation}
+    \text{MSE} = \frac{1}{n} \sum_{i=1}^{n} (y'_i - y_i)^2
+\label{eq:MSE}
+\end{equation}
+
+
+
+
