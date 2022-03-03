@@ -67,7 +67,7 @@ Die gesamte Berechnung des Ausgangs $\hat{y}$ ist in der aus \cite{6S191Intro} �
 \end{equation}
 
 Ein Neuronales Netz entsteht nun, wenn mehrere dieser Perzeptronen kombiniert werden.
-Die einfachste Möglichkeit ist ein sogenanntes Fully-connected \acrshort{nn}.
+Die einfachste Möglichkeit ist ein sogenanntes Fully-connected Feedforward-Netz.
 Hierbei werden mehrere Schichten aus parallel angeordneten Perzeptronen gebildet.
 Dies ist schematisch in \autoref{fig:FCNN} dargestellt.
 
@@ -101,7 +101,7 @@ Diese erhält nach \cite[S. 30]{DeepLearningPythonKeras} als Eingabe die Vorhers
 Die Verlustfunktion berechnet anhand dieser Eingaben einen Verlustscore (engl. loss), der ein Maß dafür ist, wie stark die Vorhersagen von den tatsächlichen Werten abweichen.
 Die Ausgabe der Verlustfunktion ist umso größer, je stärker diese Abweichung ist.
 Es gibt viele verschiedene Verlustfunktionen, die für unterschiedliche Aufgabenstellungen geeignet sind.
-Häufig verwendet werden nach \cite[S. 155]{DeepLearningPythonKeras} z.B. der mittlere quadratische Fehler (engl. \acrlong{mse}, \acrshort{mse}) oder die binäre Kreuzentropie (engl. binary crossentropy).
+Häufig verwendet werden nach \cite[S. 155]{DeepLearningPythonKeras} z.B. der mittlere quadratische Fehler (engl. \acrfull{mse}) oder die binäre Kreuzentropie (engl. binary crossentropy).
 
 Als letzte wichtige Komponente wird noch ein Optimierer benötigt.
 Dieser erhält als Eingabe den Verlustscore und passt anhand dessen die Gewichtungen des \acrshort{nn}s so an, dass der Verlustscore minimiert wird.
