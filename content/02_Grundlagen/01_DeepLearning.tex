@@ -103,16 +103,13 @@ Die Ausgabe der Verlustfunktion ist umso größer, je stärker diese Abweichung 
 Es gibt viele verschiedene Verlustfunktionen, die für unterschiedliche Aufgabenstellungen geeignet sind.
 Häufig verwendet werden nach \cite[S. 155]{DeepLearningPythonKeras} z.B. der mittlere quadratische Fehler (engl. \acrlong{mse}, \acrshort{mse}) oder die binäre Kreuzentropie (engl. binary crossentropy).
 
+Als letzte wichtige Komponente wird noch ein Optimierer benötigt.
+Dieser erhält als Eingabe den Verlustscore und passt anhand dessen die Gewichtungen des \acrshort{nn}s so an, dass der Verlustscore minimiert wird.
+Hierfür wird laut \cite[S. 30]{DeepLearningPythonKeras} ein Algorithmus namens \emph{Backpropagation} verwendet.
+Von diesem allgemeinen Algorithmus gibt es viele verschiedene Implementierungen, die sogenannten Optimierer.
+In der vorliegenden Arbeit wird der in \cite{AdamPaper} vorgestellte \emph{Adam}-Optimierer verwendet.
+Die Vorteile dieses Optimierers sind nach \cite{AdamPaper} die einfache Implementierung sowie die Speicher- und Recheneffizienz.
 
-
-Ein Beispiel für eine einfache Verlustfunktionen ist der mittlere quadratische Fehler (engl. \acrlong{mse}, \acrshort{mse}).
-Die Berechnungsvorschrift ist in \autoref{eq:MSE} zu sehen.
-
-\begin{equation}
-    \text{MSE} = \frac{1}{n} \sum_{i=1}^{n} (y'_i - y_i)^2
-\label{eq:MSE}
-\end{equation}
-
-
-
+Zusammengefasst ist Deep Learning nichts anderes als eine Funktionsminimierung.
+Die bedeutende Errungenschaft dabei ist, dass die große Menge an Gewichtungen (bei größeren \acrshort{nn}s mehrere Millionen) effizient angepasst werden können, sodass der Verlustscore minimiert wird.
 
