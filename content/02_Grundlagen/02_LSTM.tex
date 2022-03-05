@@ -5,7 +5,7 @@ Die einzige bisher vorgestellte Architektur von \acrshortpl{nn} ist das Feedforw
 Diese Netzarchitektur eignet sich gut für Klassifizierungsaufgaben.
 Die vorliegende Arbeit beschäftigt sich jedoch mit Standorten von mobilen Radarkontrollen über die Zeit, also mit sequenziellen Daten.
 Feedforward-Netze können zeitliche Zusammenhänge nicht darstellen und nicht erlernen, da sie keinen internen Zustand haben.
-Das bedeutet, dass eine Eingabe in das \acrshort{nn} nicht abhängig von vorherigen Eingaben ist.
+Das bedeutet, dass die Ausgabe des \acrshort{nn}s nur abhängig von der aktuellen Eingabe ist, nicht aber von vorherigen Eingaben.
 
 Abhilfe hierbei bieten \k{rekurrente neuronale Netze} (\acrshortpl{rnn}).
 Wie Chollet in \cite[S. 252]{DeepLearningPythonKeras} erläutert, besitzen rekurrente \acrshortpl{nn} einen internen Zustand, der alle bisherigen Eingaben repräsentiert.
@@ -39,4 +39,32 @@ Das liegt daran, dass die Daten eine Periodizität von z.B. 15 Tagen aufweisen k
 
 Zur Lösung dieses Problems gibt es verschiedene alternative \acrshort{rnn}-Architekturen.
 Eine davon ist \acrfull{lstm}.
+Wie der Name vermuten lässt, ermöglicht die \acrshort{lstm}-Architektur, sowohl Abhängigkeiten von weit zurückliegenden als auch aktuellere Eingaben zu lernen.
+Die \acrshort{lstm}-Architektur ist in \autoref{fig:LSTMCell} dargestellt.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth,height=6cm,keepaspectratio=true]{content/images/LSTMCell.png}
+    \caption{Schematische Darstellung einer \acrshort{lstm}-Zelle \cite{6S191RNN}}
+    \label{fig:LSTMCell}
+\end{figure}
+
+Eine \acrshort{lstm}-Zelle enthält drei sogenannte Tore (engl. Gates).
+Ein Tor ist selbst ein \acrshort{nn}.
+Die drei Tore und ihre jeweilige vorgesehene Wirkung sind nach \cite{6S191RNN}:
+
+\begin{enumerate}
+    \setlength\itemsep{0.2em}
+    \item \textbf{Vergessens-Tor}: Dieses Tor sorgt dafür, dass irrelevante Informationen aus dem vorherigen Zustand "`vergessen"' werden.
+    \item \textbf{Merk-Tor}: Dieses Tor fügt dem Zustand relevante neue Informationen hinzu.
+    \item \textbf{Ausgangs-Tor}: Dieses Tor bestimmt, welche Informationen aus dem Zustand zum Ausgang der Zelle gelangen sollen.
+\end{enumerate}
+
+Amini und Soleimany stellen die vorgesehene Wirkung der Tore in \cite{6S191RNN} ohne weitere kritische Auseinandersetzung dar.
+Wie Chollet in \cite[S. 263]{DeepLearningPythonKeras} argumentiert, ist diese Wirkung jedoch keinesfalls garantiert.
+Die tatsächliche Wirkung hinge nach Chollet viel mehr von den letzendlich antrainierten Gewichtungen der Tore ab.
+Amini und Soleimany sind sich jedoch mit Chollet einig, dass es nicht wichtig ist, die interne Funktionsweise einer \acrshort{lstm}-Zelle im Detail zu verstehen.
+Chollet geht noch einen Schritt weiter und argumentiert, dass dies ganz allgemein keine Aufgabe der Menschen sei.
+Wichtig ist nach Chollet, Amini und Soleimany nur sich im klaren zu sein, welche Aufgabe eine \acrshort{lstm}-Zelle erfüllt - sie ermöglicht es, sowohl langfristige als auch kurzfristige Zusammenhänge anhand der Trainingsdaten zu erlernen.
+
 
