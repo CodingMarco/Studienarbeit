@@ -61,4 +61,27 @@ Die Merkmalskarte gibt an, wo im Bild die Übereinstimmung mit dem durch den Fil
 Damit die Merkmalskarte die gleiche Höhe und Breite wie die Eingabe hat, kann nach \cite[S. 168 f.]{DeepLearningPythonKeras} die Eingabe vor der Faltungsoperation rundherum mit nullen aufgefüllt werden.
 Dies wird auch Padding genannt.
 
+Nach der Faltungsoperation ist noch ein weiterer wichtiger Schritt notwendig.
+Da die Merkmalskarte zunächst die gleichen Dimensionen wie die Eingabe hat, können nach \cite[S. 171]{DeepLearningPythonKeras} keine Merkmalshierarchien erkannt werden.
+Das liegt daran, dass ein Pixel der Merkmalskarte nur Informationen über einen Bereich der Eingabe enthält, der so groß ist wie der Filter.
+In den meisten Fällen sind dies nur 3x3 oder 5x5 Pixel.
+Das Ziel ist es also, eine Merkmalskarte zu erstellen, bei der ein Pixel Informationen über einen größeren Bereich der Eingabe enthält.
+Dies kann durch die MaxPooling-Operation erreicht werden, die auf die Merkmalskarte angewendet wird.
+Diese funktioniert ähnlich wie die Faltungsoperation.
+Auch hier gibt es einen Filter, der über die Eingabe geschoben wird.
+Im Gegensatz zur Faltungsoperation wird jedoch nichts multipliziert.
+Stattdessen entspricht die Ausgabe des Filters dem Maximalwert der Eingabe.
+Hat der Filter beispielsweise eine eine Größe von 2x2 und wird in $x$- und $y$-Richtung jeweils um die Schrittweite $2$ verschoben, wird die Seitenlänge der Eingabe durch die MaxPooling-Operation halbiert.
+Dies wird in \autoref{fig:MaxPooling} an einem Beispiel veranschaulicht.
 
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1.0\textwidth,height=8cm,keepaspectratio=true]{content/images/MaxPooling.png}
+    \caption{Beispiel einer MaxPooling-Operation \cite{6S191CNN}}
+    \label{fig:MaxPooling}
+\end{figure}
+
+Werden mehrere \acrshort{cnn}- und MaxPooling-Layer abwechselnd hintereinandergeschaltet, lassen sich die Merkmale der Eingabe hierarchisch darstellen.
+Dabei wird die Höhe und Breite der Eingabe nach jedem MaxPooling-Layer halbiert.
+Schlussendlich wird die Ausgabe des letzten MaxPooling-Layers an ein Feedforward-Netz zur Klassifizierung übergeben.
+Das Feedforward-Netz klassifiziert die Eingabe also nun anhand von abstrakten Merkmalen, die durch die \acrshort{cnn}- und MaxPooling-Layer von \emph{beliebigen Stellen} in der Eingabe extrahiert wurden.
