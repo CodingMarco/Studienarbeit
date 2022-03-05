@@ -1,12 +1,15 @@
-\subsection{TensorFLow}
-\label{sec:TensorFLow}
+\subsection{TensorFlow}
+\label{sec:TensorFlow}
 
-% Python-Framework für verschiedene Machine Learning Aufgaben
-% Keras: baut auf TensorFlow auf -> high-level Framework für Neuronale Netze, ist in TensorFlow integriert
-% NNs können definiert, trainiert und ausgewertet werden
-% Sehr viele vordefinierte Layer, darunter Feedforward, LSTM, CNN, MaxPooling
-% Auch eigene Layer können definiert werden
-% Komplexe Modelle können aus diesen vordefinierten Layern zusammengesetzt werden
-% Ablauf der Trainierung kann komplett angepasst werden
-% Training auf der GPU möglich, Verweis auf Anhang mit Speed-Vergleich
-
+TensorFlow ist eine Python-Bibliothek für viele verschiedene Machine Learning Aufgaben.
+TensorFlow implementiert dafür u.A. mathematische Grundfunktionen wie Tensoroperationen oder Gradientenberechnung.
+Da sehr viel Fachwissen nötig wäre um alleine mit TensorFlow \acrshortpl{nn} zu implementieren, wird mit TensorFlow wird auch die Keras-Bibliothek ausgeliefert.
+Keras baut auf TensorFlow auf und bietet ein High-Level-Framework für neuronale Netze.
+Mit Keras können \acrshortpl{nn} relativ einfach definiert, trainiert und ausgewertet werden.
+Keras bietet sehr viele vordefinierte Layer, darunter Feedforward-, \acrshort{lstm}-, \acrshort{cnn}- sowie MaxPooling-Layer.
+Bei Bedarf können jedoch auch auch eigene Layer definiert werden.
+Aus diesen vordefinierten und ggf. benutzerdefinierten Layern können beliebig komplexe Modelle zusammengesetzt werden.
+Außerdem kann der Ablauf der Trainierung dieser Modelle komplett angepasst werden, inklusive des Optimierers und der Verlustfunktion.
+Da die Trainierung von \acrshortpl{nn} sehr rechenintensiv ist, bietet TensorFlow die Möglichkeit, die Berechnungen auf einer unterstützten Grafikkarte auszuführen.
+Da Grafikkarten Berechnungen hochgradig parallelisiert ausführen, können Modelle deutlich schneller trainiert werden als auf der CPU.
+In [TODO: Anhang] befindet sich ein Geschwindigkeitsvergleich zwischen CPU und Grafikkarte.
