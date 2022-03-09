@@ -1,3 +1,31 @@
-% Precipation forecasting
-% Traffic accident forecasting
-% Crime prediction
+\subsubsection{Räumlich-zeitliche Vorhersagen}
+\label{sec:STPredictions}
+Im Themenfeld der räumlich-zeitlichen Vorhersagen (engl. spatio-temporal predictions) gibt es viele verschiedene Anwendungsfälle.
+Zu diesen Anwendungsfällen gehört die Vorhersage von Niederschlägen, Verbrechen, Verkehrsunfällen, Verkehrsaufkommen sowie der Bedarf an Taxis \cite{ConvLSTM,CrimeConvLSTM,CrimeSTResNet,HeteroConvLSTM,TrafficVolumeGraphDCRNN,STResNetOriginal}.
+So unterschiedlich die Themengebiete auch sind, lässt sich nach \cite{DLTraff} dennoch eine gemeinsame, formale Problemstellung definieren.
+Wenn die Daten als Raster vorliegen, lassen sie sich laut Jiang et al. als 4D-Tensor $\mathbb{R}^{T \times H \times W \times C}$ beschreiben.
+Dabei ist $T$ die Anzahl der Zeitschritte, $H \times W$ die räumliche Dimension (Höhe mal Breite), und $C$ die Anzahl an Kanälen.
+Besteht der Datensatz beispielsweise aus 100 \acrshort{rgb}-Bildern mit einer Größe von 28x28 Pixeln, kann er mit dem Tensor $\mathbb{R}^{100 \times 28 \times 28 \times 3}$ beschrieben werden.
+Die Problemstellung lässt sich nun als die in \autoref{eq:FormalSTPrediction} gezeigte Abbildung $f$ formulieren.
+
+\begin{equation}
+    f: [X_{t-(\alpha-1)}, \dots, X_{t-1}, X_t] \to [X_{t+1}, X_{t+2}, \dots, X_{t+\beta}]
+\label{eq:FormalSTPrediction}
+\end{equation}
+
+Dabei repräsentiert $X_t \in \mathbb{R}^{H \times W \times C}$ ein Raster zum Zeitpunkt $t$.
+Außerdem ist $\alpha$ die Anzahl an Zeitschritten, anhand derer die Vorhersage getroffen wird und $\beta$ die Anzahl an Zeitschritten, die vorhergesagt werden soll.
+Es ist auch möglich, nur einen Zeitschritt vorherzusagen.
+Wenn beispielsweise anhand von 16 vergangenen Tagen der 17. Tag vorhergesagt werden soll, dann ist $\alpha = 16$ und $\beta = 1$.
+Daraus ergibt sich $f: [X_{t-15}, X_{t-14}, \dots, X_{t-1}, X_t] \to X_{t+1}$.
+Mit $f$ ist nun die Funktion definiert, die durch ein \acrshort{nn} approximiert werden soll.
+Für ein solches \acrshort{nn} existieren verschiedene Architekturen.
+Im von Jiang et al. verfassten Paper \cite{DLTraff} befindet sich ein detaillierter Vergleich vieler dieser Architekturen anhand ihrer Ansätze und Performance.
+Einige Beispiele werden im folgenden zusammengefasst.
+
+\textbf{ST-ResNet} wird in \cite{STResNetOriginal} definiert und ist eines der populärsten Modelle für räumlich-zeitliche Vorhersagen.
+Jiang et al. machen dies an der Anzahl der Paper fest, die Referenzen auf das eben erwähnte Paper enthalten.
+Der Anwendungsfall für den ST-ResNet konzipiert wurde, ist die Vorhersage der Bewegung von Menschenmassen.
+Dafür wird nach der Raum in Rasterzellen unterteilt.
+Pro Zeitschritt sind jeder Zelle zwei Werte zugeordnet: die Anzahl an Menschen, die die Zelle betreten und die Anzahl an Menschen, die die Zelle verlassen.
+Dies ist ein Beispiel für ein Datensatz mit zwei Kanälen.
