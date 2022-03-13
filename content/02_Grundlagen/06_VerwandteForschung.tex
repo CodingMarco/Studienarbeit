@@ -1,24 +1,8 @@
-\subsubsection{Räumlich-zeitliche Vorhersagen}
-\label{sec:STPredictions}
-Im Themenfeld der räumlich-zeitlichen Vorhersagen (engl. spatio-temporal predictions) gibt es viele verschiedene Anwendungsfälle.
-Zu diesen Anwendungsfällen gehört die Vorhersage von Niederschlägen, Verbrechen, Verkehrsunfällen, Verkehrsaufkommen sowie der Bedarf an Taxis \cite{ConvLSTM,CrimeConvLSTM,CrimeSTResNet,HeteroConvLSTM,TrafficVolumeGraphDCRNN,STResNetOriginal}.
-So unterschiedlich die Themengebiete auch sind, lässt sich nach \cite{DLTraff} dennoch eine gemeinsame, formale Problemstellung definieren.
-Wenn die Daten als Raster vorliegen, lassen sie sich laut Jiang et al. als 4D-Tensor $\mathbb{R}^{T \times H \times W \times C}$ beschreiben.
-Dabei ist $T$ die Anzahl der Zeitschritte, $H \times W$ die räumliche Dimension (Höhe mal Breite), und $C$ die Anzahl an Kanälen.
-Besteht der Datensatz beispielsweise aus 100 \acrshort{rgb}-Bildern mit einer Größe von 28x28 Pixeln, kann er mit dem Tensor $\mathbb{R}^{100 \times 28 \times 28 \times 3}$ beschrieben werden.
-Die Problemstellung lässt sich nun als die in \autoref{eq:FormalSTPrediction} gezeigte Abbildung $f$ formulieren.
+\subsection{Verwandte Forschung}
+\label{sec:VerwandteForschung}
 
-\begin{equation}
-    f: [X_{t-(\alpha-1)}, \dots, X_{t-1}, X_t] \to [X_{t+1}, X_{t+2}, \dots, X_{t+\beta}]
-\label{eq:FormalSTPrediction}
-\end{equation}
+% TODO: Einleitende Sätze
 
-Dabei repräsentiert $X_t \in \mathbb{R}^{H \times W \times C}$ ein Raster zum Zeitpunkt $t$.
-Außerdem ist $\alpha$ die Anzahl an Zeitschritten, anhand derer die Vorhersage getroffen wird und $\beta$ die Anzahl an Zeitschritten, die vorhergesagt werden soll.
-Es ist auch möglich, nur einen Zeitschritt vorherzusagen.
-Wenn beispielsweise anhand von 16 vergangenen Tagen der 17. Tag vorhergesagt werden soll, dann ist $\alpha = 16$ und $\beta = 1$.
-Daraus ergibt sich $f: [X_{t-15}, X_{t-14}, \dots, X_{t-1}, X_t] \to X_{t+1}$.
-Mit $f$ ist nun die Funktion definiert, die durch ein \acrshort{nn} approximiert werden soll.
 Für ein solches \acrshort{nn} existieren verschiedene Architekturen.
 Im von Jiang et al. verfassten Paper \cite{DLTraff} befindet sich ein detaillierter Vergleich vieler dieser Architekturen anhand ihrer Ansätze und Performance.
 Einige Beispiele werden im folgenden zusammengefasst.
@@ -69,16 +53,28 @@ Signifikante Merkmale, die als Eingabe dienen sollen, müssen hierfür manuell e
 Die Kombination aus dem linken Teil und der zusammengeführten Ausgabe der drei rechten Teile bildet schließlich die Ausgabe von ST-ResNet.
 
 \textbf{ConvLSTM} ist ebenfalls eine weit verbreitete Architektur für räumlich-zeitliche Vorhersagen.
+Conv\-LSTM wurde von Shi et al. in \cite{ConvLSTM} vorgestellt.
+Bei ConvLSTM handelt es sich um eine Kombination aus \acrshort{cnn} und \acrshort{lstm}.
+Durch Faltungsoperationen soll hierbei die räumliche Strukur erhalten bleiben.
+Außerdem soll durch die Verwendung einer abgewandelten \acrshort{lstm}-Struktur die zeitlichen Zusammenhänge erfasst werden.
+Das ursprüngliche Ziel von ConvLSTM ist nach Shi et al. die Vorhersage einer \emph{Sequenz} von 2D-Daten anhand einer Eingabesequenz.
+Dafür orientieren sie sich an der in \cite{SequenceGeneratingLSTM} vorgestellten Architektur.
+Diese Architektur besteht aus mehreren hintereinandergeschalteten \acrshort{lstm}-Zellen.
+Jedoch wurde sie für die Generierung von 1D-Sequenzen konzipiert und verwendet daher Matrixmultiplikationen mit Gewichtungsmatrizen.
+Diese werden von Shi et al. durch Faltungsoperationen ersetzt, wodurch zweidimensionale Strukturen erlernt werden können.
+Diese Architektur wird in \autoref{fig:ConvLSTMStructure} verdeutlicht.
 
 \begin{figure}[h]
     \centering
     \includegraphics[width=0.8\textwidth,height=10cm,keepaspectratio=true]{content/images/ConvLSTMStructure.png}
-    \caption{Innere Struktur von ConvLSTM aus \cite{ConvLSTM} mit hinzugefügten Pfeilen zur verdeutlichung des Informationsflusses}
+    \caption{Innere Struktur von ConvLSTM aus \cite{ConvLSTM} mit hinzugefügten Pfeilen zur Verdeutlichung des Informationsflusses}
     \label{fig:ConvLSTMStructure}
 \end{figure}
 
+Wie man in der Abbildung erkennen kann, hängt jedes Pixel der Ausgabe von einem Bereich der Eingabe und einem Bereich des inneren Zustands ab.
+
 % ST-ResNet anwendung auf Crime
-% ConvLSTM beschreiben
 % Warum für eins entschieden?
-% Unterschied & Relevanz der Anwendungsfälle und der Daten
-% Graph / Raster
+% Verwandte Anwendungsfälle:
+%   - Niederschlagsvorhersage als weiter entfernt
+%   - Verbrechensvorhersage als sehr ähnlichen Anwendungsfall

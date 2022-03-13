@@ -1,0 +1,79 @@
+\subsection{Räumlich-zeitliche Vorhersagen}
+\label{sec:STPredictions}
+Im Themenfeld der räumlich-zeitlichen Vorhersagen (engl. spatio-temporal predictions) gibt es viele verschiedene Anwendungsfälle.
+Zu diesen Anwendungsfällen gehört die Vorhersage von Niederschlägen, Verbrechen, Verkehrsunfällen, Verkehrsaufkommen sowie der Bedarf an Taxis \cite{ConvLSTM,CrimeConvLSTM,CrimeSTResNet,HeteroConvLSTM,TrafficVolumeGraphDCRNN,STResNetOriginal}.
+So unterschiedlich die Themengebiete auch sind, lässt sich nach \cite{DLTraff} dennoch eine gemeinsame, formale Problemstellung definieren.
+Wenn die Daten als Raster vorliegen, lassen sie sich laut Jiang et al. als 4D-Tensor $\mathbb{R}^{T \times H \times W \times C}$ beschreiben.
+Dabei ist $T$ die Anzahl der Zeitschritte, $H \times W$ die räumliche Dimension (Höhe mal Breite), und $C$ die Anzahl an Kanälen.
+Besteht der Datensatz beispielsweise aus 100 \acrshort{rgb}-Bildern mit einer Größe von 28x28 Pixeln, kann er mit dem Tensor $\mathbb{R}^{100 \times 28 \times 28 \times 3}$ beschrieben werden.
+Die Problemstellung lässt sich nun als die in \autoref{eq:FormalSTPrediction} gezeigte Abbildung $f$ formulieren.
+
+\begin{equation}
+    f: [X_{t-(\alpha-1)}, \dots, X_{t-1}, X_t] \to [X_{t+1}, X_{t+2}, \dots, X_{t+\beta}]
+\label{eq:FormalSTPrediction}
+\end{equation}
+
+Dabei repräsentiert $X_t \in \mathbb{R}^{H \times W \times C}$ ein Raster zum Zeitpunkt $t$.
+Außerdem ist $\alpha$ die Anzahl an Zeitschritten, anhand derer die Vorhersage getroffen wird und $\beta$ die Anzahl an Zeitschritten, die vorhergesagt werden soll.
+Es ist auch möglich, nur einen Zeitschritt vorherzusagen.
+Wenn beispielsweise anhand von 16 vergangenen Tagen der 17. Tag vorhergesagt werden soll, dann ist $\alpha = 16$ und $\beta = 1$.
+Daraus ergibt sich $f: [X_{t-15}, X_{t-14}, \dots, X_{t-1}, X_t] \to X_{t+1}$.
+Mit $f$ ist nun die Funktion definiert, die durch ein \acrshort{nn} approximiert werden soll.
+
+Obwohl eine solche allgemeine Definition der Problemstellung möglich ist, gibt es dennoch große Unterschiede, wenn die Definition auf verschiedene Datensätze angewendet wird.
+Das liegt vor allem daran, dass die Datensätze eine sehr unterschiedliche Sturkur haben und sehr unterschiedlichen Gesetzmäßigkeiten unterliegen.
+Zunächst gibt es Unterschiede in der räumlichen Struktur der Daten.
+Grundsätzlich können die Daten räumlich diskret oder kontinuierlich sein.
+Ein Beispiel für räumlich diskrete Daten sind Wetterdaten.
+Diese werden von Wetterstationen an bestimmten, festen Orten aufgenommen, die sich über die Zeit nicht ändern.
+Beispiele für räumlich kontinuierliche Daten wären das Auftreten von Verkehrsunfällen oder Verbrechen.
+Diese können an beliebigen Orten bzw. Koordinaten auftreten.
+Räumlich kontinuierliche und diskrete Daten können in beide Richtungen umgewandelt werden.
+Räumlich diskrete Daten können in räumlich kontinuierliche Daten umgewandelt werden, indem zweidimensional interpoliert wird.
+Räumlich kontinuierliche Daten können hingegen in räumlich diskrete Daten umgewandelt werden, indem Cluster bzw. Hotspots in den Daten identifiziert werden.
+Alle Datenpunkte, die zu einem Cluster gehören bekommen dann als Koordinaten den Schwerpunkt des Clusters zugeordnet.
+Die Voraussetzung für dieses Vorgehen ist jedoch, dass überhaupt Cluster in den Daten zu erkennen sind.
+Unabhängig davon, ob die Daten ursprünglich räumlich diskret oder kontinuierlich vorliegen, lassen sie sich grundsätzlich auf zwei verschiedene Arten repräsentieren: als Raster oder als Graph.
+Sollen die Daten als Raster repräsentiert werden, wird ein zunächst leeres Raster aus gleichgroßen, meißt quadratischen Zellen über die Daten gelegt.
+Anschließend werden jeder Rasterzelle diejenigen Datenpunkte zugeordnet, die innerhalb der Zelle liegen.
+Da jede Rasterzelle aus nur einem Zahlenwert besteht, muss eine bestimmte Metrik festgelegt werden, anahand derer dieser Zahlenwert bestimmt wird.
+Dies könnte beispielsweise die Anzahl der Datenpunkte innerhalb eines bestimmten Zeitraums sein.
+Alternativ könnte eine bestimmte Eigenschaft der Datenpunkte aufsummiert werden.
+Sollen die Daten hingegen als Graph repräsentiert werden, müssen sie zunächst räumlich diskret vorliegen.
+Liegen die Daten räumlich kontinuierlich vor, müssen zunächst Cluster gebildet werden.
+Jeder diskrete Ort bzw. jeder Cluster wird dann ein Knoten des Graphs.
+Anschließend muss festgelegt werden, welche Verbindungen zwischen den einzelnen Knoten bestehen.
+Hier bietet es sich an Verbindungen festzulegen, die in der Realität auch bestehen.
+Dies könnte beispielsweise das Straßennetz sein, wenn es sich bei den Daten um Verkehrsdaten handelt.
+
+Nicht nur in der räumlichen Struktur der Daten kann es Unterschiede geben, sondern auch in der zeitlichen Struktur.
+So lassen sich Datensätze im Bezug auf die zeitliche Struktur in zwei Kathegorien einteilen: die Datenpunkte können entweder in regelmäßigen oder in unregelmäßigen Zeitabständen vorliegen.
+Wetterstationen liefern beispielsweise meißt Messwerte in regelmäßigen Zeitabständen.
+Verkehrsunfälle geschehen hingegen in unregelmäßigen Zeitabständen.
+Eine weitere Eigenschaft der Daten ist die zeitliche Auflösung, also der (durchschnittliche) Zeitabstand einzelner Datenpunkte.
+Wetterstationen liefern beispielsweise Daten in sehr kurzen Zeitabständen.
+Daher können schon in einem relativ kurzen Zeitraum sehr viele Daten gesammelt werden.
+Verkehrsunfälle oder Verbrechen treten im Gegensatz dazu nur sehr sporadisch auf.
+Daher müssen Daten über einen sehr langen Zeitraum gesammelt werden, um auf deren Basis Vorhersagen treffen zu können.
+Insgesamt ist zeitliche Auflösung wichtig, da sie die erzielbare Genauigkeit und die zeitliche Auflösung der Vorhersagen beschränkt.
+
+Die verschiedenen Möglichkeiten der Kombination von räumlicher und zeitlicher Beschaffenheit der Daten ist mit Beispielen in \autoref{tab:STStructureUseCases} zusammengefasst.
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|l|l|l|}
+\hline
+ & \textbf{Räumlich kontinuierlich} & \textbf{Räumlich diskret} \\ \hline
+\textbf{\begin{tabular}[c]{@{}l@{}}Regelmäßige\\ Zeitabstände\end{tabular}} & \begin{tabular}[c]{@{}l@{}}Regelmäßig gesendete\\ GPS-Daten\end{tabular} & Wetterstationen \\ \hline
+\textbf{\begin{tabular}[c]{@{}l@{}}Unregelmäßige\\ Zeitabstände\end{tabular}} & \begin{tabular}[c]{@{}l@{}}Verkehrsunfälle, Verbrechen,\\ mobile Radarkontrollen\end{tabular} &  \\ \hline
+\end{tabular}
+\caption{Beispiele für Anwendungsfälle mit verschiedenen räumlichen und zeitlichen Strukturen der Daten}
+\label{tab:STStructureUseCases}
+\end{table}
+
+Zuletzt gibt es noch den Unterschied zwischen kontinuierlich gemeldeten Messwerten und sporadisch auftretenden Ereignissen.
+Während der Zahlenwert einer Messung zu einem bestimmten Zeitpunkt intuitiv klar ist, ist dies bei Ereignissen nicht sofort klar.
+Zur behandlung von Ereignissen gibt es mehrere Möglichkeiten.
+Zum einen kann ein Ereignis als ein Messwert mit dem immer gleichen Zahlenwert "`$1$"' betrachtet werden.
+Zum anderen kann dem Ereignis ein Zahlenwert zugeordnet werden, der das Ereignis bzw. dessen Signifikanz genauer beschreibt.
+Für eine mobile Radarkontrolle könnte dieser Zahlenwert beispielsweise die Standdauer sein.
