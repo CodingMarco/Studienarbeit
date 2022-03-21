@@ -1,0 +1,12 @@
+\subsection{Analyse und Aufbereitung}
+\label{sec:AnalyseAufbereitung}
+
+Ziel dieses Abschnitts ist es, sich mit dem Datensatz vertraut zu machen und ihn aufzubereiten, sodass beispielsweise ungültige Einträge gelöscht werden.
+Außerdem ist es sinvoll, einige Analysen durchzuführen.
+Dies führt zu einem besseren Verständnis des Datensatzes und legt etwaige Inkonsitenzen offen.
+
+Der von der Eifrig Media GmbH bereitgestellte Datensatz liegt als sql-Datei vor.
+Für die Weiterverarbeitung muss die Datei in eine MySQL oder MariaDB Datenbank eingelesen werden.
+Die Datenbank kann komfortabel mit Docker erstellt werden.
+Eine entsprechende Docker-Compose Datei mit einer MariaDB Instanz und weiteren Komponenten, die im Verlauf dieses Abschnitts benötigt werden, befindet sich im Anhang in \autoref{lst:DockerComposeDBs}.
+Als grafische Oberfläche für den Zugriff auf die Datenbank enthält die Docker-Compose Datei eine phpMyAdmin Instanz.

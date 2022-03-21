@@ -1,0 +1,45 @@
+\begin{minipage}{\linewidth}
+\begin{lstlisting}[language={YAML}, basicstyle=\footnotesize\ttfamily\linespread{1.3}, caption={Docker-Compose Datei mit MariaDB, PhpMyAdmin und PostGIS}, captionpos=b, label=lst:DockerComposeDBs]
+version: "3.7"
+
+services:
+    mariadb:
+        image: mariadb:latest
+        restart: always
+        volumes:
+            - ./database:/var/lib/mysql
+            - /home/marco/Downloads:/downloads
+        environment:
+            - MYSQL_ROOT_PASSWORD=speedcam
+            - MYSQL_DATABASE=speedcam_mining
+        ports:
+            - 3306:3306
+
+    phpmyadmin:
+        image: phpmyadmin/phpmyadmin:latest
+        restart: always
+        ports:
+            - 8000:80
+        environment:
+            - PMA_HOST=mariadb
+            - UPLOAD_LIMIT=1G
+        depends_on:
+            - mariadb
+    
+    geodb:
+        image: kartoza/postgis:latest
+        restart: always
+        volumes:
+            - ./geodb-data:/var/lib/postgresql
+        environment:
+            - POSTGRES_DB=speedcam_archive
+            - POSTGRES_USER=speedcam
+            - POSTGRES_PASS=speedcam
+            - ALLOW_IP_RANGE=0.0.0.0/0
+            - 5432:5432
+        ports:
+            - 5432:5432
+        healthcheck:
+            test: "exit 0"
+\end{lstlisting}
+\end{minipage}

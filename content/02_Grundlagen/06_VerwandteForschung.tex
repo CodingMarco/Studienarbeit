@@ -1,18 +1,16 @@
 \subsection{Verwandte Forschung}
 \label{sec:VerwandteForschung}
 
-% TODO: Einleitende Sätze
-
-Für ein solches \acrshort{nn} existieren verschiedene Architekturen.
+Um räumlich-zeitliche Zusammenhänge in Datensätzen durch ein \acrshort{nn} zu erlernen existieren verschiedene Architekturen.
 Im von Jiang et al. verfassten Paper \cite{DLTraff} befindet sich ein detaillierter Vergleich vieler dieser Architekturen anhand ihrer Ansätze und Performance.
-Einige Beispiele werden im folgenden zusammengefasst.
+Zwei weit verbreitete Beispiele werden im folgenden zusammengefasst.
 
 \textbf{ST-ResNet} wird in \cite{STResNetOriginal} definiert und ist eines der populärsten Modelle für räumlich-zeitliche Vorhersagen.
 Jiang et al. machen dies an der Anzahl der Paper fest, die Referenzen auf \cite{STResNetOriginal} enthalten.
 Der Anwendungsfall für den ST-ResNet konzipiert wurde, ist die Vorhersage der Bewegung von Menschenmassen (engl. \emph{crowd flow}).
 Dabei ist es egal, wie sich die Menschen bewegen.
 So kann ST-ResNet beispielsweise nicht nur auf Fußgänger angewendet werden, sondern auch auf Leihfahrräder, Taxis oder Verkehr allgemein.
-Ein Datensatz, für den ST-ResNet ursprünglich konzipiert wurde, besteht aus Rastern über viele Zeitschritte.
+Ein Datensatz, für den ST-ResNet ursprünglich konzipiert wurde, besteht aus einem Raster über viele Zeitschritte.
 Pro Zeitschritt sind jeder Zelle zwei Werte zugeordnet: die Anzahl an Menschen, die die Zelle betreten (engl. \emph{inflow}) und die Anzahl an Menschen, die die Zelle verlassen (engl. \emph{outflow}).
 Dies ist ein Beispiel für einen Datensatz mit zwei Kanälen.
 Für die Architektur von ST-ResNet haben sich Zhang et al. genau überlegt, welche räumlichen und zeitlichen Zusammenhänge in den Daten vorhanden sein könnten.
@@ -72,8 +70,10 @@ Diese Architektur wird in \autoref{fig:ConvLSTMStructure} verdeutlicht.
 \end{figure}
 
 Wie man in der Abbildung erkennen kann, hängt jedes Pixel der Ausgabe von einem Bereich der Eingabe und einem Bereich des inneren Zustands ab.
+Dadurch, dass die Tore aus der \acrshort{lstm}-Architektur übernommen wurden, werden von ConvLSTM auch die räumlich-zeitlichen Zusammenhänge nach ihrer Relevanz gefiltert.
+Der große Vorteil von ConvLSTM besteht darin, dass es bereits eine fertige Implementierung als Teil von TensorFlow gibt.
 
-% ST-ResNet anwendung auf Crime
+
 % Warum für eins entschieden?
 % Verwandte Anwendungsfälle:
 %   - Niederschlagsvorhersage als weiter entfernt

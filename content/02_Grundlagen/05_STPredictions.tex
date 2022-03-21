@@ -26,13 +26,14 @@ Zunächst gibt es Unterschiede in der räumlichen Struktur der Daten.
 Grundsätzlich können die Daten räumlich diskret oder kontinuierlich sein.
 Ein Beispiel für räumlich diskrete Daten sind Wetterdaten.
 Diese werden von Wetterstationen an bestimmten, festen Orten aufgenommen, die sich über die Zeit nicht ändern.
-Beispiele für räumlich kontinuierliche Daten wären das Auftreten von Verkehrsunfällen oder Verbrechen.
+Beispiele für räumlich kontinuierliche Daten sind Verkehrsunfälle oder Verbrechen.
 Diese können an beliebigen Orten bzw. Koordinaten auftreten.
 Räumlich kontinuierliche und diskrete Daten können in beide Richtungen umgewandelt werden.
 Räumlich diskrete Daten können in räumlich kontinuierliche Daten umgewandelt werden, indem zweidimensional interpoliert wird.
 Räumlich kontinuierliche Daten können hingegen in räumlich diskrete Daten umgewandelt werden, indem Cluster bzw. Hotspots in den Daten identifiziert werden.
 Alle Datenpunkte, die zu einem Cluster gehören bekommen dann als Koordinaten den Schwerpunkt des Clusters zugeordnet.
 Die Voraussetzung für dieses Vorgehen ist jedoch, dass überhaupt Cluster in den Daten zu erkennen sind.
+
 Unabhängig davon, ob die Daten ursprünglich räumlich diskret oder kontinuierlich vorliegen, lassen sie sich grundsätzlich auf zwei verschiedene Arten repräsentieren: als Raster oder als Graph.
 Sollen die Daten als Raster repräsentiert werden, wird ein zunächst leeres Raster aus gleichgroßen, meißt quadratischen Zellen über die Daten gelegt.
 Anschließend werden jeder Rasterzelle diejenigen Datenpunkte zugeordnet, die innerhalb der Zelle liegen.
@@ -40,15 +41,15 @@ Da jede Rasterzelle aus nur einem Zahlenwert besteht, muss eine bestimmte Metrik
 Dies könnte beispielsweise die Anzahl der Datenpunkte innerhalb eines bestimmten Zeitraums sein.
 Alternativ könnte eine bestimmte Eigenschaft der Datenpunkte aufsummiert werden.
 Sollen die Daten hingegen als Graph repräsentiert werden, müssen sie zunächst räumlich diskret vorliegen.
-Liegen die Daten räumlich kontinuierlich vor, müssen zunächst Cluster gebildet werden.
-Jeder diskrete Ort bzw. jeder Cluster wird dann ein Knoten des Graphs.
+Liegen die Daten räumlich kontinuierlich vor, müssen zuerst Cluster gebildet werden.
+Jeder diskrete Ort bzw. jedes Cluster wird dann ein Knoten des Graphs.
 Anschließend muss festgelegt werden, welche Verbindungen zwischen den einzelnen Knoten bestehen.
 Hier bietet es sich an Verbindungen festzulegen, die in der Realität auch bestehen.
-Dies könnte beispielsweise das Straßennetz sein, wenn es sich bei den Daten um Verkehrsdaten handelt.
+Dies könnte beispielsweise das Straßennetz sein, wenn es sich um Verkehrsdaten handelt.
 
 Nicht nur in der räumlichen Struktur der Daten kann es Unterschiede geben, sondern auch in der zeitlichen Struktur.
 So lassen sich Datensätze im Bezug auf die zeitliche Struktur in zwei Kathegorien einteilen: die Datenpunkte können entweder in regelmäßigen oder in unregelmäßigen Zeitabständen vorliegen.
-Wetterstationen liefern beispielsweise meißt Messwerte in regelmäßigen Zeitabständen.
+Wetterstationen liefern beispielsweise Messwerte in regelmäßigen Zeitabständen.
 Verkehrsunfälle geschehen hingegen in unregelmäßigen Zeitabständen.
 Eine weitere Eigenschaft der Daten ist die zeitliche Auflösung, also der (durchschnittliche) Zeitabstand einzelner Datenpunkte.
 Wetterstationen liefern beispielsweise Daten in sehr kurzen Zeitabständen.
