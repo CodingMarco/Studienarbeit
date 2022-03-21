@@ -10,3 +10,85 @@ Für die Weiterverarbeitung muss die Datei in eine MySQL oder MariaDB Datenbank 
 Die Datenbank kann komfortabel mit Docker erstellt werden.
 Eine entsprechende Docker-Compose Datei mit einer MariaDB Instanz und weiteren Komponenten, die im Verlauf dieses Abschnitts benötigt werden, befindet sich im Anhang in \autoref{lst:DockerComposeDBs}.
 Als grafische Oberfläche für den Zugriff auf die Datenbank enthält die Docker-Compose Datei eine phpMyAdmin Instanz.
+
+Bei Betrachtung des Datensatzes fällt zunächst auf, dass einige Meldungen Inkonsistenzen aufweisen:
+
+\begin{itemize}
+    \setlength\itemsep{-15pt}
+    \item 1160 Meldungen haben als Aufbauzeitpunkt den ungültigen Wert "`0000-00-00 00:00:00"'.
+    \item Bei 420 Meldungen liegt das Abbauzeitpunkt vor dem Aufbauzeitpunkt.
+    \item Bei 9800 Meldungen beträgt die Standdauer 20 Minuten oder weniger.
+    \item Bei 62.000 Meldungen beträgt die Standdauer mehr als 24 Stunden, bei 1960 mehr als ein Jahr.
+\end{itemize}
+
+Da der Anteil an Meldungen mit ungültigem Auf- oder Abbaudatum nur 0,02\% beträgt, bietet es sich an, diese Meldungen aus dem Datensatz zu entfernen.
+Auch die Meldungen mit einer sehr geringen Standdauer von 20 Minuten oder weniger sollten entfernt werden, da es sich hierbei vermutlich um Fehlmeldungen handelt.
+Nun stellt sich die Frage, wie mit Meldungen umgegangen werden soll, die eine sehr lange Standdauer aufweisen.
+Da sich im Datensatz 1962 Meldungen befinden, deren Standdauer über ein Jahr beträgt, ist davon auszugehen, dass die Standdauer einiger Meldungen im Datensatz falsch ist.
+Aus Erfahrung kann gesagt werden, dass schon eine Standdauer von mehr als 12 Stunden in der Realität sehr selten auftritt.
+Der Datensatz enthält jedoch ca. 91.000 Meldungen, auf die dieses Kriterium zutrifft.
+Dies entspricht einem Anteil von 1,1 \%, was zu groß ist, um diese Meldungen komplett aus dem Datensatz zu entfernen.
+Die bevorzugte Alternative besteht darin, den Abbauzeitpunkt aller dieser Meldungen auf 12 Stunden nach dem Aufbauzeitpunkt zu setzen.
+Eine weitere Inkonsistenz fällt auf, wenn die Anzahl der Meldungen pro Tag über den gesamten Zeitraum des Datensatzes betrachtet.
+Diese Metrik ist in \autoref{fig:AnzahlProTagAllData} dargestellt.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1.0\textwidth,height=10cm,keepaspectratio=true]{content/images/AnzahlProTagAllData.png}
+    \caption{Anzahl mobiler Radarkontrollen pro Tag vom 22.05.2014 bis 20.10.2021}
+    \label{fig:AnzahlProTagAllData}
+\end{figure}
+
+Es fällt auf, dass deutlich weniger Meldungen im Zeitraum vom 22.05.2014 bis zum 16.07.2014 vorhanden sind als in den Jahren danach.
+Das spricht dafür, dass der Datensatz in diesem Zeitraum unvollständig ist.
+Da dies das Training des \acrshort{nn}s negativ beeinflussen würde, sollten alle Meldungen vor dem 17.07.2014 aus dem Datensatz entfernt werden.
+In \autoref{fig:AnzahlProTagAllData} sind noch einige interessante Muster zu erkennen.
+Zunächst gibt es einige sehr schmale Ausschläge.
+Beispielsweise waren am 17.09.2014 3800 mobile Radarkontrollen aufgestellt, am 18.09.2014 dann 12.400 und am 19.09.2014 wieder nur 4140.
+Diese Ausschläge sind je auf einen sogenannten "`Blitzermarathon"' zurückzuführen, bei denen an einem bestimmten Tag besonders viele Radarkontrollen aufgestellt werden.
+Ein Vergleich der Radarkontrollen auf einer Karte zwischen dem Blitzermarathon am 18.09.2014 und dem Vortag befindet sich in \appendixref{sec:AnhangDiagramme}, \autoref{fig:BlitzerMarathonSep2014Vgl}.
+
+Als nächstes ist an \autoref{fig:AnzahlProTagAllData} noch auffällig, dass es eine jährliche Periodizität gibt.
+Außerdem bleibt die durchschnittliche Anzahl an Radarkontrollen pro Jahr annähernd konstant, wenn der Ausschlag im Jahr 2020 außer Acht gelassen wird.
+Das spricht dafür, dass der Datensatz vermutlich nicht durch eine sich verändernde Nutzerzahl verzerrt ist.
+Es ist auch erkennbar, dass es im Sommer mehr mobile Radarkontrollen gibt als im Winter.
+Dies geht auch aus \autoref{fig:AnzahlNachMonat} hervor, in der die Anzahl mobiler Radarkontrollen pro Monat dargestellt ist.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1.0\textwidth,height=10cm,keepaspectratio=true]{content/images/AnzahlNachMonat.png}
+    \caption{Anzahl mobiler Radarkontrollen nach Monat}
+    \label{fig:AnzahlNachMonat}
+\end{figure}
+
+
+
+
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1.0\textwidth,height=10cm,keepaspectratio=true]{content/images/Standdauer.png}
+    \caption{Verteilung der Standdauer mobiler Radarkontrollen}
+    \label{fig:Standdauer}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1.0\textwidth,height=10cm,keepaspectratio=true]{content/images/AufbauAbbau.png}
+    \caption{Auf- und Abbau mobiler Radarkontrollen nach Tageszeit}
+    \label{fig:AufbauAbbau}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1.0\textwidth,height=10cm,keepaspectratio=true]{content/images/AnzahlNachTageszeit.png}
+    \caption{Anzahl mobiler Radarkontrollen nach Tageszeit}
+    \label{fig:AnzahlNachTageszeit}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth,height=8cm,keepaspectratio=true]{content/images/AnzahlNachWochentag.png}
+    \caption{Anzahl mobiler Radarkontrollen nach Wochentag}
+    \label{fig:AnzahlNachWochentag}
+\end{figure}

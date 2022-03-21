@@ -161,19 +161,20 @@
 \renewcommand{\appendixname}{Anhang}
 \renewcommand{\appendixtocname}{Anhang}
 \renewcommand{\appendixpagename}{Anhang}
-\newcommand{\Appendixautorefname}{Anhang} % funktioniert nicht
- \newcommand*\appendixmore{% see the KOMA-Script documentation
-   \clearpage
-   %\addsec{{\appendixname}}%
-   \renewcommand{\thesubsection}{{\Alph{subsection}}}%
- } % damit Appendix subsection mit Buchstaben anfangen
+%\newcommand{\appendixautorefname}{Anhang} % funktioniert nicht
+\newcommand*\appendixmore{% see the KOMA-Script documentation
+\clearpage
+%\addsec{{\appendixname}}%
+\renewcommand{\thesubsection}{{\Alph{subsection}}}%
+} % damit Appendix subsection mit Buchstaben anfangen
 
+\newcommand{\appendixref}[1]{\hyperref[#1]{Anhang~\ref{#1}}}
 
- \renewcommand{\k}[1]{\textit{#1}}
- \newcommand{\f}[1]{\textbf{#1}}
- \let\oldautoref\autoref
- \let\oldref\ref
+\renewcommand{\k}[1]{\textit{#1}}
+\newcommand{\f}[1]{\textbf{#1}}
+\let\oldautoref\autoref
+\let\oldref\ref
 
- \renewcommand{\autoref}[1]{\oldautoref{#1}}
- \renewcommand{\ref}[1]{\oldref{#1}}
- \newcommand{\fullref}[1]{\autoref{#1} \nameref{#1}}
+\renewcommand{\autoref}[1]{\oldautoref{#1}}
+\renewcommand{\ref}[1]{\oldref{#1}}
+\newcommand{\fullref}[1]{\autoref{#1} \nameref{#1}}
