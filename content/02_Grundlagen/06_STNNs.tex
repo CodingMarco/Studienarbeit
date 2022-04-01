@@ -1,15 +1,17 @@
-\subsection{Verwandte Forschung}
-\label{sec:VerwandteForschung}
+\subsection{Neuronale Netze für räumlich-zeitliche Vorhersagen}
+\label{sec:STNNs}
 
 Um räumlich-zeitliche Zusammenhänge in Datensätzen durch ein \acrshort{nn} zu erlernen existieren verschiedene Architekturen.
-Im von Jiang et al. verfassten Paper \cite{DLTraff} befindet sich ein detaillierter Vergleich vieler dieser Architekturen anhand ihrer Ansätze und Performance.
+In \cite{DLTraff} befindet sich ein detaillierter Vergleich vieler dieser Architekturen anhand ihrer Ansätze und Performance.
 Zwei weit verbreitete Beispiele werden im folgenden zusammengefasst.
 
 \textbf{ST-ResNet} wird in \cite{STResNetOriginal} definiert und ist eines der populärsten Modelle für räumlich-zeitliche Vorhersagen.
-Jiang et al. machen dies an der Anzahl der Paper fest, die Referenzen auf \cite{STResNetOriginal} enthalten.
+In \cite{DLTraff} wird dies mit der großen Anzahl an Paper begründet, die Referenzen auf \cite{STResNetOriginal} enthalten.
 Der Anwendungsfall für den ST-ResNet konzipiert wurde, ist die Vorhersage der Bewegung von Menschenmassen (engl. \emph{crowd flow}).
 Dabei ist es egal, wie sich die Menschen bewegen.
 So kann ST-ResNet beispielsweise nicht nur auf Fußgänger angewendet werden, sondern auch auf Leihfahrräder, Taxis oder Verkehr allgemein.
+Außerdem kann ST-ResNet auch auf beliebige andere rasterbasierte räumlich-zeitliche Vorhersagen angewendet werden, wie z. B. die Vorhersage von Verbrechen.
+Diese konkrete Adaption wird von den Autoren von ST-ResNet in \cite{CrimeSTResNet} gezeigt.
 Ein Datensatz, für den ST-ResNet ursprünglich konzipiert wurde, besteht aus einem Raster über viele Zeitschritte.
 Pro Zeitschritt sind jeder Zelle zwei Werte zugeordnet: die Anzahl an Menschen, die die Zelle betreten (engl. \emph{inflow}) und die Anzahl an Menschen, die die Zelle verlassen (engl. \emph{outflow}).
 Dies ist ein Beispiel für einen Datensatz mit zwei Kanälen.
@@ -71,10 +73,25 @@ Diese Architektur wird in \autoref{fig:ConvLSTMStructure} verdeutlicht.
 
 Wie man in der Abbildung erkennen kann, hängt jedes Pixel der Ausgabe von einem Bereich der Eingabe und einem Bereich des inneren Zustands ab.
 Dadurch, dass die Tore aus der \acrshort{lstm}-Architektur übernommen wurden, werden von ConvLSTM auch die räumlich-zeitlichen Zusammenhänge nach ihrer Relevanz gefiltert.
-Der große Vorteil von ConvLSTM besteht darin, dass es bereits eine fertige Implementierung als Teil von TensorFlow gibt.
+Wie auch schon bei reinen \acrshortpl{lstm} ist es nicht wichtig zu verstehen, was genau die Tore räumlich und zeitlich filtern.
+Es ist nur wichtig zu wissen, dass mit ConvLSTM lang- und kurzfristige Abhängigkeiten in der räumlichen und zeitlichen Dimension erlernt werden können.
+
+% TODO: Evtl. Verschieben in ModellEntwurf
+Prinzipiell sind beide Modelle für den Anwendungsfall der Vorhersage von mobilen Radarkontrollen geeignet, da beide Rasterbasiert arbeiten und räumliche sowie zeitliche Zusammenhänge erlernen können.
+Für die Auswahl eines der Modelle kommen also vor allem praktische Aspekte in Betracht.
+Dafür ist zunächst wichtig, dass die vorliegende Arbeit in einer begrenzten Zeit fertiggestellt werden muss.
+Daher sollte es so wenig wie möglich Aufwand machen, das Modell in einer Implementierung zu verwenden.
+Hier hat ConvLSTM den großen Vorteil, dass es bereits eine fertige Implementierung als Teil von TensorFlow bzw. Keras gibt: \emph{tf.keras.layers.ConvLSTM2D}\footnote{\url{https://www.tensorflow.org/api_docs/python/tf/keras/layers/ConvLSTM2D}}.
+Im Gegensatz dazu gibt es für ST-ResNet keine Standardimplementierung, die ohne weiteres Verwendet werden kann.
+Es existieren zwar unabhängige, auf TensorFlow basierende Implementierungen auf GitHub\footnote{\url{https://github.com/deepkashiwa20/DL-Traff-Grid/blob/master/workTaxiNYC/predflowio/ST_ResNet.py}}\textsuperscript{,}\footnote{\url{https://github.com/snehasinghania/STResNet}}, jedoch sind diese speziell auf den in \cite{STResNetOriginal} beschriebenden Anwendungsfall angepasst.
+Daher müsste einiges an Zeit investiert werden, um die Implementierung zu verstehen und sie entsprechend an den vorliegenden Anwendungsfall anzupassen.
+Mit der verfügbaren Implementierung von ConvLSTM als Teil von TensorFlow geht auch einher, dass einige Ressourcen existieren, die beschreiben, wie ConvLSTM praktisch angewendet werden kann.
+Ein Beispiel hierfür ist das später noch verwendete Paper \cite{CrimeConvLSTM}.
+Aufgrund dieser praktischen Vorteile wird in der vorliegenden Arbeit mit ConvLSTM weitergearbeitet.
 
 
-% Warum für eins entschieden?
+
+
 % Verwandte Anwendungsfälle:
 %   - Niederschlagsvorhersage als weiter entfernt
 %   - Verbrechensvorhersage als sehr ähnlichen Anwendungsfall
