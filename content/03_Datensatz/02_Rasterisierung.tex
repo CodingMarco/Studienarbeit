@@ -1,2 +1,49 @@
 \subsection{Rasterisierung}
 \label{sec:Rasterisierung}
+Um ein Rasterbasiertes Modell wie ConvLSTM oder ST-ResNet für die Vorhersage von mobilen Radarkontrollen verwenden zu können, müssen die räumlich und zeitlich kontinuierlichen Datenpunkte aus dem Datensatz zunächst rasterisiert werden.
+Dazu ist es sinnvoll nochmals zu betrachten, wie die Daten ursprünglich vorliegen.
+Jede Meldung ist eine Zeile in einer Datenbanktabelle mit den Spalten \emph{Längengrad}, \emph{Breitengrad}, \emph{Aufbauzeitpunkt} und \emph{Abbauzeitpunkt}.
+Das Ziel besteht darin, die Datenpunkte so zu verarbeiten, dass pro Zeitraum $T$ ein Raster aus $n \times n$ quadratischen Zellen mit der Seitenlänge $k$ entsteht, bei dem jeder Zelle ein Wert $x$ zugeordnet ist, der etwas über die gemeldeten Radarkontrollen in dieser Zelle aussagt.
+Die Werte $T,~n,~k$ sind hierbei variable Hyperparameter und müssen möglichst sinnvoll ausgewählt werden.
+Außerdem muss festgelegt werden, nach welcher Regel der Wert $x$ berechnet werden soll.
+Bei der Auswahl des Zeitraums $T$ muss zwischen der gewünschten zeitlichen Genauigkeit und der Anzahl an verfügbaren Datenpunkten abgewägt werden.
+Wird $T$ beispielsweise zu klein gewählt, enthält der betrachtete Bereich zu wenige Meldungen, um auf deren Basis aussagekräftige Vorhersagen treffen zu können.
+Wird $T$ hingegen zu groß gewählt (wie z. B. eine Woche oder ein Monat), haben die Vorhersagen weniger praktischen Nutzen.
+Außerdem könnten dann insgesamt zu wenige Zeitschritte vorliegen, um das Modell trainieren zu können.
+Nach einigen Versuchen scheinen 24 Stunden für $T$ ein guter Wert zu sein, da somit der praktische Nutzen erhalten bleibt und es dennoch genug Meldungen pro Zeitschritt gibt.
+
+Als nächstes sind $k$ udn $n$ zu wählen.
+Die Seitenlänge des gesamten betrachteten Bereichs berechnet sich daraus mit $n \cdot k$.
+Bei der Wahl von $k$ muss dieselbe Abwägung getroffen werden wie bei der Wahl von $T$, jedoch geht es hier um den praktischen Nutzen der Vorhersagen je nach räumlicher Auflösung.
+Wird $k$ zu groß gewählt, ist die zeitliche Auflösung zu gering, als dass die Vorhersagen nützlich wären.
+Wenn $k$ hingegen zu klein gewählt wird, gibt es in zu wenigen Zellen eine Meldung, um das Modell gut trainieren zu können.
+Bei der Wahl von $k$ kommt es außerdem darauf an, ob eher städtischer oder ländlicher Raum betrachtet werden soll.
+Für den ländlichen Raum scheint $k = 4~\text{km}$ eine gute Wahl zu sein, da die Radarkontrollen dort nicht sonderlich dicht liegen.
+Für den städtischen Raum ist dieser Wert jedoch eher zu groß, da sich in einem 4 km Radius vergleichsweise deulich mehr Straßen befinden.
+Außerdem ist die Dichte an Radarkontrollen im städtischen Raum höher, weshalb ein geringeres $k$ von einem oder zwei Kilometer durchaus möglich ist.
+Wird (beispielsweise in Baden-Württemberg) insgesamt ein größerer Raum abgedeckt, besteht die meiste Fläche aus ländlichem Gebiet.
+Daher wird im folgenden mit $k = 4~\text{km}$ fortgefahren.
+Die Wahl von $n$ beeinflusst nun den insgesamt durch das Raster abgedeckten Raum.
+Optimalerweise sollte dieser Wert möglichst groß sein, um möglichst viele Trainingsdaten einzuschließen.
+Andererseits ist $n$ durch den währen des Trainings verfügbaren Speicher begrenzt.
+Wird das Training auf einer Grafikkarte ausgeführt, muss das komplette Modell und alle Trainingsdaten, die pro Batch verarbeitet werden in den Grafikspeicher passen.
+Da der Speicherbedarf quadratisch mit $n$ ansteigt, ist man hier in der Praxis sehr eingeschränkt.
+Bei einem Grafikspeicher von 8 GB und einer Batch Size von 12 ist $n = 50$ gut möglich.
+Mit $k = 4~\text{km}$ ergibt sich dann eine Seitenlänge des gesamten Rasters von 200 km.
+
+Für die Berechnung von $x$ gibt es mehrere Möglichkeiten.
+Zunächst könnte $x = 1$ gesetzt werden, wenn sich in der Zelle mindestens eine Radarkontrolle befindet, ansonsten $x = 0$.
+Alternativ kann $x$ auf die Anzahl der Radarkontrollen gesetzt werden, die sich im jeweiligen Zeitraum in der Zelle befinden.
+Dies hat jedoch den Nachteil, dass eine Radarkontrolle mit einer kurzen Standdauer gleich gewichtet wird wie eine Radarkontrolle mit einer deutlich längeren Standdauer.
+Daher bietet es sich an, die Standdauer aller Radarkontrollen in einer Zelle aufzusummieren.
+Mit dieser Möglichkeit enthält $x$ am meisten Informationen über die Radarkontrollen in der jeweiligen Zelle.
+Außerdem kann diese Repräsentation auch nach der Rasterisierung einfach in eine binäre Unterscheidung umgewandelt werden, indem pro Zelle $x := x > 0$ gesetzt wird.
+
+Nun stellt sich die Frage, wie die Rasterisierung mit den erörterten Parametern möglichst effizient ausgeführt werden kann.
+Die einfachste Möglichkeit besteht darin, alle Meldungen pro Rasterzelle und Datum nacheinander mit einem Python-Skript von der MariaDB-Datenbank abzufragen.
+Pro Rasterzelle dauert diese Abfrage jedoch ca. 0,32 Sekunden.
+Bei 200 Zellen und 2648 Tagen würde die Rastergenerierung damit jedoch 47 Stunden dauern, was unpraktikabel ist.
+Eine mögliche Optimierung ist, eine Datenbank zu verwenden, die das Filtern nach Koordinaten effizienter ausführen kann als MariaDB.
+Eine solche Datenbank ist PostgreSQL mit der PostGIS-Erweiterung.
+
+
