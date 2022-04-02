@@ -43,7 +43,11 @@ Nun stellt sich die Frage, wie die Rasterisierung mit den erörterten Parametern
 Die einfachste Möglichkeit besteht darin, alle Meldungen pro Rasterzelle und Datum nacheinander mit einem Python-Skript von der MariaDB-Datenbank abzufragen.
 Pro Rasterzelle dauert diese Abfrage jedoch ca. 0,32 Sekunden.
 Bei 200 Zellen und 2648 Tagen würde die Rastergenerierung damit jedoch 47 Stunden dauern, was unpraktikabel ist.
-Eine mögliche Optimierung ist, eine Datenbank zu verwenden, die das Filtern nach Koordinaten effizienter ausführen kann als MariaDB.
-Eine solche Datenbank ist PostgreSQL mit der PostGIS-Erweiterung.
+Eine mögliche Optimierung ist, eine Geodatenbank zu verwenden, die das Filtern nach Koordinaten effizienter ausführen kann als MariaDB.
+Eine solche Geodatenbank ist PostgreSQL mit der Erweiterung PostGIS.
+Die Abkürzung \acrshort{gis} in PostGIS steht für \acrlong{gis}.
+Dies ist ein Begriff für Systeme, die besonders auf die Verarbeitung von räumlichen Daten optimiert sind, wozu auch Geodatenbanken gehören.
+Eines der wichtigsten Features einer Geodatenbank ist ein räumlicher Index (engl. spatial index).
+Ein solcher ist laut \cite[S. 2707 f.]{SpatialIndexingTechniques} eine Datenstruktur, die einen schnelleren Zugriff auf räumliche Daten bietet als traditionelle eindimensionale Indexe wie ein B\textsuperscript{+}-Baum.
 
 
