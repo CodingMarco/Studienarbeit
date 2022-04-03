@@ -62,6 +62,10 @@
 %\usepackage{enumitem}
 \usepackage{paralist} % for \begin{compactitem}
 
+% Much much better listings
+\usepackage[newfloat, outputdir=aux]{minted}
+\newenvironment{code}{\captionsetup{type=listing}}{}
+\SetupFloatingEnvironment{listing}{name=Codeausschnitt}
 
 \usepackage{listings}
 \lstset{
@@ -78,9 +82,6 @@
     \lst@ProcessOther {"2A}{\raisebox{2pt}{*}}
     \@empty\z@\@empty
 \makeatother
-
-\usepackage{color}
-\input{listingsstyls}
 
 \usepackage{etex}
 % \#TODO: Entscheiden welchen Style

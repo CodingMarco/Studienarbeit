@@ -16,3 +16,4 @@ content/__latexindent_temp.tex
 *.synctex*
 *.xml
 aux
+_minted-Main
