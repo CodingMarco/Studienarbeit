@@ -47,7 +47,7 @@ Eine mögliche Optimierung ist, eine Geodatenbank zu verwenden, die das Filtern 
 Eine solche Geodatenbank ist PostgreSQL mit der Erweiterung PostGIS.
 Die Abkürzung \acrshort{gis} in PostGIS steht für \acrlong{gis}.
 Dies ist ein Begriff für Systeme, die besonders auf die Verarbeitung von räumlichen Daten optimiert sind, wozu auch Geodatenbanken gehören.
-Eines der wichtigsten Features einer Geodatenbank ist ein räumlicher Index (engl. spatial index).
+Eines der wichtigsten Features einer Geodatenbank ist ein räumlicher Index (engl. \emph{spatial index}).
 Ein solcher ist laut \cite[S. 2707 f.]{SpatialIndexingTechniques} eine Datenstruktur, die einen schnelleren Zugriff auf räumliche Daten bietet als traditionelle eindimensionale Indexe wie ein B\textsuperscript{+}-Baum.
 Ein bekanntes Beispiel für einen räumlichen Index ist der R-Baum, der auch von PostGIS verwendet wird \cite{PostGISSpatialIndex}.
 Die Funktionsweise eines R-Baums ist in \autoref{fig:RTreeImage} dargestellt.
@@ -86,4 +86,25 @@ Hierbei ist wichtig anzumerken, dass der räumliche Index automatisch von PostGI
 Die Verwendung von PostGIS bringt noch einen weiteren großen Vorteil mit sich.
 Da die Daten nun in einem im \acrshort{gis}-Umfeld gebräuchlichen Format vorliegen, können beliebige \acrshort{gis}-Tools verwendet werden, um die Daten zu analysieren.
 Dies hat den Vorteil, dass diese Tools viele effiziente Implementierungen der Standardalgorithmen auf geographischen Daten mitbringen.
-Ein Beispiel für ein solches Tool ist QGis.
+Ein Beispiel für ein solches Tool ist QGIS.
+QGIS kann als Algorithmensammlung für geographische Daten angesehen werden.
+Außerdem beinhaltet QGIS eine \acrfullr{gui}, mit der diese Algorithmen ausgeführt werden können.
+Mit der \acrshort{gui} können zudem verschiedenste geographische Daten wie Punkte, Linien, Rechtecke, Raster etc. visualisiert werden, insbesondere auch die Ergebnisse der ausgeführten Algorithmen.
+Ein Beispiel für eine Visualisierung mit QGIS ist \autoref{fig:BlitzerMarathonSep2014Vgl}.
+Die Punkte werden über eine direkte Verbindung zu PostGIS abgerufen und dann auf einer OpenStreetMap-Karte dargestellt.
+Aufgrund des räumlichen Indexes von PostGIS werden die Punkte sehr schnell geladen, insbesondere wenn kleinere Bereiche betrachtet werden.
+QGIS ist in C++ unter Verwendung des Qt-Frameworks implementiert.
+Die Algorithmen können zusätzlich zur \acrshort{gui} über eine C++ \acrshort{api} aufgerufen werden, für die es auch Python-Bindings gibt.
+
+Für die Rasterisierung des Datensatzes gibt es nun zwei verschiedene Möglichkeiten.
+Zum einen könnte die Rasterisierung direkt in der Datenbank mit von PostGIS bereitgestellten \acrshort{sql}-Funktionen durchgeführt werden.
+Zum anderen könnten Algorithmen aus QGIS verwendet werden.
+Der erste Ansatz hat den Vorteil, dass mit einer Rasterisierung direkt in der Datenbank die maximal mögliche Geschwindigkeit erreichbar wäre.
+Allerdings ist zur Implementierung des Algorithmus in \acrshort{sql} ein umfangreiches Fachwissen im \acrshort{gis}-Umfeld erforderlich.
+Da \acrshort{gis} an sich ein großer, eigenständiger Forschungsbereich ist, überwiegt dieser Nachteil die eventuell etwas höhere Geschwindigkeit.
+Somit fällt die Wahl auf eine Implementierung der Rasterisierung mit Algorithmen aus QGIS.
+
+Für die Implementierung steht zunächst das Erstellen eines Rasters an, also die Berechnung der Grenzen der einzelnen Rasterzellen.
+Hierfür kann der QGIS-Algorithmus \emph{Create grid} verwendet werden.
+Die wichtigsten Parameter dieses Algorithmus sind die Grenzen des gesamten Rasters (engl. \emph{extent}) und die Seitenlänge der Rasterzellen (oben $k$ genannt).
+Die Grenzen des gesamten Rasters müssen anhand von $n$ und $k$ abgeschätzt werden und können in der QGIS-\acrshort{gui} mit der Funktion \emph{Draw on Map Canvas} direkt auf der Karte gezeichnet werden.
