@@ -41,7 +41,7 @@ Außerdem kann diese Repräsentation auch nach der Rasterisierung einfach in ein
 
 Nun stellt sich die Frage, wie die Rasterisierung mit den erörterten Parametern möglichst effizient ausgeführt werden kann.
 Die einfachste Möglichkeit besteht darin, alle Meldungen pro Rasterzelle und Datum nacheinander mit einem Python-Skript von der MariaDB-Datenbank abzufragen.
-Pro Rasterzelle dauert diese Abfrage jedoch ca. 0,32 Sekunden.
+Pro Rasterzelle dauert diese Abfrage ca. 0,32 Sekunden.
 Bei 200 Zellen und 2648 Tagen würde die Rastergenerierung damit jedoch 47 Stunden dauern, was unpraktikabel ist.
 Eine mögliche Optimierung ist, eine Geodatenbank zu verwenden, die das Filtern nach Koordinaten effizienter ausführen kann als MariaDB.
 Eine solche Geodatenbank ist PostgreSQL mit der Erweiterung PostGIS.
@@ -49,5 +49,31 @@ Die Abkürzung \acrshort{gis} in PostGIS steht für \acrlong{gis}.
 Dies ist ein Begriff für Systeme, die besonders auf die Verarbeitung von räumlichen Daten optimiert sind, wozu auch Geodatenbanken gehören.
 Eines der wichtigsten Features einer Geodatenbank ist ein räumlicher Index (engl. spatial index).
 Ein solcher ist laut \cite[S. 2707 f.]{SpatialIndexingTechniques} eine Datenstruktur, die einen schnelleren Zugriff auf räumliche Daten bietet als traditionelle eindimensionale Indexe wie ein B\textsuperscript{+}-Baum.
+Ein bekanntes Beispiel für einen räumlichen Index ist der R-Baum, der auch von PostGIS verwendet wird \cite{PostGISSpatialIndex}.
+Die Funktionsweise eines R-Baums ist in \autoref{fig:RTreeImage} dargestellt.
 
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1.0\textwidth,height=10cm,keepaspectratio=true]{content/images/R-tree.png}
+    \caption{Aufbau und Funktionsweise eines R-Baums \cite{RTreeImage}}
+    \label{fig:RTreeImage}
+\end{figure}
+
+Wie in der Abbildung zu erkennen ist, enthält jeder Knoten eines R-Baums Informationen über ein Rechteck.
+Die Knoten können dann nach \cite{RTrees} jeweils Kindknoten haben, deren Recktecke komplett innerhalb des Rechtecks des Elternknotens liegen müssen.
+Als Beispiel für die Suchoperation auf einem R-Baum sollen alle Rechtecke R8 bis R19 ermittelt werden, die sich mit dem in \autoref{fig:RTreeImage} grün markierten Punkt überschneiden.
+Ohne den R-Baum müssten alle 12 Recktecke R8 bis R19 nacheinander mit dem Punkt verglichen werden.
+Mit dem R-Baum sind nur noch sieben Vergleiche notwendig.
+Zunächst wird ermittelt, ob der Punkt in R1 oder R2 liegt.
+Da der Punkt in R2 liegt, können R8 bis R14 nun schon ausgeschlossen werden.
+Daraufhin wird der Punkt mit R6 und R7 verglichen.
+Da der Punkt in R7 liegt, liefern die Vergleiche mit R17, R18 und R19, dass sich nur R17 und R18 mit dem Punkt überschneiden.
+Dieser Performancegewinn macht sich nach \cite{RTrees} vor allem bei sehr vielen Datenpunkten bemerkbar.
+
+Da der Datensatz der Mobilen Radarkontrollen ca. 7,7 Millionen Einträge enthält, ist es hier sehr sinnvoll, eine Geodatenbank mit räumlichem Index zu verwenden.
+Als Geodatenbank bietet sich PostgreSQL mit der PostGIS-Erweiterung (im folgenden zusammen PostGIS genannt) an.
+Die Datenpunkte müssen nun von MariaDB nach PostGIS übertragen werden.
+Dies kann komfortabel mit einem Python-Skript unter Verwendung der Pakete SQLAlchemy und GeoAlchemy2 bewerkstelligt werden.
+Mit SQLAlchemy kann intuitiv auf Datenbanken zugegriffen werden, indem Tabellen der Datenbank auf Python-Klassen abgebildet sind.
+Dieses Konzept wird als \acrfull{orm} bezeichnet \cite{SQLAlchemyKeyFeatures}.
 
