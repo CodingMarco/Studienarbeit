@@ -1,0 +1,137 @@
+\subsection{Implementierung des Transfers von MariaDB nach PostGIS}
+\label{sec:ToPostGIS}
+
+\begin{code}
+\begin{minted}[
+    linenos,
+    numbersep=10pt,
+    gobble=0,
+    frame=lines,
+    framesep=2mm]{python}
+from sqlalchemy.orm import declarative_base
+from sqlalchemy import Column, String, BigInteger, DateTime, Numeric
+
+# See https://docs.sqlalchemy.org/en/13/changelog/migration_12.html#change-4102
+class LiberalBoolean(TypeDecorator):
+    impl = Boolean
+    def process_bind_param(self, value, dialect):
+        if value is not None:
+            value = bool(int(value))
+        return value
+
+Base = declarative_base()
+
+class ArchivedShownSpeedcam(Base):
+    __database__ = 'speedcam_archive'
+    __tablename__ = 'output_180d_dump'
+
+    id = Column(BigInteger, primary_key=True, nullable=False, autoincrement=True)
+    autobahn = Column(LiberalBoolean, nullable=False, default=False)
+    cvmax = Column(String(3), nullable=False, default='')
+    vmax = Column(String(3), nullable=False, default='')
+    lastuse_date = Column(DateTime, nullable=False, default='0000-00-00 00:00:00')
+    laenge = Column(Numeric(9, 6), nullable=False, default=0.0)
+    breite = Column(Numeric(9, 6), nullable=False, default=0.0)
+    direction = Column(String(3), nullable=False, default='')
+    created_date = Column(DateTime, nullable=False, default='0000-00-00 00:00:00')
+\end{minted}
+\captionof{listing}{SQLAlchemy-Modell einer Radarkontrolle in MariaDB}
+\label{lst:SQLAlchemyModelMariaDB}
+\end{code}
+
+\clearpage
+
+\begin{code}
+\begin{minted}[
+    linenos,
+    numbersep=10pt,
+    gobble=0,
+    frame=lines,
+    framesep=2mm]{python}
+import datetime
+from sqlalchemy import Column, BigInteger, DateTime, Numeric
+from sqlalchemy.orm import declarative_base
+from sqlalchemy.ext.hybrid import hybrid_method
+from geoalchemy2 import Geometry
+from common.archived_shown_speedcam import ArchivedShownSpeedcam
+
+Base = declarative_base()
+SRID = 4326  # This is the coordinate system that GPS uses
+
+class PostgisSpeedcam(Base):
+    __tablename__ = 'speedcam'
+
+    id = Column(BigInteger, primary_key=True)
+    position = Column(Geometry('POINT', srid=SRID))
+    created_date = Column(DateTime, nullable=False, default='0000-00-00 00:00:00')
+    lastuse_date = Column(DateTime, nullable=False, default='0000-00-00 00:00:00')
+    duration_hours = Column(Numeric(4, 2), nullable=False, default=0.0)
+
+    def __init__(self, sc: ArchivedShownSpeedcam):
+        self.id = sc.id
+        # Sometimes laenge and breite are swapped for some reason.
+        # Laenge should be between 5.9 and 15.0 for Germany.
+        # So to give some buffer, we swap them if laenge is too large.
+        if sc.laenge < 20:
+            self.position = sc.position = f'SRID={SRID};POINT({sc.laenge} {sc.breite})'
+        else:
+            self.position = sc.position = f'SRID={SRID};POINT({sc.breite} {sc.laenge})'
+
+        self.created_date = sc.created_date
+        self.lastuse_date = sc.lastuse_date
+        self.duration_hours = (sc.lastuse_date - sc.created_date).total_seconds() / 3600
+
+        # If duration is longer than 12 hours, clip it to 12 hours from created_date
+        if self.duration_hours > 12:
+            self.lastuse_date = sc.created_date + datetime.timedelta(hours=12)
+            self.duration_hours = 12
+\end{minted}
+\captionof{listing}{SQLAlchemy-Modell einer Radarkontrolle in PostGIS}
+\label{lst:SQLAlchemyModelPostGIS}
+\end{code}
+
+\clearpage
+
+\begin{code}
+\begin{minted}[
+    linenos,
+    numbersep=10pt,
+    gobble=0,
+    frame=lines,
+    framesep=2mm]{python}
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+from common.archived_shown_speedcam import ArchivedShownSpeedcam
+
+mariadb_engine = create_engine(
+    'mysql://root:speedcam@localhost/speedcam_archive')
+MariaDBSession = sessionmaker(bind=mariadb_engine)
+postgis_engine = create_engine(
+    'postgresql://speedcam:speedcam@localhost/speedcam_archive')
+PostGisSession = sessionmaker(bind=postgis_engine)
+mariadb_session = MariaDBSession()
+postgis_session = PostGisSession()
+
+# Drop all leftover data and recreate table
+Base.metadata.drop_all(postgis_session.bind)
+Base.metadata.create_all(postgis_session.bind)
+
+speedcam_count = mariadb_session.query(ArchivedShownSpeedcam).count()
+
+# Transfer all speedcams in chunks of 10000
+for i in range(0, speedcam_count, 10000):
+    speedcams = mariadb_session.query(ArchivedShownSpeedcam) \
+        .limit(10000) \
+        .offset(i) \
+        .all()
+    
+    postgis_session.add_all([PostgisSpeedcam(sc) for sc in speedcams])
+    postgis_session.commit()
+    print(f'Transferred {i} out of {speedcam_count} speedcams')
+
+mariadb_session.close()
+postgis_session.close()
+\end{minted}
+\captionof{listing}{Transfer der Radarkontrollen von MariaDB nach PostGIS}
+\label{lst:ToPostGIS}
+\end{code}

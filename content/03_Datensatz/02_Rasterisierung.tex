@@ -76,4 +76,14 @@ Die Datenpunkte müssen nun von MariaDB nach PostGIS übertragen werden.
 Dies kann komfortabel mit einem Python-Skript unter Verwendung der Pakete SQLAlchemy und GeoAlchemy2 bewerkstelligt werden.
 Mit SQLAlchemy kann intuitiv auf Datenbanken zugegriffen werden, indem Tabellen der Datenbank auf Python-Klassen abgebildet sind.
 Dieses Konzept wird als \acrfull{orm} bezeichnet \cite{SQLAlchemyKeyFeatures}.
+Das Paket GeoAlchemy2 fügt dann noch Unterstützung für PostGIS hinzu.
+Nun können zwei Klassen entworfen werden, die eine Radarkontrolle in MariaDB und in PostGIS repräsentieren.
+Die Implementierung der beiden Klassen und des letztendlichen Transfers ist in \appendixref{sec:ToPostGIS} zu finden.
+Die Klasse \emph{PostgisSpeedcam} enthält dabei einen Konstruktor, der eine MariaDB-Radarkontrolle als Parameter erhält und die Konvertierung durchführt.
+Mit der Implementierung in \autoref{lst:ToPostGIS} können alle Tabelleneinträge in ca. einer Stunde übertragen werden.
+Hierbei ist wichtig anzumerken, dass der räumliche Index automatisch von PostGIS erzeugt und aktualisiert wird.
 
+Die Verwendung von PostGIS bringt noch einen weiteren großen Vorteil mit sich.
+Da die Daten nun in einem im \acrshort{gis}-Umfeld gebräuchlichen Format vorliegen, können beliebige \acrshort{gis}-Tools verwendet werden, um die Daten zu analysieren.
+Dies hat den Vorteil, dass diese Tools viele effiziente Implementierungen der Standardalgorithmen auf geographischen Daten mitbringen.
+Ein Beispiel für ein solches Tool ist QGis.
