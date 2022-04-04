@@ -6,6 +6,9 @@ Jede Meldung ist eine Zeile in einer Datenbanktabelle mit den Spalten \emph{Län
 Das Ziel besteht darin, die Datenpunkte so zu verarbeiten, dass pro Zeitraum $T$ ein Raster aus $n \times n$ quadratischen Zellen mit der Seitenlänge $k$ entsteht, bei dem jeder Zelle ein Wert $x$ zugeordnet ist, der etwas über die gemeldeten Radarkontrollen in dieser Zelle aussagt.
 Die Werte $T,~n,~k$ sind hierbei variable Hyperparameter und müssen möglichst sinnvoll ausgewählt werden.
 Außerdem muss festgelegt werden, nach welcher Regel der Wert $x$ berechnet werden soll.
+
+\subsubsection{Auswahl der Parameter zur Rasterisierung}
+\label{sec:RasterisierungParameter}
 Bei der Auswahl des Zeitraums $T$ muss zwischen der gewünschten zeitlichen Genauigkeit und der Anzahl an verfügbaren Datenpunkten abgewägt werden.
 Wird $T$ beispielsweise zu klein gewählt, enthält der betrachtete Bereich zu wenige Meldungen, um auf deren Basis aussagekräftige Vorhersagen treffen zu können.
 Wird $T$ hingegen zu groß gewählt (wie z. B. eine Woche oder ein Monat), haben die Vorhersagen weniger praktischen Nutzen.
@@ -39,6 +42,8 @@ Daher bietet es sich an, die Standdauer aller Radarkontrollen in einer Zelle auf
 Mit dieser Möglichkeit enthält $x$ am meisten Informationen über die Radarkontrollen in der jeweiligen Zelle.
 Außerdem kann diese Repräsentation auch nach der Rasterisierung einfach in eine binäre Unterscheidung umgewandelt werden, indem pro Zelle $x := x > 0$ gesetzt wird.
 
+\subsubsection{Auswahl von Methoden und Tools zur Rasterisierung}
+\label{sec:RasterisierungMethodenTools}
 Nun stellt sich die Frage, wie die Rasterisierung mit den erörterten Parametern möglichst effizient ausgeführt werden kann.
 Die einfachste Möglichkeit besteht darin, alle Meldungen pro Rasterzelle und Datum nacheinander mit einem Python-Skript von der MariaDB-Datenbank abzufragen.
 Pro Rasterzelle dauert diese Abfrage ca. 0,32 Sekunden.
@@ -80,6 +85,8 @@ Das Paket GeoAlchemy2 fügt dann noch Unterstützung für PostGIS hinzu.
 Nun können zwei Klassen entworfen werden, die eine Radarkontrolle in MariaDB und in PostGIS repräsentieren.
 Die Implementierung der beiden Klassen und des letztendlichen Transfers ist in \appendixref{sec:ToPostGIS} zu finden.
 Die Klasse \emph{PostgisSpeedcam} enthält dabei einen Konstruktor, der eine MariaDB-Radarkontrolle als Parameter erhält und die Konvertierung durchführt.
+Die Klasse (bzw. Tabelle) \emph{PostgisSpeedcam} enthält zusätzlich ein Attribut \emph{duration\_hours}, welches die Standdauer der Radarkontrolle in Stunden enthält.
+Durch dieses Attribut kann in der nachfolgenden Verarbeitung der Datenpunkte komfortabel auf die Standdauer zugegriffen werden, ohne dass die Datumsdifferenz separat berechnet werden muss.
 Mit der Implementierung in \autoref{lst:ToPostGIS} können alle Tabelleneinträge in ca. einer Stunde übertragen werden.
 Hierbei ist wichtig anzumerken, dass der räumliche Index automatisch von PostGIS erzeugt und aktualisiert wird.
 
@@ -103,8 +110,59 @@ Der erste Ansatz hat den Vorteil, dass mit einer Rasterisierung direkt in der Da
 Allerdings ist zur Implementierung des Algorithmus in \acrshort{sql} ein umfangreiches Fachwissen im \acrshort{gis}-Umfeld erforderlich.
 Da \acrshort{gis} an sich ein großer, eigenständiger Forschungsbereich ist, überwiegt dieser Nachteil die eventuell etwas höhere Geschwindigkeit.
 Somit fällt die Wahl auf eine Implementierung der Rasterisierung mit Algorithmen aus QGIS.
+Die komplette Implementierung ist in \appendixref{sec:QgisRasterisierung} zu finden.
 
+\subsubsection{Implementierung der Rasterisierung}
+\label{sec:RasterisierungImplementierung}
 Für die Implementierung steht zunächst das Erstellen eines Rasters an, also die Berechnung der Grenzen der einzelnen Rasterzellen.
-Hierfür kann der QGIS-Algorithmus \emph{Create grid} verwendet werden.
+Hierfür kann der in \cite{QgisCreateGrid} beschriebene QGIS-Algorithmus "`Create grid"' verwendet werden.
 Die wichtigsten Parameter dieses Algorithmus sind die Grenzen des gesamten Rasters (engl. \emph{extent}) und die Seitenlänge der Rasterzellen (oben $k$ genannt).
-Die Grenzen des gesamten Rasters müssen anhand von $n$ und $k$ abgeschätzt werden und können in der QGIS-\acrshort{gui} mit der Funktion \emph{Draw on Map Canvas} direkt auf der Karte gezeichnet werden.
+Die Grenzen des gesamten Rasters müssen anhand von $n$ und $k$ abgeschätzt werden und können in der QGIS-\acrshort{gui} mit der Funktion "`Draw on Map Canvas"' direkt auf der Karte gezeichnet werden.
+Der Aufruf des Algorithmus in Python ist in \autoref{lst:GenerateHeatmapFunction} in den Zeilen 17 bis 22 zu sehen.
+Der Rückgabewert des Algorithmus ist ein Vektorlayer, der jede Rasterzelle als Rechteck (bestehend aus vier Kanten) enthält.
+Dieser Vektorlayer kann nun verwendet werden, um mit dem in \cite{QgisJoinByLocationSummary} beschriebenen QGIS-Algorithmus "`Join attributes by location (summary)"' den Zahlenwert $x$ für jede Rasterzelle zu ermitteln.
+Dieser Algorithmus fügt Attribute aus einem Vektorlayer zu einem zweiten Vektorlayer unter Berücksichtigung einer räumlichen Bedingung hinzu.
+Im vorliegenden Fall soll zu jeder Rasterzelle die Summe der Standdauer aller Radarkontrollen als Attribut hinzugefügt werden, die sich an einem bestimmten Datum mit dieser Rasterzelle überschneiden.
+Der komplette Aufruf des Algorithmus mit diesen Parametern ist in \autoref{lst:GenerateHeatmapFunction} in den Zeilen 24 bis 31 zu sehen.
+Die relevanten Parameter und Werte für dieses Ziel sind:
+
+\begin{itemize}
+    \setlength\itemsep{-15pt}
+    \item \textbf{INPUT}: Der Vektorlayer, zu dem das zusätzliche Attribut hinzugefügt werden soll. Im vorliegenden Fall ist dies der im vorherigen Schritt erzeugte Layer, der die Rasterzellen enthält.
+    \item \textbf{JOIN}: Der zweite Vektorlayer, aus dem das Attribut extrahiert werden soll. Im vorliegenden Fall besteht dieser Layer aus den Datenpunkten, die direkt aus der Datenbank abgefragt werden. Daher ist dieser Parameter in der Implementierung eine Zeichenkette, die die Datenbank-Verbindung, die Quelltabelle und den Datumsfilter beschreibt. Diese Zeichenkette ist in \autoref{lst:GenerateHeatmapFunction} in den Zeilen 5 bis 8 zu sehen. Beim eigentlichen Aufruf des Algorithmus wird in Zeile 26 noch das Datum als Filter angehängt.
+    \item \textbf{JOIN\_FIELDS}: Ein Array aus Attributen des \emph{JOIN}-Layers, die durch eine bestimmte mathematische Funktion zusammengefasst werden sollen. Im vorliegenden Fall enthält dieses Array nur ein Element, \emph{duration\_hours}.
+    \item \textbf{PREDICATE}: Ein Array aus räumlichen Bedingungen, die pro Rasterzelle in Verbindung mit allen Datenpunkten gelten müssen, die für diese Rasterzelle zusammengefasst werden sollen. In \cite{QgisJoinByLocationSummary} befindet sich eine Auflistung, welcher Zahlenwert welcher räumlichen Bedingung entspricht und was diese Bedingungen genau aussagen. Im vorliegenden Fall soll nur die Bedingung \emph{intersects} gelten, was dem Zahlenwert $0$ entspricht. Es sollen pro Rasterzelle also alle Datenpunkte zusammengefasst werden, die sich mit der jeweiligen Rasterzelle überschneiden.
+    \item \textbf{SUMMARIES}: Ein Array aus mathematischen Operationen, die für die zusammenzufassenden Datenpunkte berechnet werden sollen. Auch hier findet sich in \cite{QgisJoinByLocationSummary} eine Auflistung, welcher Zahlenwert welcher Operation entspricht. Im vorliegenden Fall soll nur die Summe der Standdauer berechnet werden, daher ist das einzige Element des Arrays $5$, was für \emph{sum} steht.
+\end{itemize}
+
+Die Rückgabe des Algorithmus ist wiederum ein Vektorlayer, der nun pro Rasterzelle die summierte Standdauer der Radarkontrollen als Attribut enthält.
+Mit dem Aufruf der Funktion \emph{store\_layer()} in Zeile 33 von \autoref{lst:GenerateHeatmapFunction} wird der Layer als \acrlong{gpkg} (\acrshort{gpkg}-Datei) gespeichert.
+Eine \acrshort{gpkg}-Datei ist nach \cite{GPKG} ein Container zum speichern von geographischen Daten.
+Dabei ist \acrshort{gpkg} als SQLite-Datenbank implementiert.
+Daher können \acrshort{gpkg}-Dateien auch mit anderen Programmen geöffnet werden, die SQLite-Datenbanken verarbeiten können.
+Als Veranschaulichung des Ergebnisses des eben erläuterten Algorithmus ist in \autoref{fig:GpkgExample} ein Ausschnitt aus der resultierenden \acrshort{gpkg}-Datei für den 17.04.2014 dargestellt.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth,height=8cm,keepaspectratio=true]{content/images/GpkgExample.png}
+    \caption{Einträge einer GPKG-Datei}
+    \label{fig:GpkgExample}
+\end{figure}
+
+Man kann erkennen, dass jede Zeile der Tabelle eine Rasterzelle enthält.
+Die Spalten \emph{left}, \emph{top}, \emph{right} und \emph{bottom} enthalten die Begrenzung der Rasterzelle.
+Durch den Algorithmus "`Join attributes by location (summary)"' wurde nun noch die letzte Spalte \emph{duration\_hours\_sum} hinzugefügt.
+Wie man erkennen kann, enthält diese Spalte \emph{NULL}, wenn sich keine Radarkontrolle in der Rasterzelle befindet.
+
+Als nächstes müssen die als \acrshort{gpkg}-Datei abgespeicherten Vektordaten in Rasterdaten umgewandelt werden, damit sie später als zweidimensionale numpy-Arrays eingelesen werden können.
+Der Unterschied zwischen Vektor- und Rasterdaten kann am besten an Geotiff, einem Dateiformat für Rasterdaten, veranschaulicht werden.
+Während eine \acrshort{gpkg}-Datei Vektordaten wie Punkte oder Linien speichert, speichert eine Geotiff-Datei Pixelwerte wie eine Bilddatei.
+Eine weitere Ähnlichkeit zu Bilddateien ist, dass Geotiff-Dateien pro Pixel mehrere Kanäle gespeichert werden können.
+Im Unterschied zu gewöhnlichen Bilddateien enthält eine Geotiff-Datei nach \cite[S. 128]{PracticalGIS} zusätzlich zu den Pixelwerten noch Metadaten, die die räumlichen Eigenschaften des Rasters beschreiben.
+Dazu zählen z. B. Koordinaten als Georeferenz und das verwendete Koordinatenreferenzsystem.
+Damit kann das Raster im Koordinatensystem richtig positioniert werden, ohne dass wie bei \acrshort{gpkg}-Dateien die Grenzen jeder einzelnen Rasterzelle gespeichert werden müssen.
+Diese Metadaten werden nach \cite{GeoTIFFStandard} so gespeichert, dass eine Geotiff-Datei auch dem \acrshort{tiff}-Format entspricht.
+Beispielsweise kann eine Geotiff-Datei mit der Bildverarbeitungssoftware \acrfull{gimp} geöffnet werden, auch wenn es dafür keine wirkliche Anwendung gibt.
+
+Zur Umwandlung der \acrshort{gpkg}-Dateien in Geotiff-Dateien kann das Kommandozeilenprogramm \emph{gdal\_rasterize} verwendet werden, welches mit der \acrfull{gdal} mitgeliefert wird.
+
