@@ -155,14 +155,48 @@ Durch den Algorithmus "`Join attributes by location (summary)"' wurde nun noch d
 Wie man erkennen kann, enthält diese Spalte \emph{NULL}, wenn sich keine Radarkontrolle in der Rasterzelle befindet.
 
 Als nächstes müssen die als \acrshort{gpkg}-Datei abgespeicherten Vektordaten in Rasterdaten umgewandelt werden, damit sie später als zweidimensionale numpy-Arrays eingelesen werden können.
-Der Unterschied zwischen Vektor- und Rasterdaten kann am besten an Geotiff, einem Dateiformat für Rasterdaten, veranschaulicht werden.
-Während eine \acrshort{gpkg}-Datei Vektordaten wie Punkte oder Linien speichert, speichert eine Geotiff-Datei Pixelwerte wie eine Bilddatei.
-Eine weitere Ähnlichkeit zu Bilddateien ist, dass Geotiff-Dateien pro Pixel mehrere Kanäle gespeichert werden können.
-Im Unterschied zu gewöhnlichen Bilddateien enthält eine Geotiff-Datei nach \cite[S. 128]{PracticalGIS} zusätzlich zu den Pixelwerten noch Metadaten, die die räumlichen Eigenschaften des Rasters beschreiben.
+Der Unterschied zwischen Vektor- und Rasterdaten kann am besten an GeoTIFF, einem Dateiformat für Rasterdaten, veranschaulicht werden.
+Während eine \acrshort{gpkg}-Datei Vektordaten wie Punkte oder Linien speichert, speichert eine GeoTIFF-Datei Pixelwerte wie eine Bilddatei.
+Eine weitere Ähnlichkeit zu Bilddateien ist, dass GeoTIFF-Dateien pro Pixel mehrere Kanäle gespeichert werden können.
+Im Unterschied zu gewöhnlichen Bilddateien enthält eine GeoTIFF-Datei nach \cite[S. 128]{PracticalGIS} zusätzlich zu den Pixelwerten noch Metadaten, die die räumlichen Eigenschaften des Rasters beschreiben.
 Dazu zählen z. B. Koordinaten als Georeferenz und das verwendete Koordinatenreferenzsystem.
 Damit kann das Raster im Koordinatensystem richtig positioniert werden, ohne dass wie bei \acrshort{gpkg}-Dateien die Grenzen jeder einzelnen Rasterzelle gespeichert werden müssen.
-Diese Metadaten werden nach \cite{GeoTIFFStandard} so gespeichert, dass eine Geotiff-Datei auch dem \acrshort{tiff}-Format entspricht.
-Beispielsweise kann eine Geotiff-Datei mit der Bildverarbeitungssoftware \acrfull{gimp} geöffnet werden, auch wenn es dafür keine wirkliche Anwendung gibt.
+Diese Metadaten werden nach \cite{GeoTIFFStandard} so gespeichert, dass eine GeoTIFF-Datei auch dem \acrshort{tiff}-Format entspricht.
+Beispielsweise kann eine GeoTIFF-Datei mit der Bildverarbeitungssoftware \acrfull{gimp} geöffnet werden, auch wenn es dafür keine wirkliche Anwendung gibt.
 
-Zur Umwandlung der \acrshort{gpkg}-Dateien in Geotiff-Dateien kann das Kommandozeilenprogramm \emph{gdal\_rasterize} verwendet werden, welches mit der \acrfull{gdal} mitgeliefert wird.
+Zur Umwandlung der \acrshort{gpkg}-Dateien in GeoTIFF-Dateien kann das Kommandozeilenprogramm \emph{gdal\_rasterize} verwendet werden, welches mit der \acrfull{gdal} mitgeliefert wird.
+Den Aufruf dieses Programms sieht man in \autoref{lst:ProcessDatesFunction} in den Zeilen 13 bis 17.
+Da \emph{gdal\_rasterize} die Höhe und Breite, sowie die Grenzen des Rasters als Parameter benötigt, werden diese in den Zeilen 6 bis 10 aus der \acrshort{gpkg}-Datei ermittelt.
+Wichtig ist auch der Parameter mit der Syntax \emph{[-a attribute\_name]}, der bestimmt, welches Attribut des Vektorlayers für die Zahlenwerte des Rasters verwendet werden soll.
+Wie in \autoref{fig:GpkgExample} zu sehen ist, ist dies im vorliegenden Fall \emph{duration\_hours\_sum}.
+Ist die GeoTIFF-Datei erstellt, kann diese sehr einfach als numpy-Array eingelesen werden, was in \autoref{lst:GdalOpen} demonstriert wird.
+Außerdem können die Metadaten ausgelesen werden, was in den Zeilen 6 bis 9 zu sehen ist.
 
+\begin{code}
+\begin{minted}[
+    linenos,
+    numbersep=10pt,
+    gobble=0,
+    frame=lines,
+    framesep=2mm]{python}
+from osgeo import gdal
+
+filename = "heatmap_2015-07-02.tif"
+geotiff = gdal.Open(filename)
+raster_data = geotiff.ReadAsArray()
+geotransform = geotiff.GetGeoTransform()
+
+print(geotransform)  # -> (927793.0, 4000.0, 0.0, 6313386.0, 0.0, -4000.0)
+print(f"{geotiff.RasterXSize} x {geotiff.RasterYSize}") # -> 50 x 50
+print(type(raster_data))  # -> <class 'numpy.ndarray'>
+print(raster_data.shape)  # -> (50, 50)
+\end{minted}
+\captionof{listing}{Extrahierung der Parameter und Daten aus einer GeoTIFF-Datei}
+\label{lst:GdalOpen}
+\end{code}
+
+Damit ist die Implementierung der Rasterisierung des Datensatzes abgeschlossen.
+Die mit \acrshort{gdal} geladenen numpy-Arrays können nun als Input für das neuronale Netz verwendet werden.
+Die komplette Implementierung ist in \appendixref{sec:QgisRasterisierung} aufgeführt.
+
+% TODO: Evtl. noch Geschwindigkeitsvergleich
