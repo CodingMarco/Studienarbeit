@@ -1,0 +1,133 @@
+\subsection{Implementierung der Rasterisierung mit QGIS-Algorithmen}
+\label{sec:QgisRasterisierung}
+
+\begin{code}
+\begin{minted}[
+    linenos,
+    numbersep=10pt,
+    gobble=0,
+    frame=lines,
+    framesep=2mm]{python}
+import processing
+from qgis.core import *
+
+def generate_heatmap(gpkg_path, date, extent, grid_cell_size=4000):
+    db_uri = 'postgres://dbname=\'speedcam_archive\' host=localhost ' + \
+        'port=5432 user=\'speedcam\' password=\'speedcam\' sslmode=allow ' + \
+        'key=\'id\' srid=4326 type=Point checkPrimaryKeyUnicity=\'1\' ' + \
+        'table="public"."speedcam" (position) sql=created_date::date = '
+
+    if os.path.isfile(gpkg_path):
+        heatmap = QgsVectorLayer(gpkg_path, '', 'ogr')
+        return heatmap
+
+    date_str = date.strftime("'%Y-%m-%d'")
+    print(f"Processing date {date_str}", flush=True)
+    
+    grid_layer = processing.run('qgis:creategrid', {
+        'EXTENT' : extent,
+        'HSPACING' : grid_cell_size, 'VSPACING' : grid_cell_size,
+        'CRS' : QgsCoordinateReferenceSystem('EPSG:3857'),
+        'HOVERLAY' : 0, 'VOVERLAY' : 0,
+        'OUTPUT' : 'TEMPORARY_OUTPUT', 'TYPE' : 2})['OUTPUT']
+
+    heatmap = processing.run('qgis:joinbylocationsummary', {
+        'INPUT' : grid_layer,
+        'JOIN' : db_uri + date_str,
+        'JOIN_FIELDS' : ['duration_hours'],
+        'PREDICATE' : [0],
+        'SUMMARIES' : [5],
+        'OUTPUT' : 'TEMPORARY_OUTPUT',
+        'DISCARD_NONMATCHING' : False})["OUTPUT"]
+
+    store_layer(heatmap, gpkg_path)
+    return heatmap
+\end{minted}
+\captionof{listing}{Rasterisierung der Datenpunkte an einem bestimmten Datum}
+\label{lst:GenerateHeatmapFunction}
+\end{code}
+
+\clearpage
+\begin{code}
+\begin{minted}[
+    linenos,
+    numbersep=10pt,
+    gobble=0,
+    frame=lines,
+    framesep=2mm]{python}
+import subprocess
+from qgis.core import *
+from processing.core.Processing import Processing
+
+def gpkg_to_tif(gpkg_path, tif_path, heatmap, grid_cell_size=1000):
+    extent = heatmap.extent()
+    extent = [round(extent.xMinimum()), round(extent.xMaximum()),
+        round(extent.yMinimum()), round(extent.yMaximum())]
+    raster_width, raster_height = round((extent[1] - extent[0])/grid_cell_size), \
+        round((extent[3] - extent[2])/grid_cell_size)
+
+    # Rasterize heatmap using gdal_rasterize subprocess
+    subprocess.call(['gdal_rasterize', '-a', 'duration_hours_sum', '-ts',
+        str(raster_width), str(raster_height), '-a_nodata', '0.0', '-te',
+        str(extent[0]), str(extent[2]), str(extent[1]), str(extent[3]),
+        '-ot', 'Float16', '-of', 'GTiff', gpkg_path, tif_path],
+        stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+
+def process_dates(dates):
+    QgsApplication.setPrefixPath('/usr', True)
+    qgs = QgsApplication([], False)
+    qgs.initQgis()
+    Processing.initialize()
+
+    grid_cell_size = 4000
+    # 200x200 km centered in Baden-Württemberg
+    extent = '927792.5265,1127792.5265,6113386.3009,6313386.3009 [EPSG:3857]'
+    heatmaps_path = os.path.join(os.path.dirname(__file__), 'heatmaps')
+
+    for date in dates:
+        base_path = os.path.join(heatmaps_path,
+            'heatmap_' + date.strftime('%Y-%m-%d'))
+        gpkg_path = base_path + '.gpkg'
+        tif_path = base_path + '.tif'
+
+        heatmap = generate_heatmap(gpkg_path, date, extent, grid_cell_size)
+        gpkg_to_tif(gpkg_path, tif_path, heatmap, grid_cell_size=grid_cell_size)
+        os.remove(gpkg_path)
+\end{minted}
+\captionof{listing}{}
+\label{lst:ProcessDatesFunction}
+\end{code}
+
+\clearpage
+\begin{code}
+\begin{minted}[
+    linenos,
+    numbersep=10pt,
+    gobble=0,
+    frame=lines,
+    framesep=2mm]{python}
+import datetime
+from joblib import Parallel, delayed
+
+def main():
+    start_date = datetime.date(2014, 7, 17)
+    end_date = datetime.date(2021, 10, 25)
+    dates = [start_date + datetime.timedelta(days=x)
+        for x in range(0, (end_date - start_date).days)]
+
+    # Make batches of 50 dates and include the rest in the last batch.
+    batch_size = 50
+    batches = [dates[i:i + batch_size]
+        for i in range(0, len(dates), batch_size)]
+
+    rest_of_dates = [date for date in dates
+        if date not in np.array(batches, dtype=object).flatten()]
+    batches.append(rest_of_dates)
+
+    # Use parallel processes to speed up the process
+    Parallel(n_jobs=24)(delayed(process_dates)(batch)
+        for batch in batches)
+\end{minted}
+\captionof{listing}{GenerateHeatmapFunction}
+\label{lst:RasterisierungMainFunction}
+\end{code}
