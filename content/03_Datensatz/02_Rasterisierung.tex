@@ -164,6 +164,7 @@ Damit kann das Raster im Koordinatensystem richtig positioniert werden, ohne das
 Diese Metadaten werden nach \cite{GeoTIFFStandard} so gespeichert, dass eine GeoTIFF-Datei auch dem \acrshort{tiff}-Format entspricht.
 Beispielsweise kann eine GeoTIFF-Datei mit der Bildverarbeitungssoftware \acrfull{gimp} geöffnet werden, auch wenn es dafür keine wirkliche Anwendung gibt.
 
+% TODO: Überstehende Zeile fixen
 Zur Umwandlung der \acrshort{gpkg}-Dateien in GeoTIFF-Dateien kann das Kommandozeilenprogramm \emph{gdal\_rasterize} verwendet werden, welches mit der \acrfull{gdal} mitgeliefert wird.
 Den Aufruf dieses Programms sieht man in \autoref{lst:ProcessDatesFunction} in den Zeilen 13 bis 17.
 Da \emph{gdal\_rasterize} die Höhe und Breite, sowie die Grenzen des Rasters als Parameter benötigt, werden diese in den Zeilen 6 bis 10 aus der \acrshort{gpkg}-Datei ermittelt.
