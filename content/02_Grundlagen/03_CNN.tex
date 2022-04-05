@@ -28,9 +28,9 @@ Die Betrachtung von 2D-Daten als Zusammensetzung von lokalen Mustern wird in \au
 
 \acrshortpl{cnn} erkennen nach \cite[S. 164]{DeepLearningPythonKeras} nun eben diese lokalen Muster.
 Chollet geht in \cite{DeepLearningPythonKeras} auf Seite 165 auf die daraus resultierenden Eigenschaften von \acrshortpl{cnn} ein.
-Zunächst sei die Erkennung der lokalen Muster nach Chollet translationsinvariant.
+Zunächst sei die Erkennung der lokalen Muster translationsinvariant.
 Dies bedeute, dass die Muster an beliebigen Stellen im Bild erkannt werden können.
-Außerdem könne durch das Hintereinanderschalten von mehreren \acrshort{cnn}-Schichten erreicht werden, dass Hierarchien von Mustern erlernt werden.
+Außerdem könne durch das Hintereinanderschalten mehrer \acrshort{cnn}-Layer erreicht werden, dass Hierarchien von Mustern erlernt werden.
 Aus diesen beiden Eigenschaften folgt, dass es für ein \acrshort{cnn} keinen Unterschied macht, ob die zu erkennenden globalen Muster (beispielsweise eine Ziffer) in der Eingabe verschoben sind.
 
 Als nächstes stellt sich die frage, wie \acrshortpl{cnn} lokale Muster erkennen können.
@@ -69,9 +69,10 @@ Das Ziel ist es also, eine Merkmalskarte zu erstellen, bei der ein Pixel Informa
 Dies kann durch die MaxPooling-Operation erreicht werden, die auf die Merkmalskarte angewendet wird.
 Diese funktioniert ähnlich wie die Faltungsoperation.
 Auch hier gibt es einen Filter, der über die Eingabe geschoben wird.
+Dieser Filter wird hier jedoch als \emph{Pool} bezeichnet.
 Im Gegensatz zur Faltungsoperation wird jedoch nichts multipliziert.
-Stattdessen entspricht die Ausgabe des Filters dem Maximalwert der Eingabe.
-Hat der Filter beispielsweise eine eine Größe von 2x2 und wird in $x$- und $y$-Richtung jeweils um die Schrittweite $2$ verschoben, wird die Seitenlänge der Eingabe durch die MaxPooling-Operation halbiert.
+Stattdessen entspricht die Ausgabe des Pools dem Maximalwert der Eingabe.
+Hat der Pool beispielsweise eine eine Größe von 2x2 und wird in $x$- und $y$-Richtung jeweils um die Schrittweite $2$ verschoben, wird die Seitenlänge der Eingabe durch die MaxPooling-Operation halbiert.
 Dies wird in \autoref{fig:MaxPooling} an einem Beispiel veranschaulicht.
 
 \begin{figure}[h]

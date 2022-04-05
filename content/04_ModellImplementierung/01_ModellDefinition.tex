@@ -1,2 +1,56 @@
 \subsection{Definition des Modells}
 \label{sec:ModellDefinition}
+Ziel dieses Unterabschnitts ist es herauszuarbeiten, wie mehrere ConvLSTM-Layer zusammen mit anderen Layertypen für räumlich-zeitliche Vorhersagen verwendet werden können.
+Außerdem wird eine Verlustfunktion definiert, die für den vorliegenden Anwendungsfall geeignet ist.
+
+ConvLSTM-Layer können unterschiedlich verwendet werden, um bestimmte Anwendungsfälle abzudecken.
+Die wichtigste Unterscheidung ist, ob die Ausgabe des Modells eine Sequenz oder ein einzelner 2D-Tensor sein soll.
+Der erste Fall wird beispielsweise für die Weiterführung einer Bildsequenz verwendet, wie in \cite{VideoPredKeras} demonstriert.
+Eine solche Architektur könnte im Kontext der vorliegenden Arbeit beispielsweise verwendet werden, um die Gefahr für mobile Radarkontrollen mehrere Tage vorauszusagen.
+Dies ist jedoch hier nicht notwendig.
+Eine alternative Architektur wird in \cite{CrimeConvLSTM} vorgestellt.
+Diese ist dazu in der Lage, anhand einer Sequenz von 16 oder 32 2D-Eingangstensoren den folgenden 2D-Tensor vorherzusagen.
+Die Architektur wurde im Kontext der Verbrechensvorhersage entwickelt.
+Da es sich dabei ebenfalls um sporadisch auftretende Ereignisse handelt, ist die Architektur mit hoher Wahrscheinlichkeit auch für den vorliegenden Anwendungsfall geeignet.
+Die Architektur ist in \autoref{fig:ArchCrimeConvLSTM} dargestellt.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1.0\textwidth,height=16cm,keepaspectratio=true]{content/images/ArchCrimeConvLSTM.jpeg}
+    \caption{Architektur eines Modells aus mehreren ConvLSTM- und MaxPooling-Layern nach \cite[Figure 2.1]{CrimeConvLSTM} mit angepassten Dimensionen}
+    \label{fig:ArchCrimeConvLSTM}
+\end{figure}
+
+Anhand der Abbildung kann der Datenfluss verfolgt werden.
+Wie ganz oben zu erkennen ist, hat die Eingabesequenz eine Größe von 16x50x50.
+Die Eingabe ist also eine Sequenz von 16 Frames, die jeweils 50x50 Pixel groß sind.
+Es ist anzumerken, dass die Eingabesequenz in \cite{CrimeConvLSTM} die Dimensionen 50x50x16 hat.
+Die erste und letzte Dimension ist für die vorliegende Arbeit getauscht, da die Verarbeitung so intuitiver ist.
+Das Resultat ist jedoch dasselbe.
+Die Eingabe durchläuft nun mehrmals je einen ConvLSTM- und einen MaxPooling3D-Layer.
+Die ConvLSTM-Layer haben nach \cite{CrimeConvLSTM} eine Kernelgröße von 3x3 Pixel.
+Außerdem werden Höhe und Breite der Frames durch Padding beibehalten.
+Auch die Anzahl an Frames bleiben durch die ConvLSTM-Layer erhalten.
+Um von den 16 Frames auf ein Frame als Ausgang zu kommen, befindet sich hinter jedem ConvLSTM-Layer ein MaxPooling3D-Layer.
+Dieser Layer berechnet je das Maximum zweier Pixel, die in zwei benachbarten Frames an derselben Position liegen.
+Dies entspricht einer Poolgröße von $(2, 1, 1)$.
+Außerdem wird eine Schrittweite von $(2, 1, 1)$ verwendet.
+Das Resultat ist (vereinfacht auf 3x3 Pixel) in \autoref{fig:MaxPooling3D} dargestellt.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth,height=8cm,keepaspectratio=true]{content/images/MaxPooling3D.jpeg}
+    \caption{Visualisierung der MaxPooling3D-Operation mit einer Poolgröße von $(2, 1, 1)$ und einer Schrittweite von $(2, 1, 1)$ anhand von vier Eingangsframes zu je 3x3 Pixeln}
+    \label{fig:MaxPooling3D}
+\end{figure}
+
+Mit der MaxPooling3D-Operation werden damit die signifikantesten Merkmale von je zwei benachbarten Frames vereint.
+Dadurch wird die Anzahl der Frames in der Sequenz nach jeder ConvLSTM-MaxPooling3D-Kombination halbiert.
+Somit ist nach vier dieser Kombinationen nur noch ein Frame übrig.
+Am Ende liegt nach \cite{CrimeConvLSTM} noch ein 3D-Faltungslayer mit einer Kernelgröße von $(1, 3, 3)$.
+Dort ist die dreidimensionale Version eines Faltungslayers nötig, da die erste und letzte Dimension wie oben angemerkt vertauscht ist.
+Da ein 3D-Faltungslayer mit einer Kernelgröße von $(3, 3, 1)$ (wie er hier verwendet werden müsste) exakt einem 2D-Faltungslayer mit einer Kernelgröße von $(3, 3)$ entspricht, wird hier letzterer verwendet.
+% TODO: Zum Abschluss bringen, evtl. Codelisting-Verweis
+
+Um das Modell trainieren zu können muss noch eine Verlustfunktion ausgewählt werden.
+
