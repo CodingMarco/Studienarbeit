@@ -171,8 +171,8 @@ Den Aufruf dieses Programms sieht man in \autoref{lst:ProcessDatesFunction} in d
 Da \emph{gdal\_rasterize} die Höhe und Breite, sowie die Grenzen des Rasters als Parameter benötigt, werden diese in den Zeilen 6 bis 10 aus der \acrshort{gpkg}-Datei ermittelt.
 Wichtig ist auch der Parameter mit der Syntax \emph{[-a attribute\_name]}, der bestimmt, welches Attribut des Vektorlayers für die Zahlenwerte des Rasters verwendet werden soll.
 Wie in \autoref{fig:GpkgExample} zu sehen ist, ist dies im vorliegenden Fall \emph{duration\_hours\_sum}.
-Ist die GeoTIFF-Datei erstellt, kann diese sehr einfach als numpy-Array eingelesen werden, was in \autoref{lst:GdalOpen} demonstriert wird.
-Außerdem können die Metadaten ausgelesen werden, was in den Zeilen 6 bis 9 zu sehen ist.
+Ist die GeoTIFF-Datei erstellt, kann diese sehr einfach als numpy-Array eingelesen werden, was in \autoref{lst:GdalOpen} Zeile 3 bis 6 demonstriert wird.
+Außerdem können die Metadaten ausgelesen werden, was in Zeile 8 bis 15 zu sehen ist.
 
 \begin{code}
 \begin{minted}[
@@ -180,18 +180,22 @@ Außerdem können die Metadaten ausgelesen werden, was in den Zeilen 6 bis 9 zu 
     numbersep=10pt,
     gobble=0,
     frame=lines,
-    framesep=2mm]{python}
-from osgeo import gdal
+    framesep=2mm]{pycon}
+>>> from osgeo import gdal
 
-filename = "heatmap_2015-07-02.tif"
-geotiff = gdal.Open(filename)
-raster_data = geotiff.ReadAsArray()
-geotransform = geotiff.GetGeoTransform()
+>>> filename = "heatmap_2015-07-02.tif"
+>>> geotiff = gdal.Open(filename)
+>>> raster_data = geotiff.ReadAsArray()
+>>> geotransform = geotiff.GetGeoTransform()
 
-print(geotransform)  # -> (927793.0, 4000.0, 0.0, 6313386.0, 0.0, -4000.0)
-print(f"{geotiff.RasterXSize} x {geotiff.RasterYSize}") # -> 50 x 50
-print(type(raster_data))  # -> <class 'numpy.ndarray'>
-print(raster_data.shape)  # -> (50, 50)
+>>> print(geotransform)
+(927793.0, 4000.0, 0.0, 6313386.0, 0.0, -4000.0)
+>>> print(f"{geotiff.RasterXSize}x{geotiff.RasterYSize}")
+50x50
+>>> print(type(raster_data))
+<class 'numpy.ndarray'>
+>>> print(raster_data.shape)
+(50, 50)
 \end{minted}
 \captionof{listing}{Extrahierung der Parameter und Daten aus einer GeoTIFF-Datei}
 \label{lst:GdalOpen}
