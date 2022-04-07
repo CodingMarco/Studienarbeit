@@ -50,7 +50,6 @@ Somit ist nach vier dieser Kombinationen nur noch ein Frame übrig.
 Am Ende liegt nach \cite{CrimeConvLSTM} noch ein 3D-Faltungslayer mit einer Kernelgröße von $(1, 3, 3)$.
 Dort ist die dreidimensionale Version eines Faltungslayers nötig, da die erste und letzte Dimension wie oben angemerkt vertauscht ist.
 Da ein 3D-Faltungslayer mit einer Kernelgröße von $(3, 3, 1)$ (wie er hier verwendet werden müsste) exakt einem 2D-Faltungslayer mit einer Kernelgröße von $(3, 3)$ entspricht, wird hier letzterer verwendet.
-% TODO: Zum Abschluss bringen, evtl. Codelisting-Verweis
 
 Um das Modell trainieren zu können muss noch eine Verlustfunktion ausgewählt werden.
 Dafür könnte eine gewöhnliche Verlustfunktion für die Klassifizierung wie die binäre Kreuzentropie (engl. \emph{binary cross entropy}) verwendet werden.
@@ -99,5 +98,36 @@ In Zeile 8 werden dann die Gewichtungen durch elementweise Multiplikation zu den
 Die Matrix \emph{weighted\_crossentropy} enthält nun die gewichtete Kreuzentropie für jeden Datenpunkt, also jede Rasterzelle.
 Der Verlustwert berechnet sich dann in Zeile 10 aus dem Durchschnitt aller dieser Werte.
 
+Als nächstes stellt sich noch die Frage, welche Gewichtungen verwendet werden sollten.
+Nach \cite{KerasImbalancedData} bietet es sich an, die Gewichtungen anhand der Anzeile der verschiedenen Klassen am gesamten Datensatz zu berechnen.
+Somit sind die Gewichtungen abhängig von der konkreten Beschaffenheit des Datensatzes.
+Konkret wird in \cite{KerasImbalancedData} die Implementierung vorgeschlagen, die in \autoref{lst:ClassWeights} zu sehen ist.
+
+\begin{code}
+\begin{minted}[
+    linenos,
+    numbersep=10pt,
+    gobble=0,
+    frame=lines,
+    framesep=2mm]{python}
+def get_class_weights(dataset):
+    neg, pos = np.bincount(dataset.flatten())
+    total = neg + pos
+    weight_for_0 = (1.0 / neg) * (total / 2.0)
+    weight_for_1 = (1.0 / pos) * (total / 2.0)
+
+    return weight_for_0, weight_for_1
+\end{minted}
+\captionof{listing}{Berechnung der Klassengewichtungen nach \cite{KerasImbalancedData}}
+\label{lst:ClassWeights}
+\end{code}
+
+In Zeile 2 wird mit \emph{np.bincount()} die Anzahl an "`0"'- und "`1"'-Werten im gesamten Datensatz berechnet.
+In Zeile 4 und 5 werden dann die Gewichtungen berechnet, sodass diese reziprok proportional zum Anteil der Klassen sind.
+Nach die Skalierung um \emph{total/2} bewirkt dabei, dass der Absolutwert des Verlusts nicht zu groß bzw. zu klein wird, um ihn als Mensch noch einigermaßen interpretieren zu können.
+In einem zufälligen Teil des Radarkontrollen-Datensatzes sind beispielsweise 5.09\% der Rasterzellen "`positiv"'.
+Daraus ergeben sich die Gewichtungen $0,53$ für die Klasse "`0"' und $9,83$ für die Klasse "`1"'.
+
 Mit der Netzarchitektur und der Verlustfunktion sind nun alle Bestandteile des Modells definiert.
-Daher kann in den folgenden Abschnitten mit der Implementierung begonnen werden.
+Die Definition des Modells in TensorFlow ist in \appendixref{sec:ModellDefTF} zu sehen.
+In den folgenden Abschnitten kann nun mit der Trainierung des Modells begonnen werden.

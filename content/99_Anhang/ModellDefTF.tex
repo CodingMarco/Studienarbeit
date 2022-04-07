@@ -1,0 +1,50 @@
+\subsection{Definition des ConvLSTM-Modells in TensorFlow}
+\label{sec:ModellDefTF}
+
+\begin{code}
+\begin{minted}[
+    linenos,
+    numbersep=10pt,
+    gobble=0,
+    frame=lines,
+    framesep=2mm]{python}
+def get_model(input, weights):
+    model = keras.models.Sequential([
+        input,
+        layers.ConvLSTM2D(
+            filters=64, kernel_size=(3, 3),
+            padding="same", return_sequences=True, activation="relu",
+        ),
+        layers.MaxPooling3D(pool_size=(2, 1, 1), strides=(2, 1, 1)),
+        layers.ConvLSTM2D(
+            filters=64, kernel_size=(3, 3),
+            padding="same", return_sequences=True, activation="relu",
+        ),
+        layers.MaxPooling3D(pool_size=(2, 1, 1), strides=(2, 1, 1)),
+        layers.ConvLSTM2D(
+            filters=32, kernel_size=(3, 3),
+            padding="same", return_sequences=True, activation="relu",
+        ),
+        layers.MaxPooling3D(pool_size=(2, 1, 1), strides=(2, 1, 1)),
+        layers.ConvLSTM2D(
+            filters=32, kernel_size=(3, 3),
+            padding="same", return_sequences=True, activation="relu",
+        ),
+        layers.MaxPooling3D(pool_size=(2, 1, 1), strides=(2, 1, 1)),
+        layers.Conv2D(
+            filters=1, kernel_size=(3, 3), activation="sigmoid", padding="same"
+        )
+    ])
+
+    loss_fn = weighted_binary_crossentropy(weights)
+
+    model.compile(
+        loss=loss_fn, optimizer=keras.optimizers.Adam(),
+        metrics=METRICS
+    )
+
+    return model, loss_fn
+\end{minted}
+\captionof{listing}{Definition des ConvLSTM-Modells in TensorFlow}
+\label{lst:ModellDefTF}
+\end{code}
