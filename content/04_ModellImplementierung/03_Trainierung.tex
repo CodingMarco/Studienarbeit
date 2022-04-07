@@ -63,5 +63,21 @@ Bei einer Stapelgröße von 12 reicht der 8 GB große Speicher der verwendeten G
 
 Nun da die notwendigen Hyperparameter definiert sind, kann das Modell trainiert werden.
 Dazu wird \emph{model.fit()} aufgerufen, wie in \autoref{lst:ModelTraining} in Zeile \ref{fit_start} bis \ref{fit_end} gezeigt.
-Diese Methode gibt den Verlauf des Trainings in Form von Listen zurück, die die Entwicklung verschiedener Metriken enthalten.
+Diese Methode gibt die Entwicklung verschiedener Metriken im Verlauf des Trainings zurück.
+Auf der oben erwähnten Grafikkarte dauert das Training pro Epoche ca. 80 Sekunden.
+Nach 26 Epochen beendet der \emph{EarlyStopping}-Callback das Training, insgesamt dauert das Training also ca. 35 Minuten.
+Der Verlauf des Verlustwerts ist in \autoref{fig:TrainingLoss} dargestellt.
 
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth,height=8cm,keepaspectratio=true]{content/images/TrainingLoss.png}
+    \caption{Entwicklung des Verlustwerts über die Epochen des Trainings}
+    \label{fig:TrainingLoss}
+\end{figure}
+
+In der Abbildung ist zunächst erkennbar, dass der Verlustwert über die Epochen hinweg optimiert werden kann.
+Ab der 15. Epoche beginnt der Verlustwert der Validierung jedoch anzusteigen, während der Verlustwert des Trainings weiter sinkt.
+Dieser Effekt spricht für eine Überanpassung.
+Dies bedeutet, dass das Modell ab einer bestimmten Epoche beginnt, die Trainingsdaten "`auswendig"' zu lernen.
+Dadurch handelt das Modell bei der Validierung jedoch nicht mehr nach den globalen Mustern, wodurch die Vorhersagen anhand der Validierungsdaten schlechter werden.
+Der \emph{EarlyStopping}-Callback stellt jedoch den besten Zustand des Modells wieder her, der in diesem Fall bei Epoche 15 bestand.
