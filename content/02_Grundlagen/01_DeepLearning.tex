@@ -13,7 +13,7 @@ In \autoref{fig:KlassischVsML} wird der Unterschied verdeutlicht.
 \end{figure}
 
 Sowohl klassische Programmierung als auch Machine Learning sollen im Rahmen von künstlicher Intelligenz verschiedenste Fragestellungen beantworten, die ansonsten von Menschen beantwortet werden.
-Ein Beispiel für eine solche Fragestellung könnte z. B. lauten: "`Welche Ziffer ist in diesem Bild dargestellt?"'.
+Ein Beispiel für eine solche Fragestellung könnte z.\,B. lauten: "`Welche Ziffer ist in diesem Bild dargestellt?"'.
 Ein anderes Beispiel wäre "`Gegeben ist dieser halbe Satz, wie könnte der Satz weiter gehen?"'.
 Die Fragestellung der vorliegenden Arbeit wurde bereits definiert.
 Sie könnte wie folgt in einem Satz zusammengefasst werden:
@@ -22,14 +22,14 @@ Bei der klassischen Programmierung liegt es nach Chollet nun am Menschen, Regeln
 Der Mensch könnte sich vergangene Daten anschauen und müsste in ihnen Muster suchen, von denen diese Regeln abgeleitet werden können.
 Die Regeln werden anschließend in einer Programmiersprache explizit in Form von Verzweigungen, Schleifen und Variablen implementiert.
 Für die Vorhersage von mobilen Radarkontrollen könnte ein Mensch beispielsweise gewisse Muster aus eigener Erfahrung im Straßenverkehr erkennen.
-Daraus könnte z. B. die Regel aufgestellt werden, dass die Wahrscheinlichkeit für eine mobile Radarkontrolle an einem Standort sehr gering ist, wenn dort am vorherigen Tag bereits eine solche vorhanden war.
+Daraus könnte z.\,B. die Regel aufgestellt werden, dass die Wahrscheinlichkeit für eine mobile Radarkontrolle an einem Standort sehr gering ist, wenn dort am vorherigen Tag bereits eine solche vorhanden war.
 Wie in \autoref{fig:KlassischVsML} zusammengefasst wird, findet die klassische Programmierung also Antworten auf Basis von Eingangsdaten und explizit implementierten Regeln.
 
 Beim Machine Learning ist es nun anders herum.
 Ein Machine Learning Algorithmus erhält nach Chollet als Eingabe Daten und Antworten und leitet daraus Regeln ab.
 Diese Regeln können anschließend verwendet werden, um anhand von neuen Eingabedaten neue Antworten zu erzeugen.
 Die Regeln müssen nun also nicht mehr explizit vom Menschen festgelegt werden.
-Dies bringt den Vorteil mit sich, dass möglicherweise Regeln erkannt werden, die dem Menschen (z. B. aufgrund ihrer Komplexität) verborgen bleiben.
+Dies bringt den Vorteil mit sich, dass möglicherweise Regeln erkannt werden, die dem Menschen (z.\,B. aufgrund ihrer Komplexität) verborgen bleiben.
 Für die Vorhersage von mobilen Radarkontrollen würde ein Machine Learning Algorithmus sehr viele Beispiele von je 16 aufeinanderfolgenden Tagen als Eingangsdaten sowie den 17. Tag als Antwort erhalten.
 Anhand der daraus erlernten Regeln und 16 neuen Tagen als Eingabe könnte dann der 17. Tag vorhergesagt werden.
 Chollet beschreibt auf Seite 152, dass hierfür jedoch zwei Voraussetzungen erfüllt sein müssen.
@@ -58,7 +58,7 @@ Ein Perzeptron hat eine beliebige Anzahl von Eingängen (engl. \emph{i puts}).
 Die Eingänge $x_1 \dots x_n$ werden mit den Gewichtungen (engl. \emph{weights}) $w_1 \dots w_m$ multipliziert und die Ergebnisse aufsummiert.
 Unabhängig von den Eingängen wird dann noch ein Bias $w_0$ dazu addiert.
 Zuletzt wird eine nicht-lineare Aktivierungsfunktion $g$ auf das Ergebnis angewendet.
-Bekannte Aktivierungsfunktionen sind z. B. \emph{Sigmoid} oder \emph{\acrfullr{relu}}, wobei in der Praxis meistens \emph{\acrshort{relu}} verwendet wird \cite{ActivFuncSharma,ActivFuncNwankpa}.
+Bekannte Aktivierungsfunktionen sind z.\,B. \emph{Sigmoid} oder \emph{\acrfullr{relu}}, wobei in der Praxis meistens \emph{\acrshort{relu}} verwendet wird \cite{ActivFuncSharma,ActivFuncNwankpa}.
 Die gesamte Berechnung des Ausgangs $\hat{y}$ ist in der aus \cite{6S191Intro} übernommenen \autoref{eq:PerceptronEquation} zu sehen.
 
 \begin{equation}
@@ -99,7 +99,7 @@ Diese erhält nach \cite[S. 30]{DeepLearningPythonKeras} als Eingabe die Vorhers
 Die Verlustfunktion berechnet anhand dieser Eingaben einen Verlustscore (engl. \emph{loss}), der ein Maß dafür ist, wie stark die Vorhersagen von den tatsächlichen Werten abweichen.
 Die Ausgabe der Verlustfunktion ist umso größer, je stärker diese Abweichung ist.
 Es gibt viele verschiedene Verlustfunktionen, die für unterschiedliche Aufgabenstellungen geeignet sind.
-Häufig verwendet werden nach \cite[S. 155]{DeepLearningPythonKeras} z. B. der mittlere quadratische Fehler (engl. \acrfull{mse}) oder die binäre Kreuzentropie (engl. \emph{binary crossentropy}).
+Häufig verwendet werden nach \cite[S. 155]{DeepLearningPythonKeras} z.\,B. der mittlere quadratische Fehler (engl. \acrfull{mse}) oder die binäre Kreuzentropie (engl. \emph{binary crossentropy}).
 
 Als letzte wichtige Komponente wird noch ein Optimierer benötigt.
 Dieser erhält als Eingabe den Verlustscore und passt anhand dessen die Gewichtungen des \acrshort{nn}s so an, dass der Verlustscore minimiert wird.

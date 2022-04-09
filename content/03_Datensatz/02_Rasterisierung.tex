@@ -11,7 +11,7 @@ Außerdem muss festgelegt werden, nach welcher Regel der Wert $x$ berechnet werd
 \label{sec:RasterisierungParameter}
 Bei der Auswahl des Zeitraums $T$ muss zwischen der gewünschten zeitlichen Genauigkeit und der Anzahl an verfügbaren Datenpunkten abgewägt werden.
 Wird $T$ beispielsweise zu klein gewählt, enthält der betrachtete Bereich zu wenige Meldungen, um auf deren Basis aussagekräftige Vorhersagen treffen zu können.
-Wird $T$ hingegen zu groß gewählt (wie z. B. eine Woche oder ein Monat), haben die Vorhersagen weniger praktischen Nutzen.
+Wird $T$ hingegen zu groß gewählt (wie z.\,B. eine Woche oder ein Monat), haben die Vorhersagen weniger praktischen Nutzen.
 Außerdem könnten dann insgesamt zu wenige Zeitschritte vorliegen, um das Modell trainieren zu können.
 Nach einigen Versuchen scheinen 24 Stunden für $T$ ein guter Wert zu sein, da somit der praktische Nutzen erhalten bleibt und es dennoch genug Meldungen pro Zeitschritt gibt.
 
@@ -160,7 +160,7 @@ Der Unterschied zwischen Vektor- und Rasterdaten kann am besten an GeoTIFF, eine
 Während eine \acrshort{gpkg}-Datei Vektordaten wie Punkte oder Linien speichert, speichert eine GeoTIFF-Datei Pixelwerte wie eine Bilddatei.
 Eine weitere Ähnlichkeit zu Bilddateien ist, dass GeoTIFF-Dateien pro Pixel mehrere Kanäle gespeichert werden können.
 Im Unterschied zu gewöhnlichen Bilddateien enthält eine GeoTIFF-Datei nach \cite[S. 128]{PracticalGIS} zusätzlich zu den Pixelwerten noch Metadaten, die die räumlichen Eigenschaften des Rasters beschreiben.
-Dazu zählen z. B. Koordinaten als Georeferenz und das verwendete Koordinatenreferenzsystem.
+Dazu zählen z.\,B. Koordinaten als Georeferenz und das verwendete Koordinatenreferenzsystem.
 Damit kann das Raster im Koordinatensystem richtig positioniert werden, ohne dass wie bei \acrshort{gpkg}-Dateien die Grenzen jeder einzelnen Rasterzelle gespeichert werden müssen.
 Diese Metadaten werden nach \cite{GeoTIFFStandard} so gespeichert, dass eine GeoTIFF-Datei auch dem \acrshort{tiff}-Format entspricht.
 Beispielsweise kann eine GeoTIFF-Datei mit der Bildverarbeitungssoftware \acrfull{gimp} geöffnet werden, auch wenn es dafür keine wirkliche Anwendung gibt.
