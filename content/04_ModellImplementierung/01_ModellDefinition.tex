@@ -98,7 +98,7 @@ In Zeile 8 werden dann die Gewichtungen durch elementweise Multiplikation zu den
 Die Matrix \emph{weighted\_crossentropy} enthält nun die gewichtete Kreuzentropie für jeden Datenpunkt, also jede Rasterzelle.
 Der Verlustwert berechnet sich dann in Zeile 10 aus dem Durchschnitt aller dieser Werte.
 
-Als nächstes stellt sich noch die Frage, welche Gewichtungen verwendet werden sollten.
+Als Nächstes stellt sich noch die Frage, welche Gewichtungen verwendet werden sollten.
 Nach \cite{KerasImbalancedData} bietet es sich an, die Gewichtungen anhand der Anzeile der verschiedenen Klassen am gesamten Datensatz zu berechnen.
 Somit sind die Gewichtungen abhängig von der konkreten Beschaffenheit des Datensatzes.
 Konkret wird in \cite{KerasImbalancedData} die Implementierung vorgeschlagen, die in \autoref{lst:ClassWeights} zu sehen ist.

@@ -15,7 +15,7 @@ Wird $T$ hingegen zu groß gewählt (wie z.\,B. eine Woche oder ein Monat), habe
 Außerdem könnten dann insgesamt zu wenige Zeitschritte vorliegen, um das Modell trainieren zu können.
 Nach einigen Versuchen scheinen 24 Stunden für $T$ ein guter Wert zu sein, da somit der praktische Nutzen erhalten bleibt und es dennoch genug Meldungen pro Zeitschritt gibt.
 
-Als nächstes sind $k$ udn $n$ zu wählen.
+Als Nächstes sind $k$ udn $n$ zu wählen.
 Die Seitenlänge des gesamten betrachteten Bereichs berechnet sich daraus mit $n \cdot k$.
 Bei der Wahl von $k$ muss dieselbe Abwägung getroffen werden wie bei der Wahl von $T$, jedoch geht es hier um den praktischen Nutzen der Vorhersagen je nach räumlicher Auflösung.
 Wird $k$ zu groß gewählt, ist die zeitliche Auflösung zu gering, als dass die Vorhersagen nützlich wären.
@@ -155,7 +155,7 @@ Die Spalten \emph{left}, \emph{top}, \emph{right} und \emph{bottom} enthalten di
 Durch den Algorithmus "`Join attributes by location (summary)"' wurde nun noch die letzte Spalte \emph{duration\_hours\_sum} hinzugefügt.
 Wie man erkennen kann, enthält diese Spalte \emph{NULL}, wenn sich keine Radarkontrolle in der Rasterzelle befindet.
 
-Als nächstes müssen die als \acrshort{gpkg}-Datei abgespeicherten Vektordaten in Rasterdaten umgewandelt werden, damit sie später als zweidimensionale numpy-Arrays eingelesen werden können.
+Als Nächstes müssen die als \acrshort{gpkg}-Datei abgespeicherten Vektordaten in Rasterdaten umgewandelt werden, damit sie später als zweidimensionale numpy-Arrays eingelesen werden können.
 Der Unterschied zwischen Vektor- und Rasterdaten kann am besten an GeoTIFF, einem Dateiformat für Rasterdaten, veranschaulicht werden.
 Während eine \acrshort{gpkg}-Datei Vektordaten wie Punkte oder Linien speichert, speichert eine GeoTIFF-Datei Pixelwerte wie eine Bilddatei.
 Eine weitere Ähnlichkeit zu Bilddateien ist, dass GeoTIFF-Dateien pro Pixel mehrere Kanäle gespeichert werden können.

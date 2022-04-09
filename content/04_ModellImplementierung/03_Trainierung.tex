@@ -49,7 +49,7 @@ Auch hier wird der Verlustwert der Validierung überwacht.
 Dieser Wert muss kleiner sein als der von \emph{EarlyStopping}, damit der Callback einen Effekt hat.
 In Zeile \ref{callbacks_passing} werden die Callbacks schließlich an \emph{model.fit()} übergeben, wodurch sie bei der Trainierung angewendet werden.
 
-Als nächstes müssen noch die maximale Anzahl an Trainingsepochen und die Stapelgröße (engl. \emph{batch size}) ausgewählt werden.
+Als Nächstes müssen noch die maximale Anzahl an Trainingsepochen und die Stapelgröße (engl. \emph{batch size}) ausgewählt werden.
 Die maximale Anzahl an Trainingsepochen kann großzügig gewählt werden, da das Training letztendlich vom \emph{EarlyStopping}-Callback beendet werden soll.
 Wird das Training davor durch die maximale Anzahl an Trainingsepochen beendet, bleibt eventuelles Potenzial ungenutzt.
 Für das hier verwendete Modell ist eine maximale Anzahl an Trainingsepochen von 32 angemessen.

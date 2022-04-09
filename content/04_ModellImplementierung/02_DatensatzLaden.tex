@@ -13,12 +13,12 @@ Im Bezug auf die Verteilung der Standdauer in \autoref{fig:StanddauerVerteilung}
 Damit wird ein großteil der Meldungen eingeschlossen, wobei die wenig verlässlichen Meldungen unter einer halben Stunde vernachlässigt werden.
 Die Klassenzuordnung je nach Überschreitung des Grenzwertes kann mit numpy einfach implementiert werden als \emph{dataset = np.where(dataset > 0.5, 1, 0)}.
 
-Als nächstes muss der Datensatz in Sequenzen von je 17 Frames aufgeteilt werden, von denen die ersten 16 als Eingabesequenz dienen und das letzte als Zielframe.
+Als Nächstes muss der Datensatz in Sequenzen von je 17 Frames aufgeteilt werden, von denen die ersten 16 als Eingabesequenz dienen und das letzte als Zielframe.
 Da die Vorhersage von beliebigen Wochentagen möglich sein soll und möglichst viele Trainingsdaten benötigt werden, sollten auch die Sequenzen ausgenutzt werden, die sich überschneiden.
 Somit soll beispielsweise aus dem Array $[1,~2,~3,~4]$ bei einer Sequenzlänge von $2$ nicht nur das Array $[[1,~2], [3,~4]]$ entstehen, sondern das Array $[[1,~2],~[2,~3],~[3,~4]]$.
 Wird der Datensatz auf diese Weise in Sequenzen unterteilt, entsteht ein Array der Form $(2636,~17,~50,~50)$.
 Das Array enthält nun also 2636 Sequenzen aus je 17 Frames mit einer Größe von 50x50 Pixel.
-Als nächstes müssen die Sequenzen in zufällige Trainings- und Validierungsdaten unterteilt werden.
+Als Nächstes müssen die Sequenzen in zufällige Trainings- und Validierungsdaten unterteilt werden.
 Dazu werden die Sequenzen zufällig gemischt und anschließend werden 90\,\% der Frames dem Trainingsdatensatz zugewiesen und 10\,\% den Validierungsdatensatz.
 Die Sequenzen müssen im letzten Schritt noch je in die Ein- und Zielausgabe des \acrshortpl{nn} unterteilt werden.
 Dies wird in \autoref{lst:CreateXYFrames} von der Funktion \emph{create\_xy\_frames()} implementiert.
