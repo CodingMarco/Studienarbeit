@@ -6,9 +6,9 @@
 In der App \emph{Blitzer.de} können Benutzer mobile und teilstationäre Radarkontrollen sowie Staus, Unfälle und sonstige Gefahren melden.
 Diese werden anderen Benutzern angezeigt, wodurch sie vorgewarnt sind und sich entsprechend vorsichtig verhalten können.
 Jedoch sind die Meldungen naturgemäß zeitverzögert, da aktive Benutzer benötigt werden, um sie aktuell zu halten.
-Es lässt sich argumentieren, dass die Zeitverzögerung insbesonders in den frühen Morgenstunden und in ländlichen Gebieten signifikant ist,
+Es lässt sich argumentieren, dass die Zeitverzögerung v. a. in den frühen Morgenstunden und in ländlichen Gebieten signifikant ist,
 da sich hier nur wenige Benutzer auf den Straßen befinden.
-Dies ist besonders für mobile Radarkontrollen entscheidend, da solche jeden Tag zu unterschiedlichen Zeiten und an unterschiedlichen Orten auf- und abgebaut werden.
+Dies ist besonders für mobile Radarkontrollen entscheidend, da diese jeden Tag zu unterschiedlichen Zeiten und an unterschiedlichen Orten aufgebaut werden.
 
 Andererseits ist auch denkbar, dass es Zusammenhänge zwischen vergangenen und zukünftigen Standorten von Radarkontrollen gibt.
 Dies ist, wie Chollet in \cite{DeepLearningPythonKeras} auf Seite 152 argumentiert, eine wichtige Annahme, derer man sich bei jeglichen Vorhersagen bewusst sein muss.
@@ -16,13 +16,13 @@ Diese Zusammenhänge haben im vorliegenden Anwendungsfall sowohl räumliche als 
 Beispielsweise liegt es nahe, dass mobile Radarkontrollen zeitlich möglichst gut gestreut werden.
 Daher kann man annehmen, dass die Gefahr für eine mobile Radarkontrolle an einem Ort eher gering ist, wenn dort am vorherigen Tag eine solche anzutreffen war.
 Die Gefahr sollte jedoch stetig steigen, je länger an diesem Ort keine Radarkontrolle steht.
-Eine beispielhafte Annahme für ein rein räumlicher Zusammenhang ist, dass mobile Radarkontrollen in ländlichen Gebieten selten sehr dicht aufeinander folgen.
+Eine beispielhafte Annahme für ein rein räumlicher Zusammenhang ist, dass mobile Radarkontrollen in ländlichen Gebieten selten sehr dicht aufeinanderfolgen.
 Befindet sich also an einem bestimmten Ort eine mobile Radarkontrolle, ist es unwahrscheinlich, in direkter Umgebung eine weitere Radarkontrolle anzutreffen.
 Je weiter weg man sich begibt, desto weiter steigt die Wahrscheinlichkeit jedoch.
 
 Das Ziel der vorliegenden Arbeit ist daher, die Gefahr für mobile Radarkontrollen anhand historischer Daten und insbesondere derer der letzten Tage für den Folgetag zu prognostizieren.
 % TODO: Evtl anderes Kapitel?
-Wie in \autoref{sec:STNNs} gezeigt wird, gibt es einige vielversprechende Ansätze, wie Neuronale Netze (\Acrshortpl{nn}) verwendet werden können, um sehr ähnliche Problemstellungen anzugehen.
+Wie in \autoref{sec:STNNs} gezeigt wird, gibt es einige vielversprechende Ansätze, wie neuronale Netze (\Acrshortpl{nn}) verwendet werden können, um sehr ähnliche Problemstellungen anzugehen.
 Ähnliche Problemstellungen sind in diesem Fall Vorhersagen mit räumlichen und zeitlichen Aspekten, wie z. B. die Vorhersage von Verkehrsunfällen oder Verbrechen.
 Daher sollen auch in dieser Arbeit \Acrshortpl{nn} verwendet werden, um die Vorhersagen anzustellen.
 
@@ -32,16 +32,16 @@ Die Eifrig Media GmbH steht hinter der Entwicklung der oben genanten App \emph{B
 Der Datensatz enthält über 7,7 Millionen gemeldete mobile Radarkontrollen vom 22.05.2014 bis zum 25.10.2021.
 Daraus ergibt sich ein Zeitraum von 2713 Tagen und somit ca. 21.300 Meldungen pro Tag.
 Die Meldungen beschränken sich hierbei auf Deutschland, wobei die Eifrig Media GmbH in \cite{AboutBlitzerDe} angibt, auch äquivalente Angebote zu \emph{Blitzer.de} im Ausland bereitzustellen.
-Jeder Eintrag des Datensatzes enthält u.A. die Koordinaten, sowie den ungefähren Aufbau- und Abbauzeitpunkt der Radarkontrolle.
+Jeder Eintrag des Datensatzes enthält u. A. die Koordinaten sowie den ungefähren Aufbau- und Abbauzeitpunkt der Radarkontrolle.
 Diese Daten basieren jedoch auf den Angaben der Appbenutzer und sollten daher nicht unkritisch betrachtet werden.
-So entsprechen die Koordinaten dem Standort des Appbenutzers zum Zeitpunkt der Meldung in der App.
+So entsprechen die Koordinaten einer Radarkontrolle dem Standort des Appbenutzers zum Zeitpunkt der Meldung in der App.
 Da die Meldungen meist bei laufender Fahrt erfolgen, kann die gemeldete Position auf einem Straßenabschnitt relativ weit vor oder nach der tatsächlichen Position der Radarkontrolle liegen.
 Der Abbauzeitpunkt basiert ebenfalls auf Angaben der Appbenutzer.
-Sobald ein Benutzer an einer eingetragenen Radarkontrolle vorbeigefahren ist wird dieser gefragt, ob die Radarkontrolle gesehen wurde.
-Sobald genügend Benutzer dies verneint haben wird die Radarkontrolle anderen Benutzern nicht mehr angezeigt.
+Sobald ein Benutzer an einer eingetragenen Radarkontrolle vorbeigefahren ist, wird dieser gefragt, ob die Radarkontrolle gesehen wurde.
+Sobald genügend Benutzer dies verneint haben, wird die Radarkontrolle anderen Benutzern nicht mehr angezeigt.
 Dieser Zeitpunkt entspricht dann auch dem Abbauzeitpunkt.
 Da prinzipiell auch Fehlmeldungen möglich sind, ist es wichtig, die Gesamtdauer der Meldung zu betrachten.
-Beträgt die Gesamtdauer beispielsweise nur 10 Minuten kann davon ausgegangen werden, dass es sich um eine Fehlmeldung handelt.
+Beträgt die Gesamtdauer beispielsweise nur 10 Minuten, kann davon ausgegangen werden, dass es sich um eine Fehlmeldung handelt.
 Je länger die Gesamtdauer hingegen ist, desto höher ist die Wahrscheinlichkeit, dass es sich um eine valide Meldung handelt, die von vielen Benutzern bestätigt wurde.
 
 Sowohl die Ungenauigkeit der gemeldeten Position als auch die Möglichkeit für Fehlmeldungen machen es erforderlich, den Datensatz aufzubereiten.
