@@ -71,9 +71,9 @@ Dies kann durch die MaxPooling-Operation erreicht werden, die auf die Merkmalska
 Diese funktioniert ähnlich wie die Faltungsoperation.
 Auch hier gibt es einen Filter, der über die Eingabe geschoben wird.
 Dieser Filter wird hier jedoch als \emph{Pool} bezeichnet.
-Im Gegensatz zur Faltungsoperation wird jedoch nichts multipliziert.
+Im Gegensatz zur Faltungsoperation wird nichts multipliziert.
 Stattdessen entspricht die Ausgabe des Pools dem Maximalwert der Eingabe.
-Hat der Pool beispielsweise eine eine Größe von 2x2 und wird in $x$- und $y$-Richtung jeweils um die Schrittweite $2$ verschoben, wird die Seitenlänge der Eingabe durch die MaxPooling-Operation halbiert.
+Hat der Pool beispielsweise eine Größe von 2x2 und wird in $x$- und $y$-Richtung jeweils um die Schrittweite $2$ verschoben, wird die Seitenlänge der Eingabe durch die MaxPooling-Operation halbiert.
 Dies wird in \autoref{fig:MaxPooling} an einem Beispiel veranschaulicht.
 
 \begin{figure}[h]
@@ -87,4 +87,3 @@ Werden mehrere \acrshort{cnn}- und MaxPooling-Layer abwechselnd hintereinanderge
 Dabei wird die Höhe und Breite der Eingabe nach jedem MaxPooling-Layer halbiert.
 Schlussendlich wird die Ausgabe des letzten MaxPooling-Layers an ein Feedforward-Netz zur Klassifizierung übergeben.
 Das Feedforward-Netz klassifiziert die Eingabe also nun anhand von abstrakten Merkmalen, die durch die \acrshort{cnn}- und MaxPooling-Layer von \emph{beliebigen Stellen} in der Eingabe extrahiert wurden.
-dgfs
