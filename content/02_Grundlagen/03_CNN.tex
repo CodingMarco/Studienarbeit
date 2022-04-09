@@ -5,10 +5,10 @@ Mit der bisher vorgestellten \acrshort{lstm}-Architektur können die zeitlichen 
 Jedoch wurde bereits motiviert, warum auch räumliche Zusammenhänge für diese Aufgabenstellung von Bedeutung sind.
 Prinzipiell ist es möglich, 2D-Daten mit Feedforward-Netzen zu verarbeiten.
 Dazu müssen die 2D-Daten verflacht werden.
-Stellt man sich ein Zweidimensionales Bild vor bedeutet das, dass jedes Pixel einem Eingangsneuron zugeführt wird.
+Für ein zweidimensionales Bild bedeutet das, dass jedes Pixel einem Eingangsneuron zugeführt wird.
 Hierbei geht die räumliche Struktur der Daten jedoch verloren - das \acrshort{nn} kann nicht wissen, welche Pixel in alle vier Richtungen benachbart waren.
 Mit genug Trainingsdaten können einfache Klassifizierungsaufgaben dennoch mit dieser Netzarchitektur bearbeitet werden.
-Chollet demonstriert beispielsweise in \cite[S. 53]{DeepLearningPythonKeras}, dass bei der Klassifizierung von handgeschriebenen Ziffern mit einem Feedforward-Netz eine Korrektklassifizierungsrate von 97,8\% erreicht werden kann.
+Chollet demonstriert beispielsweise in \cite[S. 53]{DeepLearningPythonKeras}, dass bei der Klassifizierung von handgeschriebenen Ziffern mit einem Feedforward-Netz eine Korrektklassifizierungsrate von 97,8\,\% erreicht werden kann.
 Das Problem mit Feedforward-Netzen ist jedoch, dass sie nur globale Muster erlernen, also beispielsweise eine Ziffer als ganzes.
 Ist dieselbe Ziffer nun etwas im Bild verschoben oder auf sonstige weise verzerrt, wird sie von einem Feedforward-Netz nicht mehr erkannt.
 Dies kann dadurch visualisiert werden, dass nach einer Verzerrung die einzelnen Pixel an ganz anderen Eingangsneuronen anliegen.
@@ -56,7 +56,7 @@ Angenommen, das Pixel oben in der Mitte der Eingabe wäre $1$, dann wäre das Er
 Der Wert des Ergebnisses ist also ein Maß für die Übereinstimmung des Filters mit der Eingabe.
 Auf diese Ergebnis wird in der Praxis nach \cite{6S191CNN} noch eine Aktivierungsfunktion angewendet, wofür meistens \emph{\acrshort{relu}} verwendet wird.
 Negative Pixel werden dadurch zu null.
-Wird der Filter nun mit einer Schrittweite von $1$ in $x$- und $y$-Richtung über die gesamte Eingabe geschoben und die Berechnung jedes mal ausgeführt, entsteht eine sogenannte Merkmalskarte (engl. feature map).
+Wird der Filter nun mit einer Schrittweite von $1$ in $x$- und $y$-Richtung über die gesamte Eingabe geschoben und die Berechnung jedes mal ausgeführt, entsteht eine sogenannte Merkmalskarte (engl. \emph{feature map}).
 Die Merkmalskarte gibt an, wo im Bild die Übereinstimmung mit dem durch den Filter beschriebenen Muster wie groß ist.
 Damit die Merkmalskarte die gleiche Höhe und Breite wie die Eingabe hat, kann nach \cite[S. 168 f.]{DeepLearningPythonKeras} die Eingabe vor der Faltungsoperation rundherum mit nullen aufgefüllt werden.
 Dies wird auch Padding genannt.

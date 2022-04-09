@@ -27,16 +27,15 @@ Ein einfaches \acrshort{rnn} berechnet die Ausgabe $Y_t$ nach \cite[S. 253]{Deep
 \label{eq:RNN}
 \end{equation}
 
-Dabei steht $X_t$ für die Eingabe und $S_t$ für den internen Zustand, jeweils zum Zeitschritt $t$.
+Dabei steht $X_t$ für die Eingabe und $S_t$ für den internen Zustand, beide zum Zeitschritt $t$.
 $W$ und $U$ sind Matrizen, die die trainierbaren Gewichtungen enthalten und $b$ ist ein trainierbarer Bias-Vektor.
 Nach der Berechnung wird die Ausgabe zum neuen internen Zustand, man könnte also $S_t$ in \autoref{eq:RNN} durch $Y_{t-1}$ ersetzen.
 
 Diese einfache Architektur unterliegt nach \cite[S. 260]{DeepLearningPythonKeras} jedoch dem sogenannten \emph{Problem des verschwindenden Gradienten}.
 Dieser Effekt sorgt dafür, dass relativ weit zurückliegende Eingaben praktisch keinen Einfluss mehr auf die Ausgabe haben.
 Es sind jedoch Anwendungsfälle denkbar, in denen auch weiter zurückliegende Ereignisse einen großen Einfluss auf die Gegenwart haben.
-Für die Vorhersage von mobilen Radarkontrollen könnte beispielsweise von Bedeutung sein, wie die Verteilung der Radarkontrollen vor 15 Tagen ausgesehen hat.
-Das liegt daran, dass die Daten eine Periodizität von z. B. 15 Tagen aufweisen könnten.
-
+Für die Vorhersage von mobilen Radarkontrollen könnte beispielsweise von Bedeutung sein, wie die Verteilung der Radarkontrollen 15 Tage in der Vergangenueit ausgesehen hat.
+Das liegt daran, dass eine Periodizität der Daten von z. B. 15 Tagen durchaus denkbar ist.
 Zur Lösung dieses Problems gibt es verschiedene alternative \acrshort{rnn}-Architekturen.
 Eine davon ist \acrfull{lstm}.
 Wie der Name vermuten lässt, ermöglicht die \acrshort{lstm}-Architektur, sowohl Abhängigkeiten von weit zurückliegenden als auch aktuellere Eingaben zu lernen.
@@ -49,20 +48,22 @@ Die \acrshort{lstm}-Architektur ist in \autoref{fig:LSTMCell} dargestellt.
     \label{fig:LSTMCell}
 \end{figure}
 
-Eine \acrshort{lstm}-Zelle enthält drei sogenannte Tore (engl. Gates).
-Ein Tor ist selbst ein \acrshort{nn}.
+Eine \acrshort{lstm}-Zelle enthält drei sogenannte Tore (engl. \emph{gates}).
+Jedes Tor ist selbst ein \acrshort{nn}, enthält also trainierbare Gewichtungen.
 Die drei Tore und ihre jeweilige vorgesehene Wirkung sind nach \cite{6S191RNN}:
 
+\begin{minipage}{\linewidth}
 \begin{enumerate}
     \setlength\itemsep{0.2em}
     \item \textbf{Vergessens-Tor}: Dieses Tor sorgt dafür, dass irrelevante Informationen aus dem vorherigen Zustand "`vergessen"' werden.
     \item \textbf{Merk-Tor}: Dieses Tor fügt dem Zustand relevante neue Informationen hinzu.
     \item \textbf{Ausgangs-Tor}: Dieses Tor bestimmt, welche Informationen aus dem Zustand zum Ausgang der Zelle gelangen sollen.
 \end{enumerate}
+\end{minipage}
 
 Amini und Soleimany stellen die vorgesehene Wirkung der Tore in \cite{6S191RNN} ohne weitere kritische Auseinandersetzung dar.
 Wie Chollet in \cite[S. 263]{DeepLearningPythonKeras} argumentiert, ist diese Wirkung jedoch keinesfalls garantiert.
-Die tatsächliche Wirkung hinge viel mehr von den letzendlich antrainierten Gewichtungen der Tore ab.
+Die tatsächliche Wirkung hinge viel mehr von den letztendlich antrainierten Gewichtungen der Tore ab.
 Sie sind sich jedoch einig, dass es nicht wichtig ist, die interne Funktionsweise einer \acrshort{lstm}-Zelle im Detail zu verstehen.
 Chollet geht noch einen Schritt weiter und argumentiert, dass dies ganz allgemein keine Aufgabe der Menschen sei.
-Wichtig sei nur sich im klaren zu sein, welche Aufgabe eine \acrshort{lstm}-Zelle erfüllt - sie ermöglicht es, sowohl langfristige als auch kurzfristige Zusammenhänge anhand der Trainingsdaten zu erlernen.
+Wichtig sei nur, sich im Klaren zu sein, welche Aufgabe eine \acrshort{lstm}-Zelle erfüllt: Sie ermöglicht es, sowohl langfristige als auch kurzfristige Zusammenhänge anhand der Trainingsdaten zu erlernen.

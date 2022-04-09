@@ -52,3 +52,24 @@ Auch die Vorhersage spiegelt diesen Sachverhalt wieder.
 Während die Vorhersage im oberen Beispiel viele dunkle Pixel enthält, ist die Vorhersage im unteren Beispiel insgesamt deutlich heller, das Modell geht also insgesamt von einer höheren Wahrscheinlichkeit für mobile Radarkontrollen aus.
 % TODO: Vergleich von gleichen Wochentagen? Auf später verweisen?
 
+Zuletzt ist noch eine offensichtliche Tatsache anzumerken, die aber dennoch wichtig ist, und zwar die Beschaffenheit der Ausgabe des Modells.
+Jedes Pixel wird als Zahlenwert zwischen 0 und 1 ausgegeben.
+Das liegt an der Aktivierungsfunktion \emph{Sigmoid} des letzten Layers, die die Zahlengerade auf den Bereich zwischen 0 und 1 abbildet.
+Der Bereich zwischen 0 und 1 legt nahe, dass die Ausgabe des Modells als Wahrscheinlichkeitskarte angesehen werden kann.
+Nun stellt sich die Frage, ob die Ausgabe so belassen werden sollte oder ob sie noch nachverarbeitet werden sollte.
+Hierzu gibt es zwei relevante Aspekte: die praktische Nutzbarkeit und die Performanceevaluierung.
+Zur Performanceevaluierung muss beachtet werden, dass die Problemstellung bisher als Binärklassifizierung angesehen wird,
+Daher muss die Ausgabe zur Evaluierung wie auch die Eingabe eine Binärklassifizierung sein.
+Nur so kann bestimmt werden, wie viele Rasterzellen richtig Klassifiziert werden.
+Im Bezug auch die praktische Nutzbarkeit ist es durchaus möglich, das Ergebnis als Wahrscheinlichkeit zu belassen.
+Jedoch hat diese Vorgehensweise den Nachteil, dass eine Wahrscheinlichkeit unter Umständen schwer einzuschätzen sein kann, besonders in der Hektik des Straßenverkehrs.
+Daher bietet es sich an, die ausgegebenen Wahrscheinlichkeiten in mehrere Gefahrenstufen zu unterteilen, die einfach verständlich sind.
+Diese Gefahrenstufen könnten beispielsweise \emph{niedrig}, \emph{mittel}, \emph{hoch} und \emph{sehr hoch} heißen.
+
+Unabhängig davon, ob die Wahrscheinlichkeiten als Binärklassifizierung in zwei Stufen aufgeteilt werden soll oder als Gefahrenangabe in mehrere, stellt sich die Frage, wo die Grenzen gesetzt werden sollten.
+Eine gute und einfach zu interpretierende Möglichkeit ist die Entscheidung nach Perzentil.
+In diesem Fall beziehen sich Perzentile auf die Verteilung der Rasterzellenwerte.
+Die 90. Perzentilgrenze liegt beispielsweise so, dass 90\% aller Rasterzellen einen Wert unter dieser Grenze haben.
+
+Werden beispielsweise alle Rasterzellen über dem 90. Perzentil als "`positiv"' eingestuft, betrifft dies 
+

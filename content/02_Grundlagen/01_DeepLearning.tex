@@ -35,7 +35,7 @@ Anhand der daraus erlernten Regeln und 16 neuen Tagen als Eingabe könnte dann d
 Chollet beschreibt auf Seite 152, dass hierfür jedoch zwei Voraussetzungen erfüllt sein müssen.
 Zum einen muss der 17. Tag anhand der 16 vorhergegangenen Tage vorhersagbar sein.
 Es muss also einen Zusammenhang zwischen Vergangenheit und Zukunft geben.
-Andererseits müssen genügend Trainingsdaten vorhanden sein um die Regeln daraus ableiten zu können.
+Andererseits müssen genügend Trainingsdaten vorhanden sein, um die Regeln daraus ableiten zu können.
 Jedes Muster, dass in Zukunft erkannt werden soll, muss also in den Trainingsdaten vorhanden sein.
 Zu Beginn eines Machine Learning Projekts müssen diese Voraussetzungen nach Chollet als wahr angenommen werden.
 Je nach Performanceergebnis können sich diese Annahmen schlussendlich als wahr oder falsch herausstellen.
@@ -43,7 +43,7 @@ Je nach Performanceergebnis können sich diese Annahmen schlussendlich als wahr 
 Als Nächstes stellt sich die Frage, wie ein solcher Machine Learning Algorithmus funktioniert.
 Innerhalb des Machine Learnings gibt es verschiedene Algorithmen, die von Alzubi et al. in \cite{MachineLearningOverview} zusammengefasst sind.
 Nennenswerte Algorithmen sind nach Alzubi et al. beispielsweise \emph{Decision Tree}, \emph{Na\"ive Bayes} oder \emph{Random Forest}.
-In der vorliegenden Arbeit sollen jedoch Neuronale Netze (\acrshortpl{nn}) verwendet werden.
+In der vorliegenden Arbeit sollen jedoch neuronale Netze (\acrshortpl{nn}) verwendet werden.
 Das Perzeptron (auch Zelle, Neuron oder Element genannt) bildet nach \cite{6S191Intro} den Grundbaustein von \acrshortpl{nn}.
 Die verschiedenen Bestandteile eines Perzeptrons sind in \autoref{fig:PerzeptronVisualisierung} grafisch visualisiert.
 
@@ -54,8 +54,8 @@ Die verschiedenen Bestandteile eines Perzeptrons sind in \autoref{fig:Perzeptron
     \label{fig:PerzeptronVisualisierung}
 \end{figure}
 
-Ein Perzeptron hat eine beliebige Anzahl von Eingängen (engl. Inputs).
-Die Eingänge $x_1 \dots x_n$ werden mit den Gewichtungen (engl. Weights) $w_1 \dots w_m$ multipliziert und die Ergebnisse aufsummiert.
+Ein Perzeptron hat eine beliebige Anzahl von Eingängen (engl. \emph{i puts}).
+Die Eingänge $x_1 \dots x_n$ werden mit den Gewichtungen (engl. \emph{weights}) $w_1 \dots w_m$ multipliziert und die Ergebnisse aufsummiert.
 Unabhängig von den Eingängen wird dann noch ein Bias $w_0$ dazu addiert.
 Zuletzt wird eine nicht-lineare Aktivierungsfunktion $g$ auf das Ergebnis angewendet.
 Bekannte Aktivierungsfunktionen sind z. B. \emph{Sigmoid} oder \emph{\acrfullr{relu}}, wobei in der Praxis meistens \emph{\acrshort{relu}} verwendet wird \cite{ActivFuncSharma,ActivFuncNwankpa}.
@@ -66,7 +66,7 @@ Die gesamte Berechnung des Ausgangs $\hat{y}$ ist in der aus \cite{6S191Intro} �
 \label{eq:PerceptronEquation}
 \end{equation}
 
-Ein Neuronales Netz entsteht nun, wenn mehrere dieser Perzeptronen kombiniert werden.
+Ein neuronales Netz entsteht nun, wenn mehrere dieser Perzeptronen kombiniert werden.
 Die einfachste Möglichkeit ist ein sogenanntes Fully-connected Feedforward-Netz.
 Hierbei werden mehrere Schichten aus parallel angeordneten Perzeptronen gebildet.
 Dies ist schematisch in \autoref{fig:FCNN} dargestellt.
@@ -86,29 +86,27 @@ Die zweite Schicht würde aus Ecken und Kanten zusammengesetzte Kreise und Linie
 Schließlich könnte die dritte Schicht komplette Ziffern erkennen, die wiederum aus Linien und Kreisen zusammengesetzt sind.
 
 Bisher wurde nur das eigentliche \acrshort{nn} erklärt.
-Um ein \acrshort{nn} zu trainieren sind jedoch noch einige andere Komponenten notwendig.
+Um ein \acrshort{nn} zu trainieren, sind jedoch noch einige andere Komponenten notwendig.
 Das Zusammenspiel dieser Komponenten ist in \autoref{fig:DLKomponenten} dargestellt.
-
 \begin{figure}[h]
     \centering
     \includegraphics[width=1\textwidth,height=8cm,keepaspectratio=true]{content/images/DeepLearningKomponenten.png}
     \caption{Komponenten eines Deep Learning Systems \cite[Abb. 1.9]{DeepLearningPythonKeras}}
     \label{fig:DLKomponenten}
 \end{figure}
-
 Wie in der Abbildung erkennbar ist, wird eine Verlustfunktion benötigt.
 Diese erhält nach \cite[S. 30]{DeepLearningPythonKeras} als Eingabe die Vorhersagen $Y'$ des \acrshort{nn}s sowie die tatsächlichen Werte $Y$.
-Die Verlustfunktion berechnet anhand dieser Eingaben einen Verlustscore (engl. loss), der ein Maß dafür ist, wie stark die Vorhersagen von den tatsächlichen Werten abweichen.
+Die Verlustfunktion berechnet anhand dieser Eingaben einen Verlustscore (engl. \emph{loss}), der ein Maß dafür ist, wie stark die Vorhersagen von den tatsächlichen Werten abweichen.
 Die Ausgabe der Verlustfunktion ist umso größer, je stärker diese Abweichung ist.
 Es gibt viele verschiedene Verlustfunktionen, die für unterschiedliche Aufgabenstellungen geeignet sind.
-Häufig verwendet werden nach \cite[S. 155]{DeepLearningPythonKeras} z. B. der mittlere quadratische Fehler (engl. \acrfull{mse}) oder die binäre Kreuzentropie (engl. binary crossentropy).
+Häufig verwendet werden nach \cite[S. 155]{DeepLearningPythonKeras} z. B. der mittlere quadratische Fehler (engl. \acrfull{mse}) oder die binäre Kreuzentropie (engl. \emph{binary crossentropy}).
 
 Als letzte wichtige Komponente wird noch ein Optimierer benötigt.
 Dieser erhält als Eingabe den Verlustscore und passt anhand dessen die Gewichtungen des \acrshort{nn}s so an, dass der Verlustscore minimiert wird.
 Hierfür wird laut \cite[S. 30]{DeepLearningPythonKeras} ein Algorithmus namens \emph{Backpropagation} verwendet.
 Von diesem allgemeinen Algorithmus gibt es viele verschiedene Implementierungen, die sogenannten Optimierer.
 In der vorliegenden Arbeit wird der in \cite{AdamPaper} vorgestellte \emph{Adam}-Optimierer verwendet.
-Die Vorteile dieses Optimierers sind nach \cite{AdamPaper} die einfache Implementierung sowie die Speicher- und Recheneffizienz.
+Die Vorteile dieses Optimierers sind den Autoren zufolge die einfache Implementierung sowie die Speicher- und Recheneffizienz.
 
 Zusammengefasst ist Deep Learning nichts anderes als eine Funktionsminimierung.
 Die bedeutende Errungenschaft dabei ist, dass die große Menge an Gewichtungen (bei größeren \acrshort{nn}s mehrere Millionen) effizient angepasst werden können, sodass der Verlustscore minimiert wird.
