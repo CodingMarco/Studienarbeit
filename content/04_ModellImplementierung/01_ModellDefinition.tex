@@ -60,7 +60,7 @@ Mit einer normalen Verlustfunktion werden falsch-negative Ergebnisse genauso har
 Andersherum werden richtig-positive Ergebnisse genauso begünstigt wie richtig-negative.
 Hier ergibt sich jedoch ein Problem.
 Ein bei der Trainierung sehr schnell zu findendes Minimum der Verlustfunktion liegt genau dort, wo die Vorhersage des gesamten Rasters "`negativ"' ist.
-Somit kann beispielsweise bei einer Positivenrate von 5\% im Datensatz eine Genauigkeit (engl. \emph{accuracy}) von 95\% erzielt werden, wenn alle Rasterzellen als "`negativ"' vorhergesagt werden.
+Somit kann beispielsweise bei einer Positivenrate von 5\,\% im Datensatz eine Genauigkeit (engl. \emph{accuracy}) von 95\,\% erzielt werden, wenn alle Rasterzellen als "`negativ"' vorhergesagt werden.
 Allerdings entsteht damit keinerlei Erkenntnisgewinn.
 Damit der Optimierungsalgorithmus nicht nach kurzer Zeit in dieses schnell zu erreichende Minimum fällt, kann nach \cite{CrimeConvLSTM} eine gewichtete Verlustfunktion verwendet werden.
 Eine gewichtete Verlustfunktion weist den einzelnen Klassen Gewichtungen zu, die mit den Kreuzentropiewerten der jeweiligen Klasse multipliziert werden.
@@ -125,7 +125,7 @@ def get_class_weights(dataset):
 In Zeile 2 wird mit \emph{np.bincount()} die Anzahl an "`0"'- und "`1"'-Werten im gesamten Datensatz berechnet.
 In Zeile 4 und 5 werden dann die Gewichtungen berechnet, sodass diese reziprok proportional zum Anteil der Klassen sind.
 Nach die Skalierung um \emph{total/2} bewirkt dabei, dass der Absolutwert des Verlusts nicht zu groß bzw. zu klein wird, um ihn als Mensch noch einigermaßen interpretieren zu können.
-In einem zufälligen Teil des Radarkontrollen-Datensatzes sind beispielsweise 5.09\% der Rasterzellen "`positiv"'.
+In einem zufälligen Teil des Radarkontrollen-Datensatzes sind beispielsweise 5.09\,\% der Rasterzellen "`positiv"'.
 Daraus ergeben sich die Gewichtungen $0,53$ für die Klasse "`0"' und $9,83$ für die Klasse "`1"'.
 
 Mit der Netzarchitektur und der Verlustfunktion sind nun alle Bestandteile des Modells definiert.

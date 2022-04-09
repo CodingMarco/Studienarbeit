@@ -19,7 +19,7 @@ Somit soll beispielsweise aus dem Array $[1,~2,~3,~4]$ bei einer Sequenzlänge v
 Wird der Datensatz auf diese Weise in Sequenzen unterteilt, entsteht ein Array der Form $(2636,~17,~50,~50)$.
 Das Array enthält nun also 2636 Sequenzen aus je 17 Frames mit einer Größe von 50x50 Pixel.
 Als nächstes müssen die Sequenzen in zufällige Trainings- und Validierungsdaten unterteilt werden.
-Dazu werden die Sequenzen zufällig gemischt und anschließend werden 90\% der Frames dem Trainingsdatensatz zugewiesen und 10\% den Validierungsdatensatz.
+Dazu werden die Sequenzen zufällig gemischt und anschließend werden 90\,\% der Frames dem Trainingsdatensatz zugewiesen und 10\,\% den Validierungsdatensatz.
 Die Sequenzen müssen im letzten Schritt noch je in die Ein- und Zielausgabe des \acrshortpl{nn} unterteilt werden.
 Dies wird in \autoref{lst:CreateXYFrames} von der Funktion \emph{create\_xy\_frames()} implementiert.
 
