@@ -70,6 +70,68 @@ Unabhängig davon, ob die Wahrscheinlichkeiten als Binärklassifizierung in zwei
 Eine gute und einfach zu interpretierende Möglichkeit ist die Entscheidung nach Perzentil.
 In diesem Fall beziehen sich Perzentile auf die Verteilung der Rasterzellenwerte.
 Die 90. Perzentilgrenze liegt beispielsweise so, dass 90\,\% aller Rasterzellen einen Wert unter dieser Grenze haben.
+Bei der Wahl der Perzentilgrenze hat im Fall einer Binärklassifizierung eine große Auswirkung auf das Ergebnis.
+Dies soll in \autoref{fig:PredExPercentile} verdeutlicht werden.
 
-Werden beispielsweise alle Rasterzellen über dem 90. Perzentil als "`positiv"' eingestuft, betrifft dies 
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1.0\textwidth,height=12cm,keepaspectratio=true]{content/images/PredExPercentile.png}
+    \caption{Auswirkung der Perzentilgrenze auf die Vorhersage im Fall einer Binärklassifizierung}
+    \label{fig:PredExPercentile}
+\end{figure}
+
+In der Abbildung ist als Beispiel eine Vorhersage bei zwei verschiedenen Perzentilgrenzen zu sehen.
+Dabei zeigt das obere Bild die Grundwahrheit.
+Unten ist die Vorhersage je für die 70. und 95. Perzentilgrenze dargestellt.
+Außerdem ist die Vorhersage jeweils in die richtig-positiven, falsch-positiven und falsch-negativen aufgeschlüsselt.
+Im Einklang mit der Definition der Perzentilgrenze ist beim Vergleich der Vorhersagen offensichtlich, dass mit der 70. Perzentilgrenze deutlich mehr Rasterzellen als "`positiv"' eingestuft werden als mit der 95. Perzentilgrenze.
+Dies hat zur Folge, dass mit der 70. Perzentilgrenze mehr der tatsächlich positiven Rasterzellen korrekt vorhergesagt werden.
+Jedoch resultieren daraus auch deutlich mehr falsch-positive.
+Stellt man sich dieses Szenario in der Praxis vor, würden Benutzer relativ häufit gewarnt werden, obwohl keine akute Gefahr für Radarkontrollen besteht.
+Es lässt sich jedoch argumentieren, dass es in der Praxis wichtiger ist, dass vor so vielen tatsächlich positiven Rasterzellen gewarnt werden sollte wie möglich, auch wenn dadurch Fehlwarnungen häufiger werden.
+In \autoref{fig:PredExPercentile} sind bisher nur Beispiele für zwei konkrete Perzentilgrenzen dargestellt.
+Für eine genauere Analyse sind jedoch Werte über alle Perzentilgrenzen interessant.
+Diese sind als Graphen für dasselbe Beispiel in \autoref{fig:PredExGraphs} dargestellt.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1.0\textwidth,height=12cm,keepaspectratio=true]{content/images/PredExGraphs.png}
+    \caption{dsfas}
+    \label{fig:PredExGraphs}
+\end{figure}
+
+In den oberen beiden Graphen sind die Kennzahlen, die oben schon für zwei Perzentilgrenzen analysiert wurden, über alle Perzentilgrenzen aufgetragen.
+Für die Betrachtung ist wichtig zu wissen, dass es insgesamt 2500 Rasterzellen gibt, von denen in diesem Beispiel in der Realität 140 "`positiv"' sind.
+Dies wird auch deutlich, wenn man die linken Enden der Graphen betrachtet.
+Bei der nullten Perzentilgrenze werden per Definition alle Zellen als "`positiv"' markiert, weshalb dort auch die Anzahl der richtig-positiven maximal ist.
+Jedoch ist dort auch die Anzahl der falsch-positiven maximal.
+Aufgrund der unbalancierten Verteilung der positiven Rasterzellen verhält sich die richtig-positiven- und falsch-negativen-Rate über die Perzentligrenzen hinweg exponentiell, während sich die falsch-positiven- und richtig-negativen-Rate annähernd linear verhält.
+Zur intuitiveren Bewertung der Perzentligrenzen sind die absoluten Zahlen wenig aussagekräftig, zumal sie sich bei verschiedenen Beispielen unterschiedlich verhält.
+Daher gibt es verschiedene Metriken, die die absoluten Werte zueinander ins Verhältnis setzen.
+Diese werden in \cite{ImbalancedData} beschrieben.
+Die einfachste solche Metrik ist die Genauigkeit, die den Anteil der richtig klassifizierten Elemente darstellt, es gilt also
+$$
+\text{Genauigkeit} = \frac{\text{Korrekt klassifizierte Elemente}}{\text{Gesamtanzahl der Elemente}}.
+$$
+In \autoref{sec:ModellDefinition} wurde jedoch bereits erörtert, warum die Genauigkeit für unbalancierte Daten nicht aussagekräftig ist.
+Deulich hilfreicher sind jedoch die Metriken \emph{Precision} und \emph{Recall}.
+Precision ist nach \cite{ImbalancedData} der Anteil der positiv vorhergesagten Elemente, die auch in der Realität "`positiv"' sind, es gilt also
+$$
+\text{Precision} = \frac{\text{richtig-positive}}{\text{richtig-positive + falsch-positive}}.
+$$
+Recall gibt hingegen an, welcher Anteil der tatsächlich positiven Elemente auch als "`positiv"' erkannt werden.
+Hier gilt somit
+$$
+\text{Recall} = \frac{\text{richtig-positive}}{\text{richtig-positive + falsch-negative}}.
+$$
+Um diese Metriken genauer zu verstehen ist es hilfreich zu betrachten, wann sie 100\,\% betragen.
+Damit die Precision 100\,\% beträgt, darf es keine falsch-positiven geben.
+Somit ist die Precision ein Maß dafür, wie präzise \emph{nur} die tatsächlich Positiven erkannt werden.
+Wichtig ist hierbei anzumerken, dass die Precision nichts darüber aussagt, wie viele der tatsächlich Positiven erkannt werden.
+Die Precision könnte also 100\,\% betragen, obwohl nur wenige Prozent der tatsächlich Positiven erkannt werden.
+Wichtig ist nur, dass es keine falsch-positiven gibt.
+Genau andersherum ist es nun beim Recall.
+Der Recall beträgt genau dann 100\,\%, wenn es keine falsch-negativen gibt.
+Es müssen also alle tatsächlich positiven Elemente erkannt werden.
+Dabei ist es jedoch unerheblich, wie viele in der Realität negativen Elemente zusätzlich noch als "`positiv"' erkannt werden.
 

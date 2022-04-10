@@ -99,9 +99,9 @@ Die Matrix \emph{weighted\_crossentropy} enthält nun die gewichtete Kreuzentrop
 Der Verlustwert berechnet sich dann in Zeile 10 aus dem Durchschnitt aller dieser Werte.
 
 Als Nächstes stellt sich noch die Frage, welche Gewichtungen verwendet werden sollten.
-Nach \cite{KerasImbalancedData} bietet es sich an, die Gewichtungen anhand der Anzeile der verschiedenen Klassen am gesamten Datensatz zu berechnen.
+Nach \cite{ImbalancedData} bietet es sich an, die Gewichtungen anhand der Anzeile der verschiedenen Klassen am gesamten Datensatz zu berechnen.
 Somit sind die Gewichtungen abhängig von der konkreten Beschaffenheit des Datensatzes.
-Konkret wird in \cite{KerasImbalancedData} die Implementierung vorgeschlagen, die in \autoref{lst:ClassWeights} zu sehen ist.
+Konkret wird in \cite{ImbalancedData} die Implementierung vorgeschlagen, die in \autoref{lst:ClassWeights} zu sehen ist.
 
 \begin{code}
 \begin{minted}[
@@ -118,7 +118,7 @@ def get_class_weights(dataset):
 
     return weight_for_0, weight_for_1
 \end{minted}
-\captionof{listing}{Berechnung der Klassengewichtungen nach \cite{KerasImbalancedData}}
+\captionof{listing}{Berechnung der Klassengewichtungen nach \cite{ImbalancedData}}
 \label{lst:ClassWeights}
 \end{code}
 
