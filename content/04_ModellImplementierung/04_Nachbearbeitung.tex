@@ -96,7 +96,7 @@ Diese sind als Graphen für dasselbe Beispiel in \autoref{fig:PredExGraphs} darg
 \begin{figure}[h]
     \centering
     \includegraphics[width=1.0\textwidth,height=12cm,keepaspectratio=true]{content/images/PredExGraphs.png}
-    \caption{dsfas}
+    \caption{Verschiedene Metriken einer Beispielvorhersage über Perzentilgrenzen von 1\,\% bis 99\,\%}
     \label{fig:PredExGraphs}
 \end{figure}
 
@@ -114,7 +114,7 @@ $$
 \text{Genauigkeit} = \frac{\text{Korrekt klassifizierte Elemente}}{\text{Gesamtanzahl der Elemente}}.
 $$
 In \autoref{sec:ModellDefinition} wurde jedoch bereits erörtert, warum die Genauigkeit für unbalancierte Daten nicht aussagekräftig ist.
-Deulich hilfreicher sind jedoch die Metriken \emph{Precision} und \emph{Recall}.
+Deulich hilfreicher sind die Metriken \emph{Precision} und \emph{Recall}.
 Precision ist nach \cite{ImbalancedData} der Anteil der positiv vorhergesagten Elemente, die auch in der Realität "`positiv"' sind, es gilt also
 $$
 \text{Precision} = \frac{\text{richtig-positive}}{\text{richtig-positive + falsch-positive}}.
@@ -135,3 +135,55 @@ Der Recall beträgt genau dann 100\,\%, wenn es keine falsch-negativen gibt.
 Es müssen also alle tatsächlich positiven Elemente erkannt werden.
 Dabei ist es jedoch unerheblich, wie viele in der Realität negativen Elemente zusätzlich noch als "`positiv"' erkannt werden.
 
+Insgesamt ist also klar, dass bei der Wahl der Perzentilgrenze zwischen Precision und Recall abgewogen werden muss.
+In \autoref{fig:PredExGraphs} sind Precision und Recall in den unteren beiden Graphen für das konkrete Beispiel dargestellt.
+Anhand des Precision-Graphs ist zu erkennen, dass selbst mit einer Perzentilgrenze von 99\,\% keine Precision über 60\,\% möglich ist.
+Es gibt also immer eine gewisse, nicht zu vernachlässigende Anzahl an falsch-positiven.
+Außerdem ist erkennbar, dass die Precision-Kurve bei Perzentilgrenzen gegen 99\,\% sehr stark ansteigt.
+Die Rasterzellen, die einen Wert in diesem Bereich haben, sind also mit großer Wahrscheinlichkeit tatsächlich "`positiv"'.
+Im Bezug auf den Anwendungsfall der Vorhersage von mobilen Radarkontrollen hat die Recall-Kurve eine nochh größere Bedeutung, da möglichst viele tatsächlich vorhandenen Radarkontrollen in der Vorhersage vorhanden sein sollten.
+Jedoch bleibt es eine Abwägung zwischen Precision und Recall.
+Daher bietet es sich an, beide Metriken in einem Graph in Relation zueinander zu setzen.
+Diesen Graph nennt man \acrfull{prc}.
+Die \acrshort{prc} der bisher verwendeten Beispielvorhersage ist in \autoref{fig:PredExGraphsPRC} links dargestellt.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.7\textwidth,height=8cm,keepaspectratio=true]{content/images/PredExGraphsPRC.png}
+    \caption{\acrfull{prc} einer Beispielvorhersage}
+    \label{fig:PredExGraphsPRC}
+\end{figure}
+
+An diesem Graphen kann abgelesen werden, welche Precision bei welchem Recall erreichbar ist und umgekehrt.
+Soll beispielsweise ein Recall von 70\,\% erreicht werden, entspricht dies einer Precision von ca. 15\,\%.
+In Worten werden also 70\,\% aller Rasterzellen korrekt vorhergesagt, die tatsächlich eine Radarkontrolle beinhalten, jedoch enthalten nur 15\,\% aller als "`positiv"' vorhergesagten Rasterzellen tatsächlich eine Radarkontrolle.
+Wenn die \acrshort{prc} für den gesamten Validierungsdatensatz erstellt wird, eignet sie sich auch dazu, die Performance verschiedener Modelle zu vergleichen.
+Falls ein Modell besser performt als ein anderes, liegt die \acrshort{prc} dieses Modells eher weiter oben rechts.
+Es ergeben sich also insgesamt größere Precision-Recall-Paare.
+
+Die \acrshort{prc} kann nun gemeinsam mit den einzelnen Graphen von Precision und Recall verwendet werden, um geeignete Perzentilgrenzen für eine Gefahreneinstufung auszuwählen.
+Für die Einteilung in die vier Gefahrenstufen \emph{niedrig}, \emph{mittel}, \emph{hoch} und \emph{sehr hoch} müssen drei Perzentilgrenzen ausgewählt werden.
+Für die Grenze, ab der die Gefahrenstufe \emph{mittel} gelten soll, scheint das 60. Perzentil ein guter Wert zu sein.
+Dies entspricht einem Recall von ca. 82\,\% und einer Precision von ca. 12\,\%.
+Der Recall-Wert bedeutet, dass nur 18\,\% der tatsächlichen Radarkontrollen (fälschlicherweise) auf die Gefahrenstufe \emph{niedrig} fallen.
+Die Precision ist jedoch nicht sonderlich hoch.
+Es befinden sich folglich sehr viele falsch-positive in der Gefahrenstufe \emph{mittel}.
+Die nächste Gefahrenstufe (für die Gefahrenstufe \emph{hoch}) kann beim 85. Perzentil angelegt werden.
+Hier beträgt der Recall ca. 60\,\% und die Precision ca. 23\,\%.
+Die Precision hat sich demnach im Vergleich zur Gefahrenstufe \emph{mittel} fast verdoppelt, während der Recall nur um ein Viertel geringer geworden ist.
+Bei der Gefahrenstufe \emph{sehr hoch} sollte sich das Modell sehr sicher sein, dass sich in einer solchen Rasterzelle eine Radarkontrolle befindet.
+Daher sollte eine Perzentilgrenze nahe 100\,\% gewählt werden, wie beispielsweise die 98. Perzentilgrenze.
+Hier beträgt der Recall zwar nur noch ca. 10\,\%, die Precision jedoch ca. 55\,\%.
+Statistisch befinden sich demnach in ca. der hälfte aller Rasterzellen der Gefahrenstufe \emph{sehr hoch} tatsächlich eine Radarkontrolle.
+
+Werden die Gefahrenstufen mit unterschiedlichen Farben markiert, ergibt sich für das bisher verwendete Beispiel die in \autoref{fig:Gefahrenstufen} dargestellte Gefahrenkarte.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.7\textwidth,height=8cm,keepaspectratio=true]{content/images/Gefahrenstufen.png}
+    \caption{Resultierende nachbearbeitete Vorhersage mit vier Gefahrenstufen im Vergleich zur Grundwahrheit}
+    \label{fig:Gefahrenstufen}
+\end{figure}
+
+Außerdem sind in der Abbildung die tatsächlichen Radarkontrollen mit einem Kreuz markiert.
+Wird einem Autofahrer bei jedem Rasterzellenwechsel die neue Gefahrenstufe mitgeteilt, kann dieser sie leicht einschätzen und sich entsprechend verhalten.
