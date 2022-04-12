@@ -1,0 +1,15 @@
+\subsection{Evaluierung und Optimierung des Modells}
+\label{sec:EvaluierungOptimierung}
+In diesem Abschnitt werden zunächst Metriken festgelegt, mit denen die Performance von verschiedenen Modellen verglichen werden können.
+Anschließend wird die Performance des bisherigen Modells anhand der Validierungsdaten evaluiert, indem untersucht wird, inwiefern die Vorhersagen des Modells von den konkreten Eingaben abhängen.
+Zuletzt wird das Modell an verschiedenen Stellen verändert um zu erörtern, ob sich die Performance dadurch verbessern lässt.
+
+Zunächst gilt es Metriken zu definieren, anhand derer verschiedene Modelle verglichen werden können.
+Da Precision und Recall von der Perzentilgrenze abhängig sind, eignen sie sich nicht direkt.
+Was sich hingegen eignet, ist die Precision-Recall-Kurve, da sie Precision und Recall über alle Perzentilgrenzen hinweg darstellt.
+Zwei \acrshortpl{prc} verglichen werden, indem ermittelt wird, welche Kurve über der anderen liegt.
+Jedoch erfolgt die Interpretation grafisch, obwohl der Vergleich von einzelnen Zahlenwerten oft einfacher ist.
+Außerdem könnte bei verschiedenen Recall-Werten eine unterschiedliche Kurve die höhere Precision haben.
+Eine Möglichkeit, eine komplette \acrshort{prc} in einem Zahlenwert zusammenzufassen besteht darin, die Fläche unter der Kurve zu berechnen.
+Dieser Wert wird \acrfull{auprc} genannt.
+Mit der \acrshort{auprc} kann die Performance eines Modells mit einer Zahl beschrieben werden und zwei Modelle können somit einfach verglichen werden.

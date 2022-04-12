@@ -4,8 +4,8 @@ Im Themenfeld der räumlich-zeitlichen Vorhersagen (engl. \emph{spatio-temporal 
 Zu diesen Anwendungsfällen gehört die Vorhersage von Niederschlägen, Verbrechen, Verkehrsunfällen, Verkehrsaufkommen sowie der Bedarf an Taxis \cite{ConvLSTM,CrimeConvLSTM,CrimeSTResNet,HeteroConvLSTM,TrafficVolumeGraphDCRNN,STResNetOriginal}.
 So unterschiedlich die Themengebiete auch sind, lässt sich laut \cite{DLTraff} dennoch eine gemeinsame, formale Problemstellung definieren.
 Wenn die Daten als Raster vorliegen, können sie als 4D-Tensor $\mathbb{R}^{T \times H \times W \times C}$ beschrieben werden.
-Dabei ist $T$ die Anzahl der Zeitschritte, $H \times W$ die räumliche Dimension (Höhe mal Breite), und $C$ die Anzahl an Kanälen.
-Besteht der Datensatz beispielsweise aus 100 \acrshort{rgb}-Bildern mit einer Größe von 28x28 Pixeln, kann er mit dem Tensor $\mathbb{R}^{100 \times 28 \times 28 \times 3}$ beschrieben werden.
+Dabei ist $T$ die Anzahl der Zeitschritte, $H \times W$ die räumliche Dimension (Höhe mal Breite) und $C$ die Anzahl an Kanälen.
+Besteht der Datensatz beispielsweise aus 100 \acrshort{rgb}-Bildern mit einer Größe von 28x28 Pixel, kann er mit dem Tensor $\mathbb{R}^{100 \times 28 \times 28 \times 3}$ beschrieben werden.
 Die Problemstellung lässt sich nun als die in \autoref{eq:FormalSTPrediction} gezeigte Abbildung $f$ formulieren.
 
 \begin{equation}
@@ -17,8 +17,8 @@ Dabei repräsentiert $X_t \in \mathbb{R}^{H \times W \times C}$ ein Raster zum Z
 Außerdem ist $\alpha$ die Anzahl an Zeitschritten, anhand derer die Vorhersage getroffen wird und $\beta$ die Anzahl an Zeitschritten, die vorhergesagt werden soll.
 Es ist auch möglich, nur einen Zeitschritt vorherzusagen.
 Wenn beispielsweise anhand von 16 vergangenen Tagen der 17. Tag vorhergesagt werden soll, dann ist $\alpha = 16$ und $\beta = 1$.
-Daraus ergibt sich $f: [X_{t-15}, X_{t-14}, \dots, X_{t-1}, X_t] \to X_{t+1}$.
-Mit $f$ ist nun die Funktion definiert, die durch ein \acrshort{nn} approximiert werden soll.
+Daraus ergibt sich $g: [X_{t-15}, X_{t-14}, \dots, X_{t-1}, X_t] \to X_{t+1}$.
+Mit $g$ ist nun die Funktion definiert, die in der vorliegenden Arbeit durch ein \acrshort{nn} approximiert werden soll.
 
 Obwohl eine solche allgemeine Definition der Problemstellung möglich ist, gibt es dennoch große Unterschiede, wenn die Definition auf verschiedene Datensätze angewendet wird.
 Das liegt vor allem daran, dass die Datensätze eine sehr unterschiedliche Sturkur haben und sehr unterschiedlichen Gesetzmäßigkeiten unterliegen.
@@ -35,20 +35,20 @@ Alle Datenpunkte, die zu einem Cluster gehören, bekommen dann als Koordinaten d
 Die Voraussetzung für dieses Vorgehen ist jedoch, dass überhaupt Cluster in den Daten erkennbar sind.
 
 Unabhängig davon, ob die Daten ursprünglich räumlich diskret oder kontinuierlich vorliegen, lassen sie sich grundsätzlich auf zwei verschiedene Arten repräsentieren: als Raster oder als Graph.
-Sollen die Daten als Raster repräsentiert werden, wird ein zunächst leeres Raster aus gleichgroßen, meißt quadratischen Zellen über die Daten gelegt.
+Sollen die Daten als Raster repräsentiert werden, wird ein zunächst leeres Raster aus gleichgroßen, meist quadratischen Zellen über die Daten gelegt.
 Anschließend werden jeder Rasterzelle diejenigen Datenpunkte zugeordnet, die innerhalb der Zelle liegen.
-Da jede Rasterzelle aus nur einem Zahlenwert besteht, muss eine bestimmte Metrik festgelegt werden, anahand derer dieser Zahlenwert bestimmt wird.
+Da jede Rasterzelle aus nur einem Zahlenwert besteht, muss eine bestimmte Metrik festgelegt werden, anhand derer dieser Zahlenwert bestimmt wird.
 Dies könnte beispielsweise die Anzahl der Datenpunkte innerhalb eines bestimmten Zeitraums sein.
 Alternativ könnte eine bestimmte Eigenschaft der Datenpunkte aufsummiert werden.
 Sollen die Daten hingegen als Graph repräsentiert werden, müssen sie zunächst räumlich diskret vorliegen.
 Liegen die Daten räumlich kontinuierlich vor, müssen zuerst Cluster gebildet werden.
 Jeder diskrete Ort bzw. jedes Cluster wird dann ein Knoten des Graphs.
 Anschließend muss festgelegt werden, welche Verbindungen zwischen den einzelnen Knoten bestehen.
-Hier bietet es sich an Verbindungen festzulegen, die in der Realität auch bestehen.
+Hier bietet es sich an, Verbindungen festzulegen, die in der Realität auch bestehen.
 Dies könnte beispielsweise das Straßennetz sein, wenn es sich um Verkehrsdaten handelt.
 
 Nicht nur in der räumlichen Struktur der Daten kann es Unterschiede geben, sondern auch in der zeitlichen Struktur.
-So lassen sich Datensätze im Bezug auf die zeitliche Struktur in zwei Kathegorien einteilen: die Datenpunkte können entweder in regelmäßigen oder in unregelmäßigen Zeitabständen vorliegen.
+So lassen sich Datensätze im Bezug auf die zeitliche Struktur in zwei Kategorien einteilen: Die Datenpunkte können entweder in regelmäßigen oder in unregelmäßigen Zeitabständen vorliegen.
 Wetterstationen liefern beispielsweise Messwerte in regelmäßigen Zeitabständen.
 Verkehrsunfälle geschehen hingegen in unregelmäßigen Zeitabständen.
 Eine weitere Eigenschaft der Daten ist die zeitliche Auflösung, also der (durchschnittliche) Zeitabstand einzelner Datenpunkte.
