@@ -12,12 +12,12 @@ def get_model(input, weights):
     model = keras.models.Sequential([
         input,
         layers.ConvLSTM2D(
-            filters=64, kernel_size=(3, 3),
+            filters=32, kernel_size=(3, 3),
             padding="same", return_sequences=True, activation="relu",
         ),
         layers.MaxPooling3D(pool_size=(2, 1, 1), strides=(2, 1, 1)),
         layers.ConvLSTM2D(
-            filters=64, kernel_size=(3, 3),
+            filters=32, kernel_size=(3, 3),
             padding="same", return_sequences=True, activation="relu",
         ),
         layers.MaxPooling3D(pool_size=(2, 1, 1), strides=(2, 1, 1)),
