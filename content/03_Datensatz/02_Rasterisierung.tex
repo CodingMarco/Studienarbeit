@@ -101,8 +101,8 @@ Mit der \acrshort{gui} können zudem verschiedenste geographische Daten wie Punk
 Ein Beispiel für eine Visualisierung mit QGIS ist \autoref{fig:BlitzerMarathonSep2014Vgl}.
 Die Punkte werden über eine direkte Verbindung zu PostGIS abgerufen und dann auf einer OpenStreetMap-Karte dargestellt.
 Aufgrund des räumlichen Indexes von PostGIS werden die Punkte sehr schnell geladen, insbesondere wenn kleinere Bereiche betrachtet werden.
-QGIS ist in C++ unter Verwendung des Qt-Frameworks implementiert.
-Die Algorithmen können zusätzlich zur \acrshort{gui} über eine C++ \acrshort{api} aufgerufen werden, für die es auch Python-Bindings gibt.
+QGIS ist in \Cpp unter Verwendung des Qt-Frameworks implementiert.
+Die Algorithmen können zusätzlich zur \acrshort{gui} über eine \Cpp\acrshort{api} aufgerufen werden, für die es auch Python-Bindings gibt.
 
 Für die Rasterisierung des Datensatzes gibt es nun zwei verschiedene Möglichkeiten.
 Zum einen könnte die Rasterisierung direkt in der Datenbank mit von PostGIS bereitgestellten \acrshort{sql}-Funktionen durchgeführt werden.
@@ -187,15 +187,15 @@ Außerdem können die Metadaten ausgelesen werden, was in Zeile \ref{gdal_metada
 !\label{gdal_numpy_start}!>>> filename = "heatmap_2015-07-02.tif"
 >>> geotiff = gdal.Open(filename)
 >>> raster_data = geotiff.ReadAsArray()
->>> print(type(raster_data))
+>>> type(raster_data)
 <class 'numpy.ndarray'>
->>> print(raster_data.shape)
+>>> raster_data.shape
 !\label{gdal_numpy_end}!(50, 50)
 
 !\label{gdal_metadata_start}!>>> geotransform = geotiff.GetGeoTransform()
->>> print(geotransform)
+>>> geotransform
 (927793.0, 4000.0, 0.0, 6313386.0, 0.0, -4000.0)
->>> print(f"{geotiff.RasterXSize}x{geotiff.RasterYSize}")
+>>> f"{geotiff.RasterXSize}x{geotiff.RasterYSize}"
 !\label{gdal_metadata_end}!50x50
 \end{minted}
 \captionof{listing}{Extrahierung der Parameter und Daten aus einer GeoTIFF-Datei}
