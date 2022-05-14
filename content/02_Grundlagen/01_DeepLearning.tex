@@ -14,26 +14,26 @@ In \autoref{fig:KlassischVsML} wird der Unterschied verdeutlicht.
 
 Sowohl klassische Programmierung als auch Machine Learning sollen im Rahmen von künstlicher Intelligenz verschiedenste Fragestellungen beantworten, die ansonsten von Menschen beantwortet werden.
 Ein Beispiel für eine solche Fragestellung könnte z.\,B. lauten: "`Welche Ziffer ist in diesem Bild dargestellt?"'.
-Ein anderes Beispiel wäre "`Gegeben ist dieser halbe Satz, wie könnte der Satz weiter gehen?"'.
+Ein anderes Beispiel wäre "`Gegeben ist dieser halbe Satz, wie könnte er weiter gehen?"'.
 Die Fragestellung der vorliegenden Arbeit wurde bereits definiert.
-Sie könnte wie folgt in einem Satz zusammengefasst werden:
+Sie kann wie folgt in einem Satz zusammengefasst werden:
 "`Gegeben sind die Standorte von mobilen Radarkontrollen der letzten 16 Tage, wie groß ist die Gefahr für mobile Radarkontrollen am 17. Tag an verschiedenen Stellen?"'
 Bei der klassischen Programmierung liegt es nach Chollet nun am Menschen, Regeln aufzustellen, nach denen die Fragestellungen beantwortet werden.
 Der Mensch könnte sich vergangene Daten anschauen und müsste in ihnen Muster suchen, von denen diese Regeln abgeleitet werden können.
 Die Regeln werden anschließend in einer Programmiersprache explizit in Form von Verzweigungen, Schleifen und Variablen implementiert.
-Für die Vorhersage von mobilen Radarkontrollen könnte ein Mensch beispielsweise gewisse Muster aus eigener Erfahrung im Straßenverkehr erkennen.
-Daraus könnte z.\,B. die Regel aufgestellt werden, dass die Wahrscheinlichkeit für eine mobile Radarkontrolle an einem Standort sehr gering ist, wenn dort am vorherigen Tag bereits eine solche vorhanden war.
-Wie in \autoref{fig:KlassischVsML} zusammengefasst wird, findet die klassische Programmierung also Antworten auf Basis von Eingangsdaten und explizit implementierten Regeln.
+Für die Vorhersage von mobilen Radarkontrollen könnte ein Mensch beispielsweise aus eigener Erfahrung im Straßenverkehr gewisse Muster erkennen.
+Daraus könnte z.\,B. die Regel aufgestellt werden, dass die Wahrscheinlichkeit für eine mobile Radarkontrolle an einem Standort sehr gering ist, wenn dort am vorherigen Tag bereits eine solche aufgestellt war.
+Wie in \autoref{fig:KlassischVsML} zusammengefasst wird, findet die klassische Programmierung auf Basis von Eingangsdaten und explizit implementierten Regeln Antworten.
 
-Beim Machine Learning ist es nun anders herum.
+Beim Machine Learning ist es anders herum.
 Ein Machine Learning Algorithmus erhält nach Chollet als Eingabe Daten und Antworten und leitet daraus Regeln ab.
 Diese Regeln können anschließend verwendet werden, um anhand von neuen Eingabedaten neue Antworten zu erzeugen.
 Die Regeln müssen nun also nicht mehr explizit vom Menschen festgelegt werden.
-Dies bringt den Vorteil mit sich, dass möglicherweise Regeln erkannt werden, die dem Menschen (z.\,B. aufgrund ihrer Komplexität) verborgen bleiben.
+Dies bringt den Vorteil mit sich, dass möglicherweise Regeln erkannt werden, die dem Menschen (z.\,B. aufgrund ihrer Komplexität) verborgen blieben.
 Für die Vorhersage von mobilen Radarkontrollen würde ein Machine Learning Algorithmus sehr viele Beispiele von je 16 aufeinanderfolgenden Tagen als Eingangsdaten sowie den 17. Tag als Antwort erhalten.
-Anhand der daraus erlernten Regeln und 16 neuen Tagen als Eingabe könnte dann der 17. Tag vorhergesagt werden.
-Chollet beschreibt auf Seite 152, dass hierfür jedoch zwei Voraussetzungen erfüllt sein müssen.
-Zum einen muss der 17. Tag anhand der 16 vorhergegangenen Tage vorhersagbar sein.
+Anhand der daraus erlernten Regeln und 16 neuen Tagen als Eingabe, könnte dann der 17. Tag vorhergesagt werden.
+Chollet beschreibt auf Seite 152, dass hierfür jedoch zwei Voraussetzungen erfüllt sein müssen:
+Zum einen muss der 17. Tag anhand der 16 vorangegangenen Tage vorhersagbar sein.
 Es muss also einen Zusammenhang zwischen Vergangenheit und Zukunft geben.
 Andererseits müssen genügend Trainingsdaten vorhanden sein, um die Regeln daraus ableiten zu können.
 Jedes Muster, dass in Zukunft erkannt werden soll, muss also in den Trainingsdaten vorhanden sein.
@@ -54,7 +54,7 @@ Die verschiedenen Bestandteile eines Perzeptrons sind in \autoref{fig:Perzeptron
     \label{fig:PerzeptronVisualisierung}
 \end{figure}
 
-Ein Perzeptron hat eine beliebige Anzahl von Eingängen (engl. \emph{i puts}).
+Ein Perzeptron hat eine beliebige Anzahl von Eingängen (engl. \emph{inputs}).
 Die Eingänge $x_1 \dots x_n$ werden mit den Gewichtungen (engl. \emph{weights}) $w_1 \dots w_m$ multipliziert und die Ergebnisse aufsummiert.
 Unabhängig von den Eingängen wird dann noch ein Bias $w_0$ dazu addiert.
 Zuletzt wird eine nicht-lineare Aktivierungsfunktion $g$ auf das Ergebnis angewendet.
@@ -106,7 +106,7 @@ Dieser erhält als Eingabe den Verlustscore und passt anhand dessen die Gewichtu
 Hierfür wird laut \cite[S. 30]{DeepLearningPythonKeras} ein Algorithmus namens \emph{Backpropagation} verwendet.
 Von diesem allgemeinen Algorithmus gibt es viele verschiedene Implementierungen, die sogenannten Optimierer.
 In der vorliegenden Arbeit wird der in \cite{AdamPaper} vorgestellte \emph{Adam}-Optimierer verwendet.
-Die Vorteile dieses Optimierers sind den Autoren zufolge die einfache Implementierung sowie die Speicher- und Recheneffizienz.
+Die Vorteile dieses Optimierers sind, den Autoren zufolge, die einfache Implementierung sowie die Speicher- und Recheneffizienz.
 
 Zusammengefasst ist Deep Learning nichts anderes als eine Funktionsminimierung.
 Die bedeutende Errungenschaft dabei ist, dass die große Menge an Gewichtungen (bei größeren \acrshort{nn}s mehrere Millionen) effizient angepasst werden können, sodass der Verlustscore minimiert wird.

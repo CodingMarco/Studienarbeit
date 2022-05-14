@@ -1,7 +1,7 @@
 \subsection{Formale Problemdefinition räumlich-zeitlicher Vorhersagen}
 \label{sec:STPredictions}
 Im Themenfeld der räumlich-zeitlichen Vorhersagen (engl. \emph{spatio-temporal predictions}) gibt es viele verschiedene Anwendungsfälle.
-Zu diesen Anwendungsfällen gehört die Vorhersage von Niederschlägen, Verbrechen, Verkehrsunfällen, Verkehrsaufkommen sowie der Bedarf an Taxis \cite{ConvLSTM,CrimeConvLSTM,CrimeSTResNet,HeteroConvLSTM,TrafficVolumeGraphDCRNN,STResNetOriginal}.
+Zu diesen Anwendungsfällen gehört z.\,B. die Vorhersage von Niederschlägen, Verbrechen, Verkehrsunfällen, Verkehrsaufkommen sowie der Bedarf an Taxis \cite{ConvLSTM,CrimeConvLSTM,CrimeSTResNet,HeteroConvLSTM,TrafficVolumeGraphDCRNN,STResNetOriginal}.
 So unterschiedlich die Themengebiete auch sind, lässt sich laut \cite{DLTraff} dennoch eine gemeinsame, formale Problemstellung definieren.
 Wenn die Daten als Raster vorliegen, können sie als 4D-Tensor $\mathbb{R}^{T \times H \times W \times C}$ beschrieben werden.
 Dabei ist $T$ die Anzahl der Zeitschritte, $H \times W$ die räumliche Dimension (Höhe mal Breite) und $C$ die Anzahl an Kanälen.
@@ -49,10 +49,10 @@ Dies könnte beispielsweise das Straßennetz sein, wenn es sich um Verkehrsdaten
 
 Nicht nur in der räumlichen Struktur der Daten kann es Unterschiede geben, sondern auch in der zeitlichen Struktur.
 So lassen sich Datensätze im Bezug auf die zeitliche Struktur in zwei Kategorien einteilen: Die Datenpunkte können entweder in regelmäßigen oder in unregelmäßigen Zeitabständen vorliegen.
-Wetterstationen liefern beispielsweise Messwerte in regelmäßigen Zeitabständen.
+Wetterstationen beispielsweise liefern Messwerte in regelmäßigen Zeitabständen.
 Verkehrsunfälle geschehen hingegen in unregelmäßigen Zeitabständen.
 Eine weitere Eigenschaft der Daten ist die zeitliche Auflösung, also der (durchschnittliche) Zeitabstand einzelner Datenpunkte.
-Wetterstationen liefern beispielsweise Daten in sehr kurzen Zeitabständen.
+Wetterstationen liefern Daten in sehr kurzen Zeitabständen.
 Daher können schon in einem relativ kurzen Zeitraum sehr viele Daten gesammelt werden.
 Verkehrsunfälle oder Verbrechen treten im Gegensatz dazu nur sehr sporadisch auf.
 Daher müssen Daten über einen sehr langen Zeitraum gesammelt werden, um auf deren Basis Vorhersagen treffen zu können.

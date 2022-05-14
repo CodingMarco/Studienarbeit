@@ -48,10 +48,10 @@ Mit der MaxPooling3D-Operation werden damit die signifikantesten Merkmale von je
 Dadurch wird die Anzahl der Frames in der Sequenz nach jeder ConvLSTM-MaxPooling3D-Kombination halbiert.
 Somit ist nach vier dieser Kombinationen nur noch ein Frame übrig.
 Am Ende liegt nach \cite{CrimeConvLSTM} noch ein 3D-Faltungslayer mit einer Kernelgröße von $(1, 3, 3)$.
-Dort ist die dreidimensionale Version eines Faltungslayers nötig, da die erste und letzte Dimension wie oben angemerkt vertauscht ist.
+Dort ist die dreidimensionale Version eines Faltungslayers nötig, da die erste und letzte Dimension, wie oben angemerkt, vertauscht ist.
 Da ein 3D-Faltungslayer mit einer Kernelgröße von $(3, 3, 1)$ (wie er hier verwendet werden müsste) exakt einem 2D-Faltungslayer mit einer Kernelgröße von $(3, 3)$ entspricht, wird hier letzterer verwendet.
 
-Um das Modell trainieren zu können muss noch eine Verlustfunktion ausgewählt werden.
+Um das Modell trainieren zu können, muss noch eine Verlustfunktion ausgewählt werden.
 Dafür könnte eine gewöhnliche Verlustfunktion für die Klassifizierung wie die binäre Kreuzentropie (engl. \emph{binary cross entropy}) verwendet werden.
 Das liegt daran, dass der vorliegende Anwendungsfall als Binärklassifizierung angesehen werden kann: entweder es befindet sich eine Radarkontrolle in einer Rasterzelle oder nicht.
 Bei einem ausgeglichenen Datensatz könnte eine solche Verlustfunktion direkt verwendet werden.
@@ -60,13 +60,14 @@ Mit einer normalen Verlustfunktion werden falsch-negative Ergebnisse genauso har
 Andersherum werden richtig-positive Ergebnisse genauso begünstigt wie richtig-negative.
 Hier ergibt sich jedoch ein Problem.
 Ein bei der Trainierung sehr schnell zu findendes Minimum der Verlustfunktion liegt genau dort, wo die Vorhersage des gesamten Rasters "`negativ"' ist.
-Somit kann beispielsweise bei einer Positivenrate von 5\,\% im Datensatz eine Genauigkeit (engl. \emph{accuracy}) von 95\,\% erzielt werden, wenn alle Rasterzellen als "`negativ"' vorhergesagt werden.
+Somit kann beispielsweise bei einer Positivrate von 5\,\% im Datensatz eine Genauigkeit (engl. \emph{accuracy}) von 95\,\% erzielt werden, wenn alle Rasterzellen als "`negativ"' vorhergesagt werden.
 Allerdings entsteht damit keinerlei Erkenntnisgewinn.
 Damit der Optimierungsalgorithmus nicht nach kurzer Zeit in dieses schnell zu erreichende Minimum fällt, kann nach \cite{CrimeConvLSTM} eine gewichtete Verlustfunktion verwendet werden.
 Eine gewichtete Verlustfunktion weist den einzelnen Klassen Gewichtungen zu, die mit den Kreuzentropiewerten der jeweiligen Klasse multipliziert werden.
 Ist die Gewichtung größer als $1$, wird der Wert der Kreuzentropie verstärkt bzw. mehr gewichtet und umgekehrt.
 Die in der vorliegenden Arbeit verwendete Verlustfunktion ist in \autoref{lst:WeightedCrossEntropy} dargestellt.
 
+\begin{minipage}{\textwidth}
 \begin{code}
 \begin{minted}[
     linenos,
@@ -91,6 +92,7 @@ def weighted_binary_crossentropy(weights: dict):
 \captionof{listing}{Implementierung einer gewichteten Kreuzentropie als Verlustfunktion für spärliche Daten}
 \label{lst:WeightedCrossEntropy}
 \end{code}
+\end{minipage}
 
 In Zeile 6 wird die Matrix \emph{weights\_v} berechnet, die die Gewichtungen jeweils an den Stellen enthalten, an denen die jeweilige Klasse in den wahren Daten vorkommen.
 In Zeile 7 wird die gewöhnliche binäre Kreuzentropie berechnet.
@@ -99,10 +101,11 @@ Die Matrix \emph{weighted\_crossentropy} enthält nun die gewichtete Kreuzentrop
 Der Verlustwert berechnet sich dann in Zeile 10 aus dem Durchschnitt aller dieser Werte.
 
 Als Nächstes stellt sich noch die Frage, welche Gewichtungen verwendet werden sollten.
-Nach \cite{ImbalancedData} bietet es sich an, die Gewichtungen anhand der Anzeile der verschiedenen Klassen am gesamten Datensatz zu berechnen.
+Nach \cite{ImbalancedData} bietet es sich an, die Gewichtungen anhand der Anteile der verschiedenen Klassen am gesamten Datensatz zu berechnen.
 Somit sind die Gewichtungen abhängig von der konkreten Beschaffenheit des Datensatzes.
 Konkret wird in \cite{ImbalancedData} die Implementierung vorgeschlagen, die in \autoref{lst:ClassWeights} zu sehen ist.
 
+\begin{minipage}{\textwidth}
 \begin{code}
 \begin{minted}[
     linenos,
@@ -121,6 +124,7 @@ def get_class_weights(dataset):
 \captionof{listing}{Berechnung der Klassengewichtungen nach \cite{ImbalancedData}}
 \label{lst:ClassWeights}
 \end{code}
+\end{minipage}
 
 In Zeile 2 wird mit \emph{np.bincount()} die Anzahl an "`0"'- und "`1"'-Werten im gesamten Datensatz berechnet.
 In Zeile 4 und 5 werden dann die Gewichtungen berechnet, sodass diese reziprok proportional zum Anteil der Klassen sind.

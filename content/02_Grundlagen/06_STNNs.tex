@@ -1,13 +1,13 @@
 \subsection{Neuronale Netze für räumlich-zeitliche Vorhersagen}
 \label{sec:STNNs}
 
-Um räumlich-zeitliche Zusammenhänge in Datensätzen durch ein \acrshort{nn} zu erlernen existieren verschiedene Architekturen.
+Um räumlich-zeitliche Zusammenhänge in Datensätzen durch ein \acrshort{nn} zu erlernen, existieren verschiedene Architekturen.
 In \cite{DLTraff} befindet sich ein detaillierter Vergleich vieler dieser Architekturen anhand ihrer Ansätze und Performance.
 Zwei weit verbreitete Beispiele werden im folgenden zusammengefasst.
 
 \textbf{ST-ResNet} wird in \cite{STResNetOriginal} definiert und ist eines der populärsten Modelle für räumlich-zeitliche Vorhersagen.
-In \cite{DLTraff} wird dies mit der großen Anzahl an Paper begründet, die Referenzen auf \cite{STResNetOriginal} enthalten.
-Der Anwendungsfall für den ST-ResNet konzipiert wurde, ist die Vorhersage der Bewegung von Menschenmassen (engl. \emph{crowd flow}).
+In \cite{DLTraff} wird dies mit der großen Anzahl an Papers begründet, die Referenzen auf \cite{STResNetOriginal} enthalten.
+Der Anwendungsfall, für den ST-ResNet konzipiert wurde, ist die Vorhersage der Bewegung von Menschenmassen (engl. \emph{crowd flow}).
 Dabei ist es egal, wie sich die Menschen bewegen.
 So kann ST-ResNet beispielsweise nicht nur auf Fußgänger angewendet werden, sondern auch auf Leihfahrräder, Taxis oder Verkehr allgemein.
 Außerdem kann ST-ResNet auch auf beliebige andere rasterbasierte räumlich-zeitliche Vorhersagen angewendet werden, wie z.\,B. die Vorhersage von Verbrechen.
@@ -19,9 +19,9 @@ Für die Architektur von ST-ResNet haben sich Zhang et al. genau überlegt, welc
 Sie stellen zunächst fest, dass der Inflow einer Zelle abhängig ist vom Outflow der benachbarten Zellen.
 Es können jedoch auch Zusammenhänge zu weiter entfernten Zellen bestehen, da es in größeren Städten normalerweise ein U-Bahn Netz gibt, welches weiter entfernte Zellen direkt miteinander verbindet.
 Bei den zeitlichen Zusammenhängen handelt es sich um verschieden große Zeitspannen.
-Zhang et al. führen je Beispiele für Zusammenhänge innerhalb eines Tages sowie für tagliche, wöchentliche und jährliche Zusammenhänge an.
+Zhang et al. führen Beispiele für Zusammenhänge innerhalb eines Tages sowie für tägliche, wöchentliche und jährliche Zusammenhänge an.
 Beispielsweise würden sich die Bewegungen von Menschenmassen zu Stoßzeiten jeden Tag ähnlich verhalten, wobei die Stoßzeiten im Winter aufgrund des späteren Sonnenaufgangs ebenfalls später auftreten würden.
-Die Bewegungen im Allgemeinen würden zusätzlich zu den räumlichen und zeitlichen Begebenheiten auch von externen Faktoren wie dem Wetter beeinflusst.
+Die Bewegungen im Allgemeinen würden zusätzlich zu den räumlichen und zeitlichen Begebenheiten auch von externen Faktoren wie z.\,B. dem Wetter beeinflusst.
 Um alle diese möglichen Zusammenhänge zu berücksichtigen, haben Zhang et al. die in \autoref{fig:STResNetArchitecture} dargestellte Architektur entworfen.
 
 \begin{figure}[h]
@@ -36,7 +36,7 @@ Die drei rechten Teile modellieren den langfristigen Trend (\emph{trend}), mitte
 Diese drei Teile haben jeweils die gleiche Struktur.
 Die Eingangsdaten werden zunächst einem \acrshort{cnn}-Layer zugeführt.
 Dessen Ausgabe durchläuft dann mehrere sogenannte Residual Units.
-Diese beinhalten wiederum \acrshort{cnn}-Layer, jedoch wird die Eingabe einer Residual Unit wieder zum Ausgang der \acrshort{cnn}-Layer dazuaddiert.
+Diese beinhalten wiederum \acrshort{cnn}-Layer, jedoch wird die Eingabe einer Residual Unit wieder zum Ausgang der \acrshort{cnn}-Layer hinzuaddiert.
 Dadurch können sehr tiefe Netze gebildet werden, ohne dass diese dem Problem des verschwindenden Gradienten unterliegen.
 Der Ausgang der letzten Residual Unit wird schlussendlich nochmals durch einen \acrshort{cnn}-Layer verarbeitet.
 
@@ -56,7 +56,7 @@ Die Kombination aus dem linken Teil und der zusammengeführten Ausgabe der drei 
 Conv\-LSTM wurde von Shi et al. in \cite{ConvLSTM} vorgestellt.
 Bei ConvLSTM handelt es sich um eine Kombination aus \acrshort{cnn} und \acrshort{lstm}.
 Durch Faltungsoperationen soll hierbei die räumliche Strukur erhalten bleiben.
-Außerdem soll durch die Verwendung einer abgewandelten \acrshort{lstm}-Struktur die zeitlichen Zusammenhänge erfasst werden.
+Außerdem sollen durch die Verwendung einer abgewandelten \acrshort{lstm}-Struktur die zeitlichen Zusammenhänge erfasst werden.
 Das ursprüngliche Ziel von ConvLSTM ist nach Shi et al. die Vorhersage einer \emph{Sequenz} von 2D-Daten anhand einer Eingabesequenz.
 Dafür orientieren sie sich an der in \cite{SequenceGeneratingLSTM} vorgestellten Architektur.
 Diese Architektur besteht aus mehreren hintereinandergeschalteten \acrshort{lstm}-Zellen.
@@ -76,7 +76,7 @@ Dadurch, dass die Tore aus der \acrshort{lstm}-Architektur übernommen wurden, w
 Wie auch schon bei reinen \acrshortpl{lstm} ist es nicht wichtig zu verstehen, was genau die Tore räumlich und zeitlich filtern.
 Es ist nur wichtig zu wissen, dass mit ConvLSTM lang- und kurzfristige Abhängigkeiten in der räumlichen und zeitlichen Dimension erlernt werden können.
 
-Prinzipiell sind beide Modelle für den Anwendungsfall der Vorhersage von mobilen Radarkontrollen geeignet, da beide Rasterbasiert arbeiten und räumliche sowie zeitliche Zusammenhänge erlernen können.
+Prinzipiell sind beide Modelle für den Anwendungsfall der Vorhersage von mobilen Radarkontrollen geeignet, da beide rasterbasiert arbeiten und räumliche sowie zeitliche Zusammenhänge erlernen können.
 Für die Auswahl eines der Modelle kommen also vor allem praktische Aspekte in Betracht.
 Dafür ist zunächst wichtig, dass die vorliegende Arbeit in einer begrenzten Zeit fertiggestellt werden muss.
 Daher sollte es so wenig wie möglich Aufwand machen, das Modell in einer Implementierung zu verwenden.

@@ -7,10 +7,10 @@ Somit ergibt sich ein Array der Form $(2652,~50,~50)$.
 Die einzelnen Pixel enthalten bisher noch die summierte Standdauer der Radarkontrollen.
 Mit dem Wissen um die gewichtete Verlustfunktion ist jedoch klar geworden, dass es sich bei der Problemstellung eigentlich um eine Binärklassifizierung handelt.
 Daher muss nun ein Grenzwert ausgewählt werden, ab dem eine Rasterzelle als "`positiv"' gilt.
-Auch hier muss zwischen der Verlässlichkeit der Meldungen und der Anzahl an positiven Datenpunkten abgewägt werden.
-Da es jedoch wichtiger ist, alle künftigen Radarkontrollen vorherzusagen als alle Rasterzellen korrekt vorherzusagen, in denen es keine Radarkontrolle gibt, sollte der Grenzwert relativ gering gewählt werden.
+Auch hier muss zwischen der Verlässlichkeit der Meldungen und der Anzahl an positiven Datenpunkten abgewogen werden.
+Da es jedoch wichtiger ist, alle künftigen Radarkontrollen vorherzusagen als alle Rasterzellen korrekt vorherzusagen, in denen es keine Radarkontrolle gibt, sollte der Grenzwert relativ niedrig gewählt werden.
 Im Bezug auf die Verteilung der Standdauer in \autoref{fig:StanddauerVerteilung} scheint eine halbe Stunde ein guter Grenzwert zu sein.
-Damit wird ein großteil der Meldungen eingeschlossen, wobei die wenig verlässlichen Meldungen unter einer halben Stunde vernachlässigt werden.
+Damit wird ein Großteil der Meldungen eingeschlossen, wobei die wenig verlässlichen Meldungen unter einer halben Stunde vernachlässigt werden.
 Die Klassenzuordnung je nach Überschreitung des Grenzwertes kann mit numpy einfach implementiert werden als \emph{dataset = np.where(dataset > 0.5, 1, 0)}.
 
 Als Nächstes muss der Datensatz in Sequenzen von je 17 Frames aufgeteilt werden, von denen die ersten 16 als Eingabesequenz dienen und das letzte als Zielframe.
@@ -23,6 +23,7 @@ Dazu werden die Sequenzen zufällig gemischt und anschließend werden 90\,\% der
 Die Sequenzen müssen im letzten Schritt noch je in die Ein- und Zielausgabe des \acrshortpl{nn} unterteilt werden.
 Dies wird in \autoref{lst:CreateXYFrames} von der Funktion \emph{create\_xy\_frames()} implementiert.
 
+\begin{minipage}{\textwidth}
 \begin{code}
 \begin{minted}[
     linenos,
@@ -40,13 +41,14 @@ def create_xy_frames(data):
 x_train, y_train = create_xy_frames(train_dataset)
 x_val, y_val = create_xy_frames(val_dataset)
 \end{minted}
-\captionof{listing}{Implementierung der Funktion \emph{create\_xy\_frames()} zum Unterteilen der Sequenzen in Ein- und Zielausgabe}
+\captionof{listing}{Implementierung der Funktion \emph{create\_xy\_frames()} zum Unterteilen der Sequenzen in Eingabe und Zielausgabe}
 \label{lst:CreateXYFrames}
 \end{code}
+\end{minipage}
 
 In Zeile \ref{x_frames} wird zunächst die Eingabesequenz extrahiert.
 Diese besteht aus dem ersten bis vorletzten Frame, somit hat der Eingabedatensatz \emph{x\_train} schließlich die Form $(2372,~16,~50,~50)$.
-Die Zielausgabe hingegen wird in Zeile \ref{y_frames} erstellt besteht nur aus dem letzten Frame jeder Sequenz.
+Die Zielausgabe hingegen wird in Zeile \ref{y_frames} erstellt und besteht nur aus dem letzten Frame jeder Sequenz.
 Durch die Auswahl nur eines Elements einer Dimension geht diese Dimension jedoch komplett verloren.
 Da das \acrshort{nn} die Dimension jedoch erwartet, muss sie in Zeile \ref{y_frames_dim} wieder hinzugefügt werden, sie hat dann die Länge $1$.
 Damit hat die Zielausgabe \emph{y\_train} die Form $(2372,~1,~50,~50)$.

@@ -9,6 +9,7 @@ Dieser überwacht die Performance des Modells mithilfe einer beliebigen Metrik u
 Somit kann überflüssige Trainingszeit gespart und Überanpassung vermieden werden.
 Die Definition des Callbacks ist in \autoref{lst:ModelTraining} in Zeile 1 und 2 zu sehen.
 
+\begin{minipage}{\textwidth}
 \begin{code}
 \begin{minted}[
     linenos,
@@ -33,11 +34,12 @@ batch_size = 12
 \captionof{listing}{Definition der Callbacks zur Verbesserung des Trainings und Trainierung des Modells}
 \label{lst:ModelTraining}
 \end{code}
+\end{minipage}
 
 Die überwachte Metrik ist der Verlustwert der Validierung.
-Der Parameter \emph{patience} bestimmt, wie viele Epochen ohne eine verbesserung der überwachten Metrik gewartet werden sollen, bis das Training beendet wird.
+Der Parameter \emph{patience} bestimmt, wie viele Epochen ohne eine Verbesserung der überwachten Metrik gewartet werden sollen, bis das Training beendet wird.
 Die in Zeile 2 aktivierte Option \emph{restore\_best\_weights} besagt, dass das Modell am Ende des Trainings in den Zustand gebracht werden soll, bei dem die überwachte Metrik den besten Wert hatte.
-Dies kann beispielsweise Sinnvoll sein, wenn sich der Verlustwert der Validierung durch Überanpassung gegen Ende wieder verschlechtert.
+Dies kann beispielsweise sinnvoll sein, wenn sich der Verlustwert der Validierung durch Überanpassung gegen Ende wieder verschlechtert.
 Allerdings muss diese Option mit Vorsicht verwendet werden, da sie auch eine Überanpassung an die Validierungsdaten begünstigt.
 
 Ein weiterer hilfreicher Callback ist \emph{ReduceLROnPlateau}.
@@ -61,7 +63,7 @@ Die Stapelgröße sollte also so gewählt werden, dass der Speicher bestmöglich
 Da die Trainingsdaten im vorliegenden Anwendungsfall größer sind als bei einfachen Klassifizierungsaufgaben, kann die Stapelgröße nicht sehr groß gewählt werden.
 Bei einer Stapelgröße von 12 reicht der 8 GB große Speicher der verwendeten Grafikkarte \emph{Nvidia GeForce GTX 1080} gerade aus.
 
-Nun da die notwendigen Hyperparameter definiert sind, kann das Modell trainiert werden.
+Nun, da die notwendigen Hyperparameter definiert sind, kann das Modell trainiert werden.
 Dazu wird \emph{model.fit()} aufgerufen, wie in \autoref{lst:ModelTraining} in Zeile \ref{fit_start} bis \ref{fit_end} gezeigt.
 Diese Methode gibt die Entwicklung verschiedener Metriken im Verlauf des Trainings zurück.
 Auf der oben erwähnten Grafikkarte dauert das Training pro Epoche ca. 80 Sekunden.

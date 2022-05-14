@@ -1,6 +1,6 @@
 \subsection{Rasterisierung}
 \label{sec:Rasterisierung}
-Um ein Rasterbasiertes Modell wie ConvLSTM oder ST-ResNet für die Vorhersage von mobilen Radarkontrollen verwenden zu können, müssen die räumlich und zeitlich kontinuierlichen Datenpunkte aus dem Datensatz zunächst rasterisiert werden.
+Um ein rasterbasiertes Modell wie ConvLSTM oder ST-ResNet für die Vorhersage von mobilen Radarkontrollen verwenden zu können, müssen die räumlich und zeitlich kontinuierlichen Datenpunkte aus dem Datensatz zunächst rasterisiert werden.
 Dazu ist es sinnvoll nochmals zu betrachten, wie die Daten ursprünglich vorliegen.
 Jede Meldung ist eine Zeile in einer Datenbanktabelle mit den Spalten \emph{Längengrad}, \emph{Breitengrad}, \emph{Aufbauzeitpunkt} und \emph{Abbauzeitpunkt}.
 Das Ziel besteht darin, die Datenpunkte so zu verarbeiten, dass pro Zeitraum $T$ ein Raster aus $n \times n$ quadratischen Zellen mit der Seitenlänge $k$ entsteht, bei dem jeder Zelle ein Wert $x$ zugeordnet ist, der etwas über die gemeldeten Radarkontrollen in dieser Zelle aussagt.
@@ -22,14 +22,14 @@ Wird $k$ zu groß gewählt, ist die zeitliche Auflösung zu gering, als dass die
 Wenn $k$ hingegen zu klein gewählt wird, gibt es in zu wenigen Zellen eine Meldung, um das Modell gut trainieren zu können.
 Bei der Wahl von $k$ kommt es außerdem darauf an, ob eher städtischer oder ländlicher Raum betrachtet werden soll.
 Für den ländlichen Raum scheint $k = 4~\text{km}$ eine gute Wahl zu sein, da die Radarkontrollen dort nicht sonderlich dicht liegen.
-Für den städtischen Raum ist dieser Wert jedoch eher zu groß, da sich in einem 4 km Radius vergleichsweise deulich mehr Straßen befinden.
+Für den städtischen Raum ist dieser Wert jedoch zu groß, da sich in einem 4 km Radius vergleichsweise deulich mehr Straßen befinden.
 Außerdem ist die Dichte an Radarkontrollen im städtischen Raum höher, weshalb ein geringeres $k$ von einem oder zwei Kilometer durchaus möglich ist.
 Wird (beispielsweise in Baden-Württemberg) insgesamt ein größerer Raum abgedeckt, besteht die meiste Fläche aus ländlichem Gebiet.
 Daher wird im folgenden mit $k = 4~\text{km}$ fortgefahren.
 Die Wahl von $n$ beeinflusst nun den insgesamt durch das Raster abgedeckten Raum.
 Optimalerweise sollte dieser Wert möglichst groß sein, um möglichst viele Trainingsdaten einzuschließen.
-Andererseits ist $n$ durch den währen des Trainings verfügbaren Speicher begrenzt.
-Wird das Training auf einer Grafikkarte ausgeführt, muss das komplette Modell und alle Trainingsdaten, die pro Batch verarbeitet werden in den Grafikspeicher passen.
+Andererseits ist $n$ durch den während des Trainings verfügbaren Speicher begrenzt.
+Wird das Training auf einer Grafikkarte ausgeführt, müssen das komplette Modell und alle Trainingsdaten, die pro Batch verarbeitet werden in den Grafikspeicher passen.
 Da der Speicherbedarf quadratisch mit $n$ ansteigt, ist man hier in der Praxis sehr eingeschränkt.
 Bei einem Grafikspeicher von 8 GB und einer Batch Size von 12 ist $n = 50$ gut möglich.
 Mit $k = 4~\text{km}$ ergibt sich dann eine Seitenlänge des gesamten Rasters von 200 km.
@@ -76,7 +76,7 @@ Daraufhin wird der Punkt mit R6 und R7 verglichen.
 Da der Punkt in R7 liegt, liefern die Vergleiche mit R17, R18 und R19, dass sich nur R17 und R18 mit dem Punkt überschneiden.
 Dieser Performancegewinn macht sich nach \cite{RTrees} vor allem bei sehr vielen Datenpunkten bemerkbar.
 
-Da der Datensatz der Mobilen Radarkontrollen ca. 7,7 Millionen Einträge enthält, ist es hier sehr sinnvoll, eine Geodatenbank mit räumlichem Index zu verwenden.
+Da der Datensatz der mobilen Radarkontrollen ca. 7,7 Millionen Einträge enthält, ist es hier sehr sinnvoll, eine Geodatenbank mit räumlichem Index zu verwenden.
 Als Geodatenbank bietet sich PostgreSQL mit der PostGIS-Erweiterung (im folgenden zusammen PostGIS genannt) an.
 Die Datenpunkte müssen nun von MariaDB nach PostGIS übertragen werden.
 Dies kann komfortabel mit einem Python-Skript unter Verwendung der Pakete SQLAlchemy und GeoAlchemy2 bewerkstelligt werden.
@@ -138,7 +138,7 @@ Die relevanten Parameter und Werte für dieses Ziel sind:
 
 Die Rückgabe des Algorithmus ist wiederum ein Vektorlayer, der nun pro Rasterzelle die summierte Standdauer der Radarkontrollen als Attribut enthält.
 Mit dem Aufruf der Funktion \emph{store\_layer()} in Zeile 33 von \autoref{lst:GenerateHeatmapFunction} wird der Layer als \acrlong{gpkg} (\acrshort{gpkg}-Datei) gespeichert.
-Eine \acrshort{gpkg}-Datei ist nach \cite{GPKG} ein Container zum speichern von geographischen Daten.
+Eine \acrshort{gpkg}-Datei ist nach \cite{GPKG} ein Container zum Speichern von geographischen Daten.
 Dabei ist \acrshort{gpkg} als SQLite-Datenbank implementiert.
 Daher können \acrshort{gpkg}-Dateien auch mit anderen Programmen geöffnet werden, die SQLite-Datenbanken verarbeiten können.
 Als Veranschaulichung des Ergebnisses des eben erläuterten Algorithmus ist in \autoref{fig:GpkgExample} ein Ausschnitt aus der resultierenden \acrshort{gpkg}-Datei für den 17.04.2014 dargestellt.
@@ -163,7 +163,7 @@ Im Unterschied zu gewöhnlichen Bilddateien enthält eine GeoTIFF-Datei nach \ci
 Dazu zählen z.\,B. Koordinaten als Georeferenz und das verwendete Koordinatenreferenzsystem.
 Damit kann das Raster im Koordinatensystem richtig positioniert werden, ohne dass wie bei \acrshort{gpkg}-Dateien die Grenzen jeder einzelnen Rasterzelle gespeichert werden müssen.
 Diese Metadaten werden nach \cite{GeoTIFFStandard} so gespeichert, dass eine GeoTIFF-Datei auch dem \acrshort{tiff}-Format entspricht.
-Beispielsweise kann eine GeoTIFF-Datei mit der Bildverarbeitungssoftware \acrfull{gimp} geöffnet werden, auch wenn es dafür keine wirkliche Anwendung gibt.
+Beispielsweise kann eine GeoTIFF-Datei mit der Bildverarbeitungssoftware \acrfullr{gimp} geöffnet werden, auch wenn es dafür keine wirkliche Anwendung gibt.
 
 Zur Umwandlung der \acrshort{gpkg}-Dateien in GeoTIFF-Dateien kann das Programm \emph{gdal\_rasterize} verwendet werden, welches mit der \acrfull{gdal} mitgeliefert wird.
 Den Aufruf dieses Programms sieht man in \autoref{lst:ProcessDatesFunction} in den Zeilen 13 bis 17.
@@ -173,6 +173,7 @@ Wie in \autoref{fig:GpkgExample} zu sehen ist, ist dies im vorliegenden Fall \em
 Ist die GeoTIFF-Datei erstellt, kann diese sehr einfach als numpy-Array eingelesen werden, was in \autoref{lst:GdalOpen} Zeile \ref{gdal_numpy_start} bis \ref{gdal_numpy_end} demonstriert wird.
 Außerdem können die Metadaten ausgelesen werden, was in Zeile \ref{gdal_metadata_start} bis \ref{gdal_metadata_end} zu sehen ist.
 
+\begin{minipage}{\textwidth}
 \begin{code}
 \begin{minted}[
     linenos,
@@ -200,6 +201,7 @@ Außerdem können die Metadaten ausgelesen werden, was in Zeile \ref{gdal_metada
 \captionof{listing}{Extrahierung der Parameter und Daten aus einer GeoTIFF-Datei}
 \label{lst:GdalOpen}
 \end{code}
+\end{minipage}
 
 Damit ist die Implementierung der Rasterisierung des Datensatzes abgeschlossen.
 Die mit \acrshort{gdal} geladenen numpy-Arrays können nun als Input für das neuronale Netz verwendet werden.

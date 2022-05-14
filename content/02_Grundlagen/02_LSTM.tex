@@ -34,7 +34,7 @@ Nach der Berechnung wird die Ausgabe zum neuen internen Zustand, man könnte als
 Diese einfache Architektur unterliegt nach \cite[S. 260]{DeepLearningPythonKeras} jedoch dem sogenannten \emph{Problem des verschwindenden Gradienten}.
 Dieser Effekt sorgt dafür, dass relativ weit zurückliegende Eingaben praktisch keinen Einfluss mehr auf die Ausgabe haben.
 Es sind jedoch Anwendungsfälle denkbar, in denen auch weiter zurückliegende Ereignisse einen großen Einfluss auf die Gegenwart haben.
-Für die Vorhersage von mobilen Radarkontrollen könnte beispielsweise von Bedeutung sein, wie die Verteilung der Radarkontrollen 15 Tage in der Vergangenueit ausgesehen hat.
+Für die Vorhersage von mobilen Radarkontrollen könnte beispielsweise von Bedeutung sein, wie die Verteilung der Radarkontrollen 15 Tage in der Vergangenheit ausgesehen hat.
 Das liegt daran, dass eine Periodizität der Daten von z.\,B. 15 Tagen durchaus denkbar ist.
 Zur Lösung dieses Problems gibt es verschiedene alternative \acrshort{rnn}-Architekturen.
 Eine davon ist \acrfull{lstm}.
@@ -62,8 +62,8 @@ Die drei Tore und ihre jeweilige vorgesehene Wirkung sind nach \cite{6S191RNN}:
 \end{minipage}
 
 Amini und Soleimany stellen die vorgesehene Wirkung der Tore in \cite{6S191RNN} ohne weitere kritische Auseinandersetzung dar.
-Wie Chollet in \cite[S. 263]{DeepLearningPythonKeras} argumentiert, ist diese Wirkung jedoch keinesfalls garantiert.
+Wie Chollet in \cite[S. 263]{DeepLearningPythonKeras} argumentiert, sei diese Wirkung jedoch keinesfalls garantiert.
 Die tatsächliche Wirkung hinge viel mehr von den letztendlich antrainierten Gewichtungen der Tore ab.
-Sie sind sich jedoch einig, dass es nicht wichtig ist, die interne Funktionsweise einer \acrshort{lstm}-Zelle im Detail zu verstehen.
+Alle drei sind sich jedoch einig, dass es nicht wichtig ist, die interne Funktionsweise einer \acrshort{lstm}-Zelle im Detail zu verstehen.
 Chollet geht noch einen Schritt weiter und argumentiert, dass dies ganz allgemein keine Aufgabe der Menschen sei.
-Wichtig sei nur, sich im Klaren zu sein, welche Aufgabe eine \acrshort{lstm}-Zelle erfüllt: Sie ermöglicht es, sowohl langfristige als auch kurzfristige Zusammenhänge anhand der Trainingsdaten zu erlernen.
+Wichtig wäre nur, sich im Klaren zu sein, welche Aufgabe eine \acrshort{lstm}-Zelle erfüllt: Sie ermöglicht es, anhand der Trainingsdaten sowohl langfristige als auch kurzfristige Zusammenhänge zu erlernen.
