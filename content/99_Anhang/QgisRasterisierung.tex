@@ -94,7 +94,7 @@ def process_dates(dates):
         gpkg_to_tif(gpkg_path, tif_path, heatmap, grid_cell_size=grid_cell_size)
         os.remove(gpkg_path)
 \end{minted}
-\captionof{listing}{}
+\captionof{listing}{Umwandlung einer \acrshort{gpkg}-Datei in eine GeoTIFF-Datei mit \emph{gdal\_rasterize} und high-level Ablauf der Rasterisierung}
 \label{lst:ProcessDatesFunction}
 \end{code}
 
@@ -128,6 +128,6 @@ def main():
     Parallel(n_jobs=24)(delayed(process_dates)(batch)
         for batch in batches)
 \end{minted}
-\captionof{listing}{GenerateHeatmapFunction}
+\captionof{listing}{Parallele Rasterisierung des Datensatzes}
 \label{lst:RasterisierungMainFunction}
 \end{code}
