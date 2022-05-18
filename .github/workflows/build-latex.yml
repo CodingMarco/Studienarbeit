@@ -12,7 +12,6 @@ jobs:
           root_file: Main.tex
           latexmk_shell_escape: true
           extra_system_packages: "py-pygments"
-          pre_compile: "tlmgr update --self && tlmgr update --all"
       - uses: actions/upload-artifact@v2
         with:
             name: PDF
