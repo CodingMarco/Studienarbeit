@@ -16,5 +16,5 @@ jobs:
           pre_compile: "find * -type d -exec mkdir -p -- aux/{} \\;"
       - uses: actions/upload-artifact@v2
         with:
-            name: PDF
-            path: Main.pdf
+            name: studienarbeit_pdf
+            path: aux/Main.pdf
