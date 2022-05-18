@@ -13,7 +13,7 @@ jobs:
           latexmk_shell_escape: true
           extra_system_packages: "py-pygments"
           args: "-pdf -file-line-error -halt-on-error -interaction=nonstopmode -outdir=aux"
-          pre_compile: "find * -type d -exec mkdir -p -- aux/{} \;"
+          pre_compile: "find * -type d -exec mkdir -p -- aux/{} \\;"
       - uses: actions/upload-artifact@v2
         with:
             name: PDF
