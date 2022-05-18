@@ -48,6 +48,7 @@ def generate_heatmap(gpkg_path, date, extent, grid_cell_size=4000):
 \end{code}
 
 \clearpage
+\begin{minipage}{\textwidth}
 \begin{code}
 \begin{minted}[
     linenos,
@@ -66,7 +67,6 @@ def gpkg_to_tif(gpkg_path, tif_path, heatmap, grid_cell_size=1000):
     raster_width = round((extent[1] - extent[0])/grid_cell_size)
     raster_height = round((extent[3] - extent[2])/grid_cell_size)
 
-    # Rasterize heatmap using gdal_rasterize subprocess
     subprocess.call(['gdal_rasterize', '-a', 'duration_hours_sum', '-ts',
         str(raster_width), str(raster_height), '-a_nodata', '0.0', '-te',
         str(extent[0]), str(extent[2]), str(extent[1]), str(extent[3]),
@@ -97,6 +97,7 @@ def process_dates(dates):
 \captionof{listing}{Umwandlung einer \acrshort{gpkg}-Datei in eine GeoTIFF-Datei mit \emph{gdal\_rasterize} und high-level Ablauf der Rasterisierung}
 \label{lst:ProcessDatesFunction}
 \end{code}
+\end{minipage}
 
 \clearpage
 \begin{code}
