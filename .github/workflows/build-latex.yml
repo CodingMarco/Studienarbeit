@@ -10,7 +10,6 @@ jobs:
         uses: xu-cheng/latex-action@v2
         with:
           root_file: Main.tex
-          latexmk_use_xelatex: true
           latexmk_shell_escape: true
       - uses: actions/upload-artifact@v2
         with:
