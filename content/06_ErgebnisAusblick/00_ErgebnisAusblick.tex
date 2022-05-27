@@ -20,31 +20,31 @@ Mit der Einteilung in vier Gefahrenstufen wurde eine Möglichkeit gefunden, mög
 Zuletzt wurde die Performance des Modells evaluiert.
 Dieser Schritt ist sehr wichtig, da er die Sinnhaftigkeit einer Anwendung von Deep Learning auf die vorliegende Problemstellung bestätigen oder wiederlegen soll.
 Durch zufälliges Vertauschen der Zielframes konnte bestätigt werden, dass die Vorhersagen tatsächlich von den konkreten Eingabeframes abhängen.
-Es wurde mit bestem Wissen und Gewissen und mit nicht zu vernachlässigendem Aufwand dafür gesorgt, dass das Modell die wahren Zielframes zuvor wirklich noch nie gesehen hat.
+Es wurde mit bestem Wissen und Gewissen dafür gesorgt, dass das Modell die wahren Zielframes zuvor noch nie gesehen hat.
 Daher lässt sich schlussfolgen, dass sich die anfängliche Vermutung bestätigt, dass es gewisse Muster in den Daten gibt, anhand derer sich die Standorte von mobilen Radarkontrollen vorhersagen lassen.
 Es besteht also teilweise ein direkter Zusammenhang zwischen den Standorten der letzten 16 Tage und denen des Folgetages.
 Des weiteren lässt sich aus diesem Ergebnis ableiten, dass Deep Learning und insbesondere die ConvLSTM-Architektur auf die vorliegende Problemstellung anwendbar ist, was nicht von Anfang an klar war.
 Mit dem gewählten Vorgehen ist die Vorhersage der Gefahr für mobile Radarkontrollen somit grundsätzlich möglich.
-Allerdings ist die Vorhersage fehlerbehaftet, da es sowohl einige falsch-negative als auch falsch-positive gibt.
+Allerdings ist die Vorhersage fehlerbehaftet, da es sowohl einige Falsch-Negative als auch Falsch-Positive gibt.
 Dies war jedoch von Anfang an zu erwarten, da schon der Datensatz nicht perfekt ist.
 Außerdem kann nicht davon ausgegangen werden, dass ein komplett kausaler Zusammenhang zwischen den Standorten der letzten 16 Tage und denen des Folgetages besteht.
 Daher werden die Vorhersagen immer fehlerbehaftet sein.
 
 Jedoch gibt es einige Ansätze, wie die Genauigkeit der Vorhersagen auch unter diesen Umständen weiter erhöht werden könnte.
 Zunächst kann man bei einer räumlichen Betrachtung des Datensatzes schnell erkennen, dass es für die Standorte von mobilen Radarkontrollen Hotspots gibt, die über die Zeit konstant bleiben, wie z.\,B. an bestimmten Kreuzungen.
-Daher würde es zum vorliegenden, räumlich kontinuierlichen Datensatz besser passen, diesen als Graph zu betrachten, bei dem Hotspots den Knoten und das Straßennetz den Kanten entsprechen.
+Daher würde es zum vorliegenden, räumlich kontinuierlichen Datensatz besser passen, diesen als Graph zu betrachten, bei dem Hotspots Knoten und das Straßennetz Kanten entsprechen.
 Für graphbasierte Daten gibt es einige vielversprechende Modellarchitekturen, über die in \cite{DLTraff} ein Überblick gegeben wird.
-Beispiel hierfür sind die Modelle STGCN oder DCRNN.
+Beispiele hierfür sind die Modelle STGCN oder DCRNN.
 Auch der rasterbasierte Ansatz kann noch weiter verfeinert werden.
-In \cite{HeteroConvLSTM}, wo es um die Vorhersage von Verkehrsunfällen geht, werden beispielsweise einige vielversprechende Vorgehensweisen vorgestellt, die über das Vorgehen in dieser Arbeit deutlich hinausgehen.
-Zunächst beschäftigen die Autoren die Unterschiede zwischen Stadt und Land.
+In \cite{HeteroConvLSTM}, werden beispielsweise im Rahmen der Vorhersage von Verkehrsunfällen einige vielversprechende Vorgehensweisen vorgestellt, die über das Vorgehen der vorliegenden Arbeit deutlich hinausgehen.
+Zunächst versuchen die Autoren, Unterschiede zwischen Stadt und Land möglichst gut zu berücksichtigen.
 Um ihnen gerecht zu werden, verwenden sie einen Sliding-Window Ansatz, bei dem ein 32x32 Pixel großes Fenster über verschiedene Bereiche der Eingabe gelegt wird.
 Somit überwiegt bei jeder einzelnen Position nicht immer der Verlustwert der städtischen Gebiete, was sonst der Fall wäre.
-Der zweite große Unterschied zur in dieser Arbeit verwendeten Implementierung ist die Einbindung von deutlich mehr Merkmalen.
+Der zweite große Unterschied zur in der vorliegenden Arbeit verwendeten Implementierung ist die Einbindung von deutlich mehr Merkmalen.
 Zusätzlich zu den Verkehrsunfällen der letzten Tage werden noch ca. 30 weitere Merkmalskarten pro Tag verwendet.
 Diese enthalten u.\,A. ob sich in einer Zelle überhaupt eine Straße befindet, die Anzahl der Verkehrsknoten, das Verkehrsaufkommen, Wetterdaten, ein RGB-Satellitenbild und den Zustand der Straßen.
 Solche zusätzlichen Merkmalskarten könnten auch für die vorliegende Problemstellung verwendet werden.
-Außerdem wird in \cite{HeteroConvLSTM} die Ausgabe des Modells am Ende mit einer Matrix multipliziert, die alle Rasterzellen auf null setzt, in denen sich keine Straße befindet.
+Außerdem wird die Ausgabe des Modells am Ende mit einer Matrix multipliziert, die alle Rasterzellen auf null setzt, in denen sich keine Straße befindet.
 
 Bei Betrachtung aller dieser Optimierungen wird klar, dass mit der vorliegenden Arbeit nur eine Grundlage geschaffen wurde.
 Daher ist es bemerkenswert, dass schon die vorliegende Implementierung einigermaßen gute Vorhersagen erzeugen kann.
