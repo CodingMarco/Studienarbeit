@@ -1,96 +1,30 @@
-# LaTeX Vorlage by Johannes Staib 2020
+# Studienarbeit Marco von Rosenberg
+Titel: Spatio-Temporal Predictions am Beispiel von Geschwindigkeitskontrollen
 
-Dateistruktur:
+## Beispielvorhersage
+![Beispielvorhersage](/content/images/Gefahrenstufen.png?raw=true "Beispielvorhersage")
 
-- **Main.tex** Main file, hier content files einbinden
-- **documentkeys.tx** Schlüsselwerte wie Studentenname und Co.
-- **configuration.tex** Alle Einstellungen
-- **general** Ordner mit allgemeinen Dateien, hier sollte man nichts ändern müssen
-- **content** hier allen eigenen Content rein.
-- **citation** hier liegt Citavi Projekt
+![Precision-Recall-Kurve](/content/images/prc_ugs.jpeg?raw=true "Precision-Recall-Kurve")
 
+## Abstract
+Spatio-temporal predictions have gained more and more popularity over the last few years.
+Spatio-temporal neural networks have been used for many different applications,
+including precipation forecasting, traffic forecasting or crime prediction.
+In this work, the spatio-temporal model ConvLSTM is applied to the prediction of speed camera locations.
+The model is trained and tested on a dataset covering seven years of reported speed camera locations in Germany.
+To be able to apply ConvLSTM, the raw locations are rasterized and a heatmap is generated for each day.
+The model then predicts, based on the preceeding 16 days, the heatmap of the following day.
+It is concluded that spatio-temporal neuronal networks are indeed applicable to the prediciton of speed camera locations, since the resulting predictions largely match the ground truth.
+Since the predictions match the actual ground truth significantly better than another random day of the same day of week, it can also be concluded that the data contains certain patterns by which the speed camera locations on a given day depend on those of the preceeding 16 days.
+Moreover it is confirmed that the model is able to learn these patterns.
 
-
-## Programme
-
-| Programme                                           | Verwendung                                      |
-| --------------------------------------------------- | ----------------------------------------------- |
-| [MiKTeX](https://miktex.org/download)               | TeX distribution                                |
-| [Perl](https://strawberryperl.com/)                 | Perl                                            |
-| [VS Code](https://code.visualstudio.com/download)   | Allgemeine IDE                                  |
-| Erweiterungen für Latex:                            |                                                 |
-| LaTeX Workshop                                      |                                                 |
-| Hilfreich bei LaTeX:                                |                                                 |
-| Explorer Exclude                                    | Ausblenden von .aux und so was                  |
-| Spell Right                                         | Für Sprachcheck in IDE                          |
-| Todo+                                               | Für #TODO Kommentare                            |
-|                                                     |                                                 |
-| Allgemein Hilfreich:                                |                                                 |
-| _Markdown Preview Enhanced_                         |                                                 |
-| _PlantUML_                                          |                                                 |
-| Better Comments                                     |                                                 |
-| Code Runner                                         |                                                 |
-| Prettier - Code formatter                           | Automatische Formatierung, geht nicht bei Latex |
-|                                                     |                                                 |
-| [Git for Windows](https://git-scm.com/download/win) | Git                                             |
-| [Sourcetree](https://www.sourcetreeapp.com/)        | für Git                                         |
-| Python                                              |                                                 |
-
-## Einrichten
-
-1. install git
-2. install Sourcetree
-3. clone Repository
-4. install Perl
-5. install MiKTex
-6. install VS Code
-7. install VS Code Extensions
-8. reboot
-9. try `latexmk` in cmd
-10. open `Bachelorarbeit.code-workspace`
-11. open TEX extension
-12. Build LaTeX Project -> Recipe: latexmk
-13. try build
-
-## Infos
-
-- Formatierung für Latex hab ich noch nicht zum laufen bekommen
-- Stricht bei gleichen Autoren in Literatur gerade noch ein Problem, ist aber nach IEEETran
-- autoref für Anhang geht nicht
-
-## Shortcuts
-
-| Tasten             | Auswirkungen                                                  |
-| ------------------ | ------------------------------------------------------------- |
-| `Ctrl`+`p`         | File Auswahl bei Namen                                        |
-| `Shift`+`Ctrl`+`p` | vs code suche Kommando                                         |
-| `Ctrl`+`b`         | Latex build                                                   |
-| `Ctrl`+`Alt`+`b`   | Rechte Leiste toggle                                         |
-| `Shift`+`Alt`+`f`  | Formatieren                                                   |
-| `Ctrl`+`Shift`+`f` | Suchen in allen Files                                         |
-| ``Ctrl`+`.`        | Wenn auch falsch geschrieben Wort, öffnet Korrekturvorschläge |
-
-## Helpful Commands
-
-| Command                                          | Funktion                            |
-| ------------------------------------------------ | ----------------------------------- |
-| `>LaTeX Workshop: View LaTeX PDF file`           |                                     |
-| `>LaTeX Workshop: Count words in LaTeX document` | In Main ausführen, Zählt die Wörter |
-
-## Helpful LaTeX
-
-| Befehl / Zeichen              | Bedeutung / Verwendung                                          |
-| ----------------------------- | --------------------------------------------------------------- |
-| `` "`<Text>"' ``              | „\<Text\>“ (Deutsche Anführungszeichen)                         |
-| ` ``<Text>'' `                | “\<Text\>” (Englische Anführungszeichen                         |
-| `\cite{<bib_key>}`            | `[<Quellen Nr.>]`                                               |
-| `\cite[<Text>]{<bib_key>}`    | `[<Quellen Nr.>, <Text>]`, für Seitenangabe oder ähnliches      |
-| `\autoref{<type>:<labelname>` | `<Type ausgeschrieben> <Nr>`, Referenz auf Bild oder ähnliches  |
-| ^                             | funktioniert nicht für Anhang                                   |
-| `\<befehl>*{<arg>}`           | Befehl ohne Link, z.B. `\section*{Test}` erscheint nicht in TOC |
-
-## Sonstiges
-
-| Was                                                                                      | Bedeutung / Verwendung                                                  |
-| ---------------------------------------------------------------------------------------- | ----------------------------------------------------------------------- |
-| `*.aux OR *.blg OR *.bbl OR *.bcf OR *.log OR *.lot OR *.tdo OR *.lof OR *.toc OR *.out` | Windows File Explorer Suchbegriff um alle LaTeX-Temp-Dateien zu löschen |
+## Kurzfassung
+Räumlich-zeitliche Vorhersagen haben in den letzten Jahren deutlich an Popularität zugenommen.
+Räumlich-zeitliche neuronale Netze wurden in der Vergangenheit erfolgreich auf verschiedene räumlich-zeitliche Aufgabenstellungen angewendet, wie z. B. die Vorhersage von Niederschlägen, Verkehrsaufkommen oder Verbrechen.
+In dieser Arbeit wird das räumlich-zeitliche Modell ConvLSTM auf die Vorhersage von mobilen Radarkontrollen angewendet.
+Das Modell wird mit einem Datensatz trainiert und evaluiert, der die in einer App gemeldeten Standorte von mobilen Radarkontrollen der letzten sieben Jahre in ganz Deutschland enthält.
+Um ConvLSTM auf den Datensatz anwenden zu können, werden die Standorte zunächst rasterisiert und somit wird eine Heatmap für jeden Tag erstellt.
+Das Modell sagt dann anhand von 16 Tagen als Eingabe die Heatmap des 17. Tages voraus.
+Es ist festzustellen, dass räumlich-zeitliche neuronale Netze tatsächlich auf die Vorhersage von mobilen Radarkontrollen anwendbar ist, da die Vorhersagen größtenteils mit der Grundwahrheit übereinstimmen.
+Da die Vorhersagen deutlich besser mit der Grundwahrheit des tatsächlichen Zieltages übereinstimmen als mit der eines zufälligen anderen Tages vom selben Wochentag, kann auch festgestellt werden, dass die Daten bestimmte Muster enthalten, durch die die Standorte von mobilen Radarkontrollen an einem bestimmten Tag von denen der letzten 16 Tage abhängen.
+Zudem ist bestätigt, dass das vorgestellte Modell diese Muster erlernen kann.
