@@ -3,7 +3,18 @@
 
 Machine Learning ist ein Teilgebiet der Informatik, das sich fundamental von der klassischen Programmierung unterscheidet.
 Diese Unterscheidung wird von Chollet in \cite{DeepLearningPythonKeras} auf den Seiten 23 und 24 beschrieben.
-In \autoref{fig:KlassischVsML} wird der Unterschied verdeutlicht.
+Sowohl klassische Programmierung als auch Machine Learning sollen Chollet zufolge im Rahmen von künstlicher Intelligenz verschiedenste Fragestellungen beantworten, die ansonsten von Menschen beantwortet werden.
+Ein Beispiel für eine solche Fragestellung könnte z.\,B. lauten: "`Welche Ziffer ist in diesem Bild dargestellt?"'.
+Ein anderes Beispiel wäre "`Gegeben ist dieser halbe Satz, wie könnte er weiter gehen?"'.
+Die Fragestellung der vorliegenden Arbeit wurde bereits definiert.
+Sie kann wie folgt in einem Satz zusammengefasst werden:
+"`Gegeben sind die Standorte von mobilen Radarkontrollen der letzten 16 Tage, wie groß ist die Gefahr für mobile Radarkontrollen am 17. Tag an verschiedenen Stellen?"'
+Bei der klassischen Programmierung liegt es nach Chollet nun am Menschen, Regeln aufzustellen, nach denen die Fragestellungen beantwortet werden.
+Der Mensch könnte sich vergangene Daten anschauen und müsste in ihnen Muster suchen, von denen diese Regeln abgeleitet werden können.
+Die Regeln werden anschließend in einer Programmiersprache explizit in Form von Variablen, Verzweigungen, Schleifen und Funktionen implementiert.
+Für die Vorhersage von mobilen Radarkontrollen könnte ein Mensch beispielsweise aus eigener Erfahrung im Straßenverkehr gewisse Muster erkennen.
+Daraus könnte z.\,B. die Regel aufgestellt werden, dass die Wahrscheinlichkeit für eine mobile Radarkontrolle an einem Standort sehr gering ist, wenn dort am vorherigen Tag bereits eine solche aufgestellt war.
+Wie in \autoref{fig:KlassischVsML} zusammengefasst wird, findet die klassische Programmierung auf Basis von Eingangsdaten und explizit implementierten Regeln Antworten.
 
 \begin{figure}[h]
     \centering
@@ -12,21 +23,8 @@ In \autoref{fig:KlassischVsML} wird der Unterschied verdeutlicht.
     \label{fig:KlassischVsML}
 \end{figure}
 
-Sowohl klassische Programmierung als auch Machine Learning sollen im Rahmen von künstlicher Intelligenz verschiedenste Fragestellungen beantworten, die ansonsten von Menschen beantwortet werden.
-Ein Beispiel für eine solche Fragestellung könnte z.\,B. lauten: "`Welche Ziffer ist in diesem Bild dargestellt?"'.
-Ein anderes Beispiel wäre "`Gegeben ist dieser halbe Satz, wie könnte er weiter gehen?"'.
-Die Fragestellung der vorliegenden Arbeit wurde bereits definiert.
-Sie kann wie folgt in einem Satz zusammengefasst werden:
-"`Gegeben sind die Standorte von mobilen Radarkontrollen der letzten 16 Tage, wie groß ist die Gefahr für mobile Radarkontrollen am 17. Tag an verschiedenen Stellen?"'
-Bei der klassischen Programmierung liegt es nach Chollet nun am Menschen, Regeln aufzustellen, nach denen die Fragestellungen beantwortet werden.
-Der Mensch könnte sich vergangene Daten anschauen und müsste in ihnen Muster suchen, von denen diese Regeln abgeleitet werden können.
-Die Regeln werden anschließend in einer Programmiersprache explizit in Form von Verzweigungen, Schleifen und Variablen implementiert.
-Für die Vorhersage von mobilen Radarkontrollen könnte ein Mensch beispielsweise aus eigener Erfahrung im Straßenverkehr gewisse Muster erkennen.
-Daraus könnte z.\,B. die Regel aufgestellt werden, dass die Wahrscheinlichkeit für eine mobile Radarkontrolle an einem Standort sehr gering ist, wenn dort am vorherigen Tag bereits eine solche aufgestellt war.
-Wie in \autoref{fig:KlassischVsML} zusammengefasst wird, findet die klassische Programmierung auf Basis von Eingangsdaten und explizit implementierten Regeln Antworten.
-
 Beim Machine Learning ist es anders herum.
-Ein Machine Learning Algorithmus erhält nach Chollet als Eingabe Daten und Antworten und leitet daraus Regeln ab.
+Ein Machine Learning Algorithmus erhält als Eingabe Daten und Antworten und leitet daraus Regeln ab, wie auch in \autoref{fig:KlassischVsML} zu sehen.
 Diese Regeln können anschließend verwendet werden, um anhand von neuen Eingabedaten neue Antworten zu erzeugen.
 Die Regeln müssen nun also nicht mehr explizit vom Menschen festgelegt werden.
 Dies bringt den Vorteil mit sich, dass möglicherweise Regeln erkannt werden, die dem Menschen (z.\,B. aufgrund ihrer Komplexität) verborgen blieben.
@@ -34,7 +32,7 @@ Für die Vorhersage von mobilen Radarkontrollen würde ein Machine Learning Algo
 Anhand der daraus erlernten Regeln und 16 neuen Tagen als Eingabe, könnte dann der 17. Tag vorhergesagt werden.
 Chollet beschreibt auf Seite 152, dass hierfür jedoch zwei Voraussetzungen erfüllt sein müssen:
 Zum einen muss der 17. Tag anhand der 16 vorangegangenen Tage vorhersagbar sein.
-Es muss also einen Zusammenhang zwischen Vergangenheit und Zukunft geben.
+Es muss also einen signifikanten Zusammenhang zwischen Vergangenheit und Zukunft geben, der über zufälliges Rauschen hinaus geht.
 Andererseits müssen genügend Trainingsdaten vorhanden sein, um die Regeln daraus ableiten zu können.
 Jedes Muster, dass in Zukunft erkannt werden soll, muss also in den Trainingsdaten vorhanden sein.
 Zu Beginn eines Machine Learning Projekts müssen diese Voraussetzungen nach Chollet als wahr angenommen werden.
@@ -62,7 +60,7 @@ Bekannte Aktivierungsfunktionen sind z.\,B. \emph{Sigmoid} oder \emph{\acrfullr{
 Die gesamte Berechnung des Ausgangs $\hat{y}$ ist in der aus \cite{6S191Intro} übernommenen \autoref{eq:PerceptronEquation} zu sehen.
 
 \begin{equation}
-    \hat{y} = g\left(w_0 + \sum_{i=1}^{m} x_i w_i \right)  
+    \hat{y} = g\left(w_0 + \sum_{i=1}^{m} x_i w_i \right)
 \label{eq:PerceptronEquation}
 \end{equation}
 
@@ -103,9 +101,9 @@ Häufig verwendet werden nach \cite[S. 155]{DeepLearningPythonKeras} z.\,B. der 
 
 Als letzte wichtige Komponente wird noch ein Optimierer benötigt.
 Dieser erhält als Eingabe den Verlustscore und passt anhand dessen die Gewichtungen des \acrshort{nn}s so an, dass der Verlustscore minimiert wird.
-Hierfür wird laut \cite[S. 30]{DeepLearningPythonKeras} ein Algorithmus namens \emph{Backpropagation} verwendet.
-Von diesem allgemeinen Algorithmus gibt es viele verschiedene Implementierungen, die sogenannten Optimierer.
-In der vorliegenden Arbeit wird der in \cite{AdamPaper} vorgestellte \emph{Adam}-Optimierer verwendet.
+Hierfür wird ein Algorithmus namens \emph{Backpropagation} verwendet \cite[S. 30]{DeepLearningPythonKeras}.
+Von diesem allgemeinen Algorithmus gibt es viele verschiedene Implementierungen.
+In der vorliegenden Arbeit wird der \emph{Adam}-Optimierer \cite{AdamPaper} verwendet.
 Die Vorteile dieses Optimierers sind, den Autoren zufolge, die einfache Implementierung sowie die Speicher- und Recheneffizienz.
 
 Zusammengefasst ist Deep Learning nichts anderes als eine Funktionsminimierung.

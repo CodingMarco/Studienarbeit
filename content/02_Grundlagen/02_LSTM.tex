@@ -20,7 +20,7 @@ In \autoref{fig:RNNSchleife} ist diese Architektur schematisch dargestellt.
     \label{fig:RNNSchleife}
 \end{figure}
 
-Ein einfaches \acrshort{rnn} berechnet die Ausgabe $Y_t$ nach \cite[S. 253]{DeepLearningPythonKeras} wie in \autoref{eq:RNN} gezeigt.
+Ein einfaches \acrshort{rnn} berechnet die Ausgabe $Y_t$ wie in \autoref{eq:RNN} \cite[S. 253]{DeepLearningPythonKeras} gezeigt.
 
 \begin{equation}
     Y_t = a(W \cdot X_t + U \cdot S_t + b)
@@ -43,7 +43,7 @@ Die \acrshort{lstm}-Architektur ist in \autoref{fig:LSTMCell} dargestellt.
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.8\textwidth,height=6cm,keepaspectratio=true]{content/images/LSTMCell.png}
+    \includegraphics[width=0.8\textwidth,height=6cm,keepaspectratio=true]{content/images/LSTMCell.jpg}
     \caption{Schematische Darstellung einer \acrshort{lstm}-Zelle \cite{6S191RNN}}
     \label{fig:LSTMCell}
 \end{figure}
@@ -55,9 +55,9 @@ Die drei Tore und ihre jeweilige vorgesehene Wirkung sind nach \cite{6S191RNN}:
 \begin{minipage}{\linewidth}
 \begin{enumerate}
     \setlength\itemsep{0.2em}
-    \item \textbf{Vergessens-Tor}: Dieses Tor sorgt dafür, dass irrelevante Informationen aus dem vorherigen Zustand "`vergessen"' werden.
-    \item \textbf{Merk-Tor}: Dieses Tor fügt dem Zustand relevante neue Informationen hinzu.
-    \item \textbf{Ausgangs-Tor}: Dieses Tor bestimmt, welche Informationen aus dem Zustand zum Ausgang der Zelle gelangen sollen.
+    \item \textbf{Vergessens-Tor} $\sigma_1$: Dieses Tor sorgt dafür, dass irrelevante Informationen aus dem vorherigen Zustand "`vergessen"' werden.
+    \item \textbf{Merk-Tor} $\sigma_2$: Dieses Tor fügt dem Zustand relevante neue Informationen hinzu.
+    \item \textbf{Ausgangs-Tor} $\sigma_3$: Dieses Tor bestimmt, welche Informationen aus dem Zustand zum Ausgang der Zelle gelangen sollen.
 \end{enumerate}
 \end{minipage}
 
