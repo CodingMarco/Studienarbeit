@@ -15,7 +15,7 @@ Wird $T$ hingegen zu groß gewählt (wie z.\,B. eine Woche oder ein Monat), habe
 Außerdem könnten dann insgesamt zu wenige Zeitschritte vorliegen, um das Modell trainieren zu können.
 Nach einigen Versuchen scheinen 24 Stunden für $T$ ein guter Wert zu sein, da somit der praktische Nutzen erhalten bleibt und es dennoch genug Meldungen pro Zeitschritt gibt.
 
-Als Nächstes sind $k$ udn $n$ zu wählen.
+Als Nächstes sind $k$ und $n$ zu wählen.
 Die Seitenlänge des gesamten betrachteten Bereichs berechnet sich daraus mit $n \cdot k$.
 Bei der Wahl von $k$ muss dieselbe Abwägung getroffen werden wie bei der Wahl von $T$, jedoch geht es hier um den praktischen Nutzen der Vorhersagen je nach räumlicher Auflösung.
 Wird $k$ zu groß gewählt, ist die zeitliche Auflösung zu gering, als dass die Vorhersagen nützlich wären.
@@ -88,7 +88,7 @@ Die Implementierung der beiden Klassen und des letztendlichen Transfers ist in \
 Die Klasse \emph{PostgisSpeedcam} enthält dabei einen Konstruktor, der eine MariaDB-Radarkontrolle als Parameter erhält und die Konvertierung durchführt.
 Die Klasse (bzw. Tabelle) \emph{PostgisSpeedcam} enthält zusätzlich ein Attribut \emph{duration\_hours}, welches die Standdauer der Radarkontrolle in Stunden enthält.
 Durch dieses Attribut kann in der nachfolgenden Verarbeitung der Datenpunkte komfortabel auf die Standdauer zugegriffen werden, ohne dass die Datumsdifferenz separat berechnet werden muss.
-Mit der Implementierung in \autoref{lst:ToPostGIS} können alle Tabelleneinträge in ca. einer Stunde übertragen werden.
+Mit der Implementierung in \appendixref{sec:ToPostGIS}, \autoref{lst:ToPostGIS} können alle Tabelleneinträge in ca. einer Stunde übertragen werden.
 Hierbei ist wichtig anzumerken, dass der räumliche Index automatisch von PostGIS erzeugt und aktualisiert wird.
 
 Die Verwendung von PostGIS bringt noch einen weiteren großen Vorteil mit sich.

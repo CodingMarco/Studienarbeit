@@ -58,8 +58,7 @@ Bei ConvLSTM handelt es sich um eine Kombination aus \acrshort{cnn} und \acrshor
 Durch Faltungsoperationen soll hierbei die räumliche Strukur erhalten bleiben.
 Außerdem sollen durch die Verwendung einer abgewandelten \acrshort{lstm}-Struktur die zeitlichen Zusammenhänge erfasst werden.
 Das ursprüngliche Ziel von ConvLSTM ist nach Shi et al. die Vorhersage einer \emph{Sequenz} von 2D-Daten anhand einer Eingabesequenz.
-Dafür orientieren sie sich an der in \cite{SequenceGeneratingLSTM} vorgestellten Architektur.
-Diese Architektur besteht aus mehreren hintereinandergeschalteten \acrshort{lstm}-Zellen.
+Dafür orientieren sie sich an der Architektur aus \cite{SequenceGeneratingLSTM}, die aus aus mehreren hintereinandergeschalteten \acrshort{lstm}-Zellen besteht und dadurch eine Sequenz-zu-Sequenz Vorhersage ermöglicht.
 Jedoch wurde sie für die Generierung von 1D-Sequenzen konzipiert und verwendet daher Matrixmultiplikationen mit Gewichtungsmatrizen.
 Diese werden von Shi et al. durch Faltungsoperationen ersetzt, wodurch zweidimensionale Strukturen erlernt werden können.
 Diese Architektur wird in \autoref{fig:ConvLSTMStructure} verdeutlicht.
@@ -71,7 +70,7 @@ Diese Architektur wird in \autoref{fig:ConvLSTMStructure} verdeutlicht.
     \label{fig:ConvLSTMStructure}
 \end{figure}
 
-Wie man in der Abbildung erkennen kann, hängt jedes Pixel der Ausgabe von einem Bereich der Eingabe und einem Bereich des inneren Zustands ab.
+Jedes Pixel der Ausgabe $H_t$ hängt von einem Bereich der Eingabe $X_t$ und einem Bereich des inneren Zustands $H_{t-1}, C_{t-1}$ ab.
 Dadurch, dass die Tore aus der \acrshort{lstm}-Architektur übernommen wurden, werden von ConvLSTM auch die räumlich-zeitlichen Zusammenhänge nach ihrer Relevanz gefiltert.
 Wie auch schon bei reinen \acrshortpl{lstm} ist es nicht wichtig zu verstehen, was genau die Tore räumlich und zeitlich filtern.
 Es ist nur wichtig zu wissen, dass mit ConvLSTM lang- und kurzfristige Abhängigkeiten in der räumlichen und zeitlichen Dimension erlernt werden können.
