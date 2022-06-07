@@ -75,7 +75,7 @@ Die in der vorliegenden Arbeit verwendete Verlustfunktion ist in \autoref{lst:We
     gobble=0,
     frame=lines,
     framesep=2mm]{python}
-def weighted_binary_crossentropy(weights: dict):
+def weighted_binary_crossentropy(weights):
     def loss_fn(y_true, y_pred):
         tf_y_true = tf.cast(y_true, dtype=y_pred.dtype)
         tf_y_pred = tf.cast(y_pred, dtype=y_pred.dtype)
@@ -128,7 +128,8 @@ def get_class_weights(dataset):
 
 In Zeile 2 wird mit \emph{np.bincount()} die Anzahl an "`0"'- und "`1"'-Werten im gesamten Datensatz berechnet.
 In Zeile 4 und 5 werden dann die Gewichtungen berechnet, sodass diese reziprok proportional zum Anteil der Klassen sind.
-Nach die Skalierung um \emph{total/2} bewirkt dabei, dass der Absolutwert des Verlusts nicht zu groß bzw. zu klein wird, um ihn als Mensch noch einigermaßen interpretieren zu können.
+Nach die Skalierung um \emph{total/2} bewirkt dabei, dass der Absolutwert des Verlusts nicht zu groß bzw. zu klein wird, das Verhältnis aber erhalten bleibt.
+Somit ist er besser interpretierbar als beispielsweise nach einer Normierung, bei der der eine Wert sehr klein wäre und der andere nahe $1$.
 In einem zufälligen Teil des Radarkontrollen-Datensatzes sind beispielsweise 5.09\,\% der Rasterzellen "`positiv"'.
 Daraus ergeben sich die Gewichtungen $0,53$ für die Klasse "`0"' und $9,83$ für die Klasse "`1"'.
 
